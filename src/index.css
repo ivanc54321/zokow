@@ -1,0 +1,209 @@
+:root {
+  /* Master Palette: Deep Obsidian, Warm Electric Ember/Orange, Neon Violet, Cyber Cyan, Gold Amber */
+  --bg-obsidian: #08090c;
+  --bg-dark: #0d0f15;
+  --bg-surface: #131722;
+  --bg-card: #181d2a;
+  --bg-card-hover: #22293b;
+  --bg-card-elevated: #1f2537;
+  --bg-glass: rgba(13, 15, 21, 0.85);
+  --bg-glass-card: rgba(22, 27, 39, 0.75);
+  --bg-glass-overlay: rgba(8, 9, 12, 0.65);
+  
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.16);
+  --border-hover: rgba(255, 94, 20, 0.4);
+  --border-focus: #ff5e14;
+
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-subtle: #64748b;
+  --text-dark: #0d0f15;
+
+  /* Reference Master Accent: Electric Vibrant Orange / Amber */
+  --brand-orange: #ff5e14;
+  --brand-orange-hover: #ff7533;
+  --brand-orange-deep: #e04f0f;
+  --brand-orange-light: #ffedd5;
+  --brand-orange-glow: rgba(255, 94, 20, 0.35);
+  --brand-orange-soft: rgba(255, 94, 20, 0.12);
+
+  /* Sectional Color Identities (Different color for each section) */
+  /* 1. Food & Culinary */
+  --color-food: #f59e0b;
+  --color-food-glow: rgba(245, 158, 11, 0.35);
+  --color-food-soft: rgba(245, 158, 11, 0.12);
+  --color-food-border: rgba(245, 158, 11, 0.4);
+
+  /* 2. Drinks & Nightlife */
+  --color-drink: #d946ef;
+  --color-drink-glow: rgba(217, 70, 239, 0.35);
+  --color-drink-soft: rgba(217, 70, 239, 0.12);
+  --color-drink-border: rgba(217, 70, 239, 0.4);
+
+  /* 3. Live Events, Stage & Gigs */
+  --color-event: #06b6d4;
+  --color-event-glow: rgba(6, 182, 212, 0.35);
+  --color-event-soft: rgba(6, 182, 212, 0.12);
+  --color-event-border: rgba(6, 182, 212, 0.4);
+
+  /* 4. Active Sports, Fitness & 5-a-Side */
+  --color-sports: #84cc16;
+  --color-sports-glow: rgba(132, 204, 22, 0.35);
+  --color-sports-soft: rgba(132, 204, 22, 0.12);
+  --color-sports-border: rgba(132, 204, 22, 0.4);
+
+  /* 5. Volunteering, Coast & Eco */
+  --color-community: #14b8a6;
+  --color-community-glow: rgba(20, 184, 166, 0.35);
+  --color-community-soft: rgba(20, 184, 166, 0.12);
+  --color-community-border: rgba(20, 184, 166, 0.4);
+
+  /* 6. Social Circles & Meetups */
+  --color-social: #a855f7;
+  --color-social-glow: rgba(168, 85, 247, 0.35);
+  --color-social-soft: rgba(168, 85, 247, 0.12);
+  --color-social-border: rgba(168, 85, 247, 0.4);
+
+  /* Gradients */
+  --gradient-brand: linear-gradient(135deg, #ff5e14 0%, #ff8c38 60%, #fbbf24 100%);
+  --gradient-split-action: linear-gradient(90deg, #ff5e14 0%, #f05a22 50%, #e04810 100%);
+  --gradient-card-overlay: linear-gradient(to top, rgba(8, 9, 12, 0.98) 0%, rgba(8, 9, 12, 0.5) 55%, transparent 100%);
+  --gradient-hero-ambient: radial-gradient(circle at 50% 25%, rgba(255, 94, 20, 0.22) 0%, rgba(217, 70, 239, 0.12) 40%, rgba(8, 9, 12, 0.95) 75%);
+  --gradient-glow-food: radial-gradient(circle at center, rgba(245, 158, 11, 0.2) 0%, transparent 70%);
+  --gradient-glow-drink: radial-gradient(circle at center, rgba(217, 70, 239, 0.2) 0%, transparent 70%);
+  --gradient-glow-event: radial-gradient(circle at center, rgba(6, 182, 212, 0.2) 0%, transparent 70%);
+
+  /* Typography */
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Space Grotesk', var(--font-sans);
+
+  /* Radii */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.7);
+  --shadow-orange-glow: 0 8px 30px rgba(255, 94, 20, 0.35);
+  --shadow-card-glow: 0 12px 35px rgba(0, 0, 0, 0.6);
+
+  /* Transitions */
+  --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-bounce: 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  background-color: var(--bg-obsidian);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  outline: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-obsidian);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #232938;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--bg-obsidian);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-orange);
+}
+
+/* Scroll Animation Engine Utilities */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.94);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-scale.is-revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.delay-100 { transition-delay: 100ms; }
+.delay-150 { transition-delay: 150ms; }
+.delay-200 { transition-delay: 200ms; }
+.delay-250 { transition-delay: 250ms; }
+.delay-300 { transition-delay: 300ms; }
+.delay-400 { transition-delay: 400ms; }
+
+/* Subtle Ambient Glow keyframes */
+@keyframes ambientPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.05); }
+}
+
+@keyframes orangePulse {
+  0%, 100% { box-shadow: 0 0 15px rgba(255, 94, 20, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(255, 94, 20, 0.6); }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
