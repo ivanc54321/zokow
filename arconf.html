@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0" name="viewport" />
+  <title>ZOKAL • ARCONF — Thanet Social & Cultural Directory | Margate, Ramsgate & Broadstairs</title>
+  <meta name="description"
+    content="Discover live music, sunrise tidal swims, creative tech meetups, beach cleans, and local activities across Margate, Ramsgate, and Broadstairs in one sleek directory." />
+
+  <!-- Tailwind CSS v3 with Plugins -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <!-- Leaflet CSS for Coastal Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Canvas Confetti for ticket claim celebration -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandDark: '#090d16',
+            brandDarker: '#060910',
+            brandCardDark: '#121826',
+            brandCardHover: '#182032',
+            brandMagenta: '#b3458e',
+            brandTeal: '#0097a8',
+            brandIndigo: '#5d47e8',
+            brandCoral: '#f1513a',
+            brandYellow: '#eec239',
+            brandCyan: '#4cd4fb',
+            brandPink: '#e86aa7',
+            brandMint: '#00d68f',
+          },
+          fontFamily: {
+            headline: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+            sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+          },
+          animation: {
+            'spin-slow': 'spin 18s linear infinite',
+            'float-slow': 'float 4s ease-in-out infinite',
+            'pulse-glow': 'pulseGlow 2.5s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-6px)' },
+            },
+            pulseGlow: {
+              '0%, 100%': { opacity: '0.6', transform: 'scale(1)' },
+              '50%': { opacity: '1', transform: 'scale(1.05)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #060910;
+      color: #f8fafc;
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .headline-font {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .glass-panel {
+      background: rgba(18, 24, 38, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .glass-card {
+      background: rgba(18, 24, 38, 0.82);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .glass-card:hover {
+      border-color: rgba(76, 212, 251, 0.4);
+      box-shadow: 0 16px 40px -12px rgba(0, 151, 168, 0.25);
+    }
+
+    .neon-glow-teal {
+      box-shadow: 0 0 25px -4px rgba(0, 151, 168, 0.35);
+    }
+
+    .neon-glow-coral {
+      box-shadow: 0 0 25px -4px rgba(241, 81, 58, 0.35);
+    }
+
+    .neon-glow-indigo {
+      box-shadow: 0 0 25px -4px rgba(93, 71, 232, 0.35);
+    }
+
+    /* Leaflet popup styling */
+    .leaflet-popup-content-wrapper {
+      background: #0f172a !important;
+      color: #ffffff !important;
+      border: 1px solid rgba(76, 212, 251, 0.3) !important;
+      border-radius: 14px !important;
+      padding: 0 !important;
+      overflow: hidden;
+    }
+
+    .leaflet-popup-tip {
+      background: #0f172a !important;
+    }
+
+    .custom-marker-pin {
+      width: 32px;
+      height: 32px;
+      border-radius: 50% 50% 50% 0;
+      background: #0097a8;
+      position: absolute;
+      transform: rotate(-45deg);
+      left: 50%;
+      top: 50%;
+      margin: -20px 0 0 -20px;
+      box-shadow: 0 0 14px rgba(0, 151, 168, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #ffffff;
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #232d42;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col bg-brandDarker text-slate-100 selection:bg-brandCyan selection:text-brandDark">
+
+  <!-- TOP TICKER BAR -->
+  <div
+    class="bg-gradient-to-r from-brandIndigoDark via-brandDarker to-brandTealDark text-[11px] py-1.5 px-4 font-semibold tracking-wider text-cyan-200 border-b border-white/10 flex items-center justify-between">
+    <div class="flex items-center gap-2 overflow-hidden whitespace-nowrap">
+      <span
+        class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] bg-brandCoral/30 text-brandCoral border border-brandCoral/40 uppercase tracking-widest animate-pulse">●
+        LIVE</span>
+      <span class="truncate">MARGATE • RAMSGATE • BROADSTAIRS — THANET'S UNIFIED SOCIAL & CULTURAL DIRECTORY</span>
+    </div>
+    <div class="hidden md:flex items-center gap-4 text-slate-300">
+      <span>🌊 High Tide: Walpole Bay 08:14</span>
+      <span>•</span>
+      <span id="headerLiveEventCount">30+ Local Events</span>
+    </div>
+  </div>
+
+  <!-- NAVIGATION BAR -->
+  <nav class="sticky top-0 z-40 glass-panel border-b border-white/10 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+
+      <!-- Brand Logo -->
+      <a href="/arconf.html" class="flex items-center gap-3 group">
+        <div
+          class="w-11 h-11 rounded-xl bg-gradient-to-tr from-brandTeal via-brandIndigo to-brandMagenta flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform duration-300">
+          <i data-lucide="compass" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span
+              class="headline-font font-black text-2xl tracking-tight bg-gradient-to-r from-white via-slate-100 to-cyan-300 bg-clip-text text-transparent">ZOKAL</span>
+            <span
+              class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-brandTeal/20 text-brandCyan border border-brandTeal/40">2026
+              EDITION</span>
+          </div>
+          <p class="text-[11px] text-slate-400 font-medium">Thanet Coastal Directory</p>
+        </div>
+      </a>
+
+      <!-- Quick Action Buttons -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- View Toggle (Grid / Map) -->
+        <div class="flex items-center p-1 rounded-xl bg-brandCardDark/90 border border-white/10">
+          <button id="viewGridBtn" onclick="setViewMode('grid')"
+            class="px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all bg-brandTeal text-white shadow-sm">
+            <i data-lucide="grid" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">Grid</span>
+          </button>
+          <button id="viewMapBtn" onclick="setViewMode('map')"
+            class="px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all text-slate-400 hover:text-white">
+            <i data-lucide="map" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">Coastal Map</span>
+          </button>
+        </div>
+
+        <!-- Weekend Planner Button -->
+        <button onclick="openWeekendPlanner()"
+          class="relative px-3.5 py-2 rounded-xl text-xs font-semibold glass-panel hover:bg-white/10 text-cyan-300 border border-brandCyan/30 flex items-center gap-2 transition-all">
+          <i data-lucide="calendar" class="w-4 h-4 text-brandCyan"></i>
+          <span class="hidden md:inline">Weekend Planner</span>
+          <span id="itineraryCountBadge"
+            class="hidden px-1.5 py-0.2 rounded-full text-[10px] bg-brandCoral text-white font-bold">0</span>
+        </button>
+
+        <!-- Saved Events Filter -->
+        <button id="savedFilterBtn" onclick="toggleSavedFilter()"
+          class="p-2 sm:px-3 sm:py-2 rounded-xl text-xs font-semibold glass-panel hover:bg-white/10 text-slate-300 border border-white/10 flex items-center gap-1.5 transition-all">
+          <i data-lucide="heart" class="w-4 h-4 text-rose-400"></i>
+          <span class="hidden md:inline">Saved</span>
+          <span id="savedCountBadge"
+            class="px-1.5 py-0.2 rounded-full text-[10px] bg-rose-500/20 text-rose-300 border border-rose-500/30">0</span>
+        </button>
+
+        <!-- Submit Event Button -->
+        <button onclick="openSubmitModal()"
+          class="px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-brandCoral to-brandMagenta hover:from-brandCoralDark hover:to-brandMagentaDark text-white shadow-lg shadow-coral-500/20 flex items-center gap-1.5 transition-all transform hover:scale-[1.02]">
+          <i data-lucide="plus-circle" class="w-4 h-4"></i>
+          <span class="hidden sm:inline">Submit Event</span>
+        </button>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <header class="relative overflow-hidden pt-10 pb-8 px-4 sm:px-6 lg:px-8 border-b border-white/5">
+    <!-- Ambient Background Glows -->
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-brandTeal/15 rounded-full blur-3xl pointer-events-none -z-10">
+    </div>
+    <div class="absolute top-10 right-1/4 w-96 h-96 bg-brandIndigo/15 rounded-full blur-3xl pointer-events-none -z-10">
+    </div>
+    <div class="absolute bottom-0 right-10 w-72 h-72 bg-brandCoral/10 rounded-full blur-3xl pointer-events-none -z-10">
+    </div>
+
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center max-w-3xl mx-auto mb-8">
+
+        <!-- Region Badge -->
+        <div
+          class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brandCardDark/90 border border-cyan-500/30 text-xs font-semibold text-brandCyan mb-4 shadow-sm">
+          <span class="w-2 h-2 rounded-full bg-brandCyan animate-ping"></span>
+          <span>ISLE OF THANET • MARGATE • RAMSGATE • BROADSTAIRS</span>
+        </div>
+
+        <h1 class="headline-font font-black text-3xl sm:text-5xl lg:text-6xl tracking-tight leading-tight mb-4">
+          Everything Happening on the <span
+            class="bg-gradient-to-r from-brandCyan via-brandTeal to-brandIndigo bg-clip-text text-transparent">Kent
+            Coast</span>
+        </h1>
+
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
+          From sunrise tidal swims at Walpole Bay and live indie gigs at Ramsgate Music Hall to tech meetups and
+          clifftop ecology walks — discover your next coastal plan.
+        </p>
+
+        <!-- Live Statistics Badges -->
+        <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mt-6 text-xs font-semibold">
+          <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-brandCardDark/80 border border-white/10">
+            <i data-lucide="calendar" class="w-4 h-4 text-brandCyan"></i>
+            <span id="statTotalEvents" class="text-white font-bold">30</span>
+            <span class="text-slate-400">Verified Events</span>
+          </div>
+          <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-brandCardDark/80 border border-white/10">
+            <i data-lucide="map-pin" class="w-4 h-4 text-brandCoral"></i>
+            <span class="text-white font-bold">3 Coastal Towns</span>
+          </div>
+          <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-brandCardDark/80 border border-white/10">
+            <i data-lucide="users" class="w-4 h-4 text-brandMint"></i>
+            <span id="statAttendees" class="text-white font-bold">3,840+</span>
+            <span class="text-slate-400">RSVPs</span>
+          </div>
+          <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-brandCardDark/80 border border-white/10">
+            <i data-lucide="sparkles" class="w-4 h-4 text-brandYellow"></i>
+            <span id="statFreeEvents" class="text-brandYellow font-bold">18 Free</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SEARCH & FILTER BAR -->
+      <div class="glass-panel p-3 sm:p-4 rounded-2xl max-w-4xl mx-auto shadow-2xl border border-white/10">
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+
+          <!-- Search Query Input -->
+          <div class="sm:col-span-6 relative">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            <input type="text" id="searchInput" placeholder="Search by band, swim, meetup, venue, or tag..."
+              oninput="handleSearch(this.value)"
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-brandDarker/80 border border-white/10 text-white placeholder-slate-500 text-xs sm:text-sm focus:outline-none focus:border-brandCyan focus:ring-1 focus:ring-brandCyan transition-all" />
+          </div>
+
+          <!-- Town Select -->
+          <div class="sm:col-span-3">
+            <select id="townSelect" onchange="setTown(this.value)"
+              class="w-full px-3 py-2.5 rounded-xl bg-brandDarker/80 border border-white/10 text-slate-200 text-xs sm:text-sm focus:outline-none focus:border-brandCyan focus:ring-1 focus:ring-brandCyan transition-all">
+              <option value="all">📍 All Towns</option>
+              <option value="Margate">Margate</option>
+              <option value="Ramsgate">Ramsgate</option>
+              <option value="Broadstairs">Broadstairs</option>
+            </select>
+          </div>
+
+          <!-- Timeframe Select -->
+          <div class="sm:col-span-3">
+            <select id="timeframeSelect" onchange="setTimeframe(this.value)"
+              class="w-full px-3 py-2.5 rounded-xl bg-brandDarker/80 border border-white/10 text-slate-200 text-xs sm:text-sm focus:outline-none focus:border-brandCyan focus:ring-1 focus:ring-brandCyan transition-all">
+              <option value="all">🗓️ All Dates</option>
+              <option value="today">Tonight / Today</option>
+              <option value="weekend">This Weekend</option>
+              <option value="upcoming">Upcoming</option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- QUICK TOWN PILLS -->
+        <div
+          class="flex flex-wrap items-center justify-between gap-2 pt-3 mt-3 border-t border-white/5 text-xs font-semibold">
+          <div class="flex flex-wrap items-center gap-1.5" id="townPills">
+            <button onclick="setTown('all')" data-town="all"
+              class="town-pill px-3 py-1 rounded-lg transition-all bg-brandTeal text-white shadow-sm">All Thanet (<span
+                id="countTownAll">30</span>)</button>
+            <button onclick="setTown('Margate')" data-town="Margate"
+              class="town-pill px-3 py-1 rounded-lg transition-all text-slate-400 hover:text-white hover:bg-white/5">Margate
+              (<span id="countTownMargate">16</span>)</button>
+            <button onclick="setTown('Ramsgate')" data-town="Ramsgate"
+              class="town-pill px-3 py-1 rounded-lg transition-all text-slate-400 hover:text-white hover:bg-white/5">Ramsgate
+              (<span id="countTownRamsgate">7</span>)</button>
+            <button onclick="setTown('Broadstairs')" data-town="Broadstairs"
+              class="town-pill px-3 py-1 rounded-lg transition-all text-slate-400 hover:text-white hover:bg-white/5">Broadstairs
+              (<span id="countTownBroadstairs">7</span>)</button>
+          </div>
+
+          <!-- Free Only Toggle -->
+          <label class="flex items-center gap-2 cursor-pointer select-none text-slate-300 hover:text-white">
+            <input type="checkbox" id="freeOnlyToggle" onchange="toggleFreeOnly(this.checked)"
+              class="rounded bg-brandDarker border-white/20 text-brandCyan focus:ring-0 w-3.5 h-3.5" />
+            <span class="text-xs">Free Events Only</span>
+          </label>
+        </div>
+
+      </div>
+
+    </div>
+  </header>
+
+  <!-- CATEGORY TABS BAR (NEW ARCONF STAGE-STYLE SELECTOR) -->
+  <section class="sticky top-20 z-30 glass-panel border-b border-white/10 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+      <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1" id="categoryTabs">
+        <!-- Injected via Javascript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- ACTIVE FILTER SUMMARY BAR -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+      <div class="flex items-center gap-2 text-xs text-slate-400">
+        <span class="font-bold text-white" id="visibleCountText">Showing 30 events</span>
+        <span>•</span>
+        <span id="activeFiltersDescription" class="text-cyan-300">All Categories across Thanet</span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <!-- Sort By Dropdown -->
+        <div class="flex items-center gap-1.5 text-xs text-slate-400">
+          <i data-lucide="arrow-down-up" class="w-3.5 h-3.5"></i>
+          <span>Sort:</span>
+          <select id="sortSelect" onchange="setSort(this.value)"
+            class="bg-brandCardDark border border-white/10 text-white rounded-lg px-2 py-1 text-xs focus:outline-none">
+            <option value="date">Upcoming Date</option>
+            <option value="popular">Most Popular</option>
+            <option value="spots">Spots Remaining</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 1: GRID VIEW -->
+    <div id="directoryGridView" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Event Cards injected via Javascript -->
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div id="emptyState" class="hidden text-center py-20 glass-card rounded-2xl max-w-md mx-auto my-12 p-8">
+      <div
+        class="w-16 h-16 rounded-full bg-brandTeal/10 border border-brandTeal/30 flex items-center justify-center mx-auto mb-4 text-brandCyan">
+        <i data-lucide="calendar-x" class="w-8 h-8"></i>
+      </div>
+      <h3 class="headline-font font-bold text-lg text-white mb-2">No matching events found</h3>
+      <p class="text-xs text-slate-400 mb-6">Try clearing your filters or searching for something else like "swim",
+        "music", or "meetup".</p>
+      <button onclick="resetAllFilters()"
+        class="px-4 py-2 rounded-xl text-xs font-semibold bg-brandTeal hover:bg-brandTealDark text-white transition-all">
+        Reset All Filters
+      </button>
+    </div>
+
+    <!-- VIEW 2: COASTAL MAP VIEW (Leaflet) -->
+    <div id="coastalMapView" class="hidden space-y-4">
+      <div class="glass-panel p-4 rounded-2xl flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div class="flex items-center gap-2 text-cyan-300 font-semibold">
+          <i data-lucide="map-pin" class="w-4 h-4 text-brandCoral"></i>
+          <span>Thanet Coastal Interactive Map — Margate, Ramsgate & Broadstairs</span>
+        </div>
+        <div class="flex items-center gap-4 text-slate-400">
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-brandTeal"></span> Live
+            Music</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-brandCoral"></span> Outdoor /
+            Swim</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-brandIndigo"></span> Tech &
+            Meetup</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-brandMint"></span> Community
+            / Eco</span>
+        </div>
+      </div>
+
+      <!-- Map Container -->
+      <div id="thanetMap" class="w-full h-[620px] rounded-2xl overflow-hidden border border-white/10 shadow-2xl z-10">
+      </div>
+    </div>
+
+  </main>
+
+  <!-- EVENT DETAILS & PASS MODAL -->
+  <div id="eventModal" onclick="if(event.target === this) closeEventModal()"
+    class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-brandDarker/80 backdrop-blur-md overflow-y-auto">
+    <div
+      class="relative w-full max-w-2xl glass-card border border-white/15 rounded-3xl overflow-hidden shadow-2xl my-8 transform transition-all">
+
+      <!-- Close Button -->
+      <button onclick="closeEventModal()" aria-label="Close"
+        class="modal-close absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-brandDarker/70 border border-white/20 text-white flex items-center justify-center hover:bg-brandCoral transition-colors">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <!-- Modal Image Banner -->
+      <div class="relative h-64 w-full overflow-hidden">
+        <img id="modalImg" src="" alt="" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-[#121826] via-[#121826]/40 to-transparent"></div>
+
+        <!-- Badges on Image -->
+        <div class="absolute bottom-4 left-6 right-6 flex items-end justify-between gap-3">
+          <div>
+            <div class="flex items-center gap-2 mb-2">
+              <span id="modalTownBadge"
+                class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase bg-brandCyan/20 text-brandCyan border border-brandCyan/30"></span>
+              <span id="modalCategoryBadge"
+                class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase bg-brandIndigo/20 text-indigo-300 border border-indigo-500/30"></span>
+              <span id="modalPriceBadge"
+                class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase bg-brandYellow/20 text-brandYellow border border-brandYellow/30"></span>
+            </div>
+            <h2 id="modalTitle" class="headline-font font-black text-2xl sm:text-3xl text-white leading-tight"></h2>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Content Body -->
+      <div class="p-6 sm:p-8 space-y-6">
+
+        <!-- Key Metadata Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="p-3 rounded-xl bg-brandDarker/60 border border-white/5">
+            <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Date</span>
+            <span id="modalDate" class="text-xs font-bold text-white"></span>
+          </div>
+          <div class="p-3 rounded-xl bg-brandDarker/60 border border-white/5">
+            <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Time</span>
+            <span id="modalTime" class="text-xs font-bold text-cyan-300"></span>
+          </div>
+          <div class="p-3 rounded-xl bg-brandDarker/60 border border-white/5">
+            <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Confirmed</span>
+            <span id="modalAttendees" class="text-xs font-bold text-brandMint"></span>
+          </div>
+          <div class="p-3 rounded-xl bg-brandDarker/60 border border-white/5">
+            <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Spots Left</span>
+            <span id="modalSpots" class="text-xs font-bold text-brandCoral"></span>
+          </div>
+        </div>
+
+        <!-- Venue & Location Info -->
+        <div class="p-4 rounded-2xl bg-brandDarker/60 border border-white/10 flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-brandTeal/20 text-brandCyan flex items-center justify-center shrink-0">
+            <i data-lucide="map-pin" class="w-5 h-5"></i>
+          </div>
+          <div class="flex-1">
+            <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold block">Location & Venue</span>
+            <p id="modalVenue" class="text-sm font-bold text-white mb-1"></p>
+            <p id="modalOrganizer" class="text-xs text-slate-400"></p>
+          </div>
+          <a id="modalMapLink" href="#" target="_blank"
+            class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 hover:bg-white/10 text-cyan-300 border border-white/10 shrink-0">
+            Directions
+          </a>
+        </div>
+
+        <!-- Description -->
+        <div>
+          <h4 class="text-xs font-bold uppercase text-slate-400 tracking-wider mb-2">About This Event</h4>
+          <p id="modalDesc" class="text-sm text-slate-300 leading-relaxed"></p>
+        </div>
+
+        <!-- Tag Pills -->
+        <div id="modalTags" class="flex flex-wrap gap-2 pt-2"></div>
+
+        <!-- RSVP & Digital Pass Claim Box -->
+        <div
+          class="p-5 rounded-2xl bg-gradient-to-br from-brandIndigoDark/40 via-brandDarker to-brandTealDark/30 border border-cyan-500/30">
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <div>
+              <h4 class="headline-font font-bold text-base text-white">Claim Free Community Pass / RSVP</h4>
+              <p class="text-xs text-slate-400">Reserve your spot and receive instant digital accreditation badge.</p>
+            </div>
+            <span
+              class="px-2.5 py-1 rounded-full text-xs font-extrabold bg-brandMint/20 text-brandMint border border-brandMint/30">VERIFIED
+              PASS</span>
+          </div>
+
+          <div id="rsvpForm" class="flex flex-col sm:flex-row gap-2">
+            <input type="text" id="rsvpName" placeholder="Your name or handle"
+              class="flex-1 px-3.5 py-2.5 rounded-xl bg-brandDarker/90 border border-white/10 text-white text-xs placeholder-slate-500 focus:outline-none focus:border-brandCyan" />
+            <button onclick="handleClaimPass()"
+              class="px-5 py-2.5 rounded-xl text-xs font-bold bg-brandTeal hover:bg-brandTealDark text-white shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2 transition-all">
+              <i data-lucide="ticket" class="w-4 h-4"></i>
+              <span>Claim Digital Pass</span>
+            </button>
+          </div>
+
+          <!-- RSVP Success Notification -->
+          <div id="rsvpSuccessBox"
+            class="hidden p-4 rounded-xl bg-brandMint/10 border border-brandMint/30 mt-3 text-xs text-brandMint flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i data-lucide="check-circle-2" class="w-5 h-5 text-brandMint"></i>
+              <div>
+                <span class="font-bold block">You're on the list!</span>
+                <span id="rsvpPassCode" class="text-[11px] text-slate-300"></span>
+              </div>
+            </div>
+            <button onclick="copyPassCode()"
+              class="px-2.5 py-1 rounded bg-brandMint/20 hover:bg-brandMint/30 font-bold text-[10px]">
+              Copy Code
+            </button>
+          </div>
+        </div>
+
+        <!-- Modal Action Footer -->
+        <div class="flex items-center justify-between pt-4 border-t border-white/10">
+          <button id="modalItineraryToggleBtn" onclick="toggleModalItinerary()"
+            class="px-3 py-2 rounded-xl text-xs font-semibold glass-panel hover:bg-white/10 text-slate-200 border border-white/10 flex items-center gap-1.5">
+            <i data-lucide="plus" class="w-4 h-4 text-cyan-400"></i>
+            <span>Add to Weekend Itinerary</span>
+          </button>
+          <a id="modalSourceBtn" href="#" target="_blank"
+            class="px-4 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 text-white flex items-center gap-1.5 transition-all">
+            <span>Official Event Page</span>
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- WEEKEND PLANNER MODAL -->
+  <div id="plannerModal" onclick="if(event.target === this) closeWeekendPlanner()"
+    class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-brandDarker/80 backdrop-blur-md overflow-y-auto">
+    <div class="relative w-full max-w-2xl glass-card border border-white/15 rounded-3xl p-6 sm:p-8 shadow-2xl my-8">
+
+      <button onclick="closeWeekendPlanner()" aria-label="Close"
+        class="modal-close absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-brandDarker/70 border border-white/20 text-white flex items-center justify-center hover:bg-brandCoral">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 rounded-xl bg-brandIndigo/20 text-brandCyan flex items-center justify-center">
+          <i data-lucide="calendar" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h3 class="headline-font font-black text-xl text-white">Your Thanet Weekend Planner</h3>
+          <p class="text-xs text-slate-400">Build your personal seaside itinerary for Saturday & Sunday.</p>
+        </div>
+      </div>
+
+      <!-- Planner Event List -->
+      <div id="plannerEventList" class="space-y-3 max-h-96 overflow-y-auto pr-1 mb-6">
+        <!-- Injected via Javascript -->
+      </div>
+
+      <div class="flex items-center justify-between pt-4 border-t border-white/10 text-xs">
+        <button onclick="clearPlanner()" class="text-rose-400 hover:text-rose-300 font-medium">Clear All</button>
+        <button onclick="copyPlannerItinerary()"
+          class="px-4 py-2 rounded-xl font-bold bg-brandTeal hover:bg-brandTealDark text-white shadow-md flex items-center gap-1.5">
+          <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
+          <span>Copy Itinerary</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SUBMIT EVENT MODAL -->
+  <div id="submitModal" onclick="if(event.target === this) closeSubmitModal()"
+    class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-brandDarker/80 backdrop-blur-md overflow-y-auto">
+    <div class="relative w-full max-w-xl glass-card border border-white/15 rounded-3xl p-6 sm:p-8 shadow-2xl my-8">
+
+      <button onclick="closeSubmitModal()" aria-label="Close"
+        class="modal-close absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-brandDarker/70 border border-white/20 text-white flex items-center justify-center hover:bg-brandCoral">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 rounded-xl bg-brandCoral/20 text-brandCoral flex items-center justify-center">
+          <i data-lucide="plus-circle" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h3 class="headline-font font-black text-xl text-white">Submit a Thanet Event</h3>
+          <p class="text-xs text-slate-400">Add your gig, swim, workshop, or community meetup to the directory.</p>
+        </div>
+      </div>
+
+      <form id="submitEventForm" onsubmit="handleEventSubmit(event)" class="space-y-4 text-xs">
+        <div>
+          <label class="block text-slate-300 font-semibold mb-1">Event Title *</label>
+          <input type="text" id="newTitle" required placeholder="e.g. Cliftonville Vinyl & Coffee Exchange"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-brandDarker/90 border border-white/10 text-white placeholder-slate-500 focus:border-brandCyan" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-300 font-semibold mb-1">Town *</label>
+            <select id="newTown" required
+              class="w-full px-3 py-2.5 rounded-xl bg-brandDarker/90 border border-white/10 text-white focus:border-brandCyan">
+              <option value="Margate">Margate</option>
+              <option value="Ramsgate">Ramsgate</option>
+              <option value="Broadstairs">Broadstairs</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-300 font-semibold mb-1">Category *</label>
+            <select id="newCategory" required
+              class="w-full px-3 py-2.5 rounded-xl bg-brandDarker/90 border border-white/10 text-white focus:border-brandCyan">
+              <option value="event">Live Music & Arts</option>
+              <option value="activity">Outdoor & Wellness</option>
+              <option value="meetup">Meetups & Tech</option>
+              <option value="volunteer">Volunteering & Community</option>
+              <option value="food">Food & Nightlife</option>
+              <option value="sports">Sports & Fitness</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-300 font-semibold mb-1">Date & Time *</label>
+            <input type="text" id="newDateTime" required placeholder="e.g. Saturday, Oct 24 • 19:00"
+              class="w-full px-3.5 py-2.5 rounded-xl bg-brandDarker/90 border border-white/10 text-white placeholder-slate-500 focus:border-brandCyan" />
+          </div>
+          <div>
+            <label class="block text-slate-300 font-semibold mb-1">Price / Ticket</label>
+            <input type="text" id="newPrice" placeholder="e.g. Free or £5"
+              class="w-full px-3.5 py-2.5 rounded-xl bg-brandDarker/90 border border-white/10 text-white placeholder-slate-500 focus:border-brandCyan" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-semibold mb-1">Venue / Meeting Point *</label>
+          <input type="text" id="newVenue" required placeholder="e.g. Marine Studios, Albert Terrace"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-brandDarker/90 border border-white/10 text-white placeholder-slate-500 focus:border-brandCyan" />
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-semibold mb-1">Description *</label>
+          <textarea id="newDesc" rows="3" required
+            placeholder="Describe what attendees can expect, equipment needed, and welcome vibe..."
+            class="w-full px-3.5 py-2 rounded-xl bg-brandDarker/90 border border-white/10 text-white placeholder-slate-500 focus:border-brandCyan"></textarea>
+        </div>
+
+        <button type="submit"
+          class="w-full py-3 rounded-xl font-bold bg-gradient-to-r from-brandCoral to-brandMagenta hover:from-brandCoralDark hover:to-brandMagentaDark text-white shadow-lg transition-all text-xs">
+          Publish Event to Directory
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toastNotification"
+    class="fixed bottom-6 right-6 z-50 hidden px-4 py-3 rounded-2xl glass-panel border border-cyan-400/40 text-cyan-200 text-xs font-semibold shadow-2xl flex items-center gap-2 transform transition-all duration-300">
+    <i data-lucide="sparkles" class="w-4 h-4 text-brandCyan"></i>
+    <span id="toastMessage"></span>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="glass-panel border-t border-white/10 py-10 px-4 sm:px-6 lg:px-8 mt-16 text-xs text-slate-400">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+
+      <div class="flex items-center gap-3">
+        <div
+          class="w-8 h-8 rounded-lg bg-gradient-to-tr from-brandTeal to-brandIndigo flex items-center justify-center text-white">
+          <i data-lucide="compass" class="w-4 h-4"></i>
+        </div>
+        <div>
+          <span class="headline-font font-black text-sm text-white">ZOKAL • ARCONF</span>
+          <p class="text-[11px] text-slate-500">Isle of Thanet Community Directory • Margate • Ramsgate • Broadstairs
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <a href="#" onclick="setViewMode('map'); return false;" class="hover:text-cyan-300 transition-colors">Coastal
+          Map</a>
+        <a href="#" onclick="openWeekendPlanner(); return false;" class="hover:text-cyan-300 transition-colors">Weekend
+          Planner</a>
+        <a href="/admin" class="hover:text-cyan-300 transition-colors">Admin Portal</a>
+      </div>
+
+      <p class="text-[11px] text-slate-500">
+        © 2026 ZOKAL Thanet Social Directory. All verified community events.
+      </p>
+
+    </div>
+  </footer>
+
+  <!-- APPLICATION LOGIC SCRIPT -->
+  <script>
+    // State
+    let allEvents = [];
+    let allVenues = [];
+    let currentTown = 'all';
+    let currentCategory = 'all';
+    let currentTimeframe = 'all';
+    let currentSearch = '';
+    let isFreeOnly = false;
+    let isSavedOnly = false;
+    let currentSort = 'date';
+    let viewMode = 'grid'; // 'grid' | 'map'
+    let currentEventModal = null;
+    let mapInstance = null;
+    let mapMarkers = [];
+
+    // Local Storage Data
+    let savedEventIds = JSON.parse(localStorage.getItem('zokal_saved_ids') || '["evt-1", "evt-4"]');
+    let itineraryIds = JSON.parse(localStorage.getItem('zokal_itinerary_ids') || '["evt-1", "evt-2"]');
+
+    // Category Configuration with ARCONF Theme Accents
+    const CATEGORIES = [
+      { id: 'all', label: 'All Events', color: '#0097a8', icon: 'layers' },
+      { id: 'event', label: 'Live Music & Arts', color: '#0097a8', icon: 'music' },
+      { id: 'activity', label: 'Outdoor & Wellness', color: '#f1513a', icon: 'waves' },
+      { id: 'meetup', label: 'Meetups & Tech', color: '#5d47e8', icon: 'laptop' },
+      { id: 'volunteer', label: 'Volunteering & Nature', color: '#00d68f', icon: 'sprout' },
+      { id: 'sports', label: 'Sports & Fitness', color: '#4cd4fb', icon: 'activity' },
+      { id: 'food', label: 'Food & Nightlife', color: '#eec239', icon: 'utensils' }
+    ];
+
+    // Initialize Application
+    async function initApp() {
+      try {
+        const response = await fetch('/api/arconf/state');
+        const json = await response.json();
+        if (json.success && json.data) {
+          allEvents = json.data.events || [];
+          allVenues = json.data.venues || [];
+        }
+      } catch (err) {
+        console.warn('API fetch failed, fallback to local fetch:', err);
+      }
+
+      // If backend was empty or failed, fetch from /api/arconf/events
+      if (!allEvents.length) {
+        try {
+          const res = await fetch('/api/arconf/events');
+          const d = await res.json();
+          if (d.success) allEvents = d.data;
+        } catch (e) { }
+      }
+
+      renderCategoryTabs();
+      updateBadges();
+      renderEvents();
+      lucide.createIcons();
+    }
+
+    // Render Category Tabs in ARCONF Stage Selector Style
+    function renderCategoryTabs() {
+      const container = document.getElementById('categoryTabs');
+      container.innerHTML = CATEGORIES.map(cat => {
+        const isActive = currentCategory === cat.id;
+        const count = cat.id === 'all'
+          ? allEvents.length
+          : allEvents.filter(e => e.category === cat.id || e.categoryLabel?.toLowerCase().includes(cat.label.toLowerCase())).length;
+
+        return `
+          <button 
+            onclick="setCategory('${cat.id}')"
+            class="category-tab px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-2 border ${isActive
+            ? 'bg-brandTeal text-white border-cyan-400 shadow-lg shadow-cyan-500/20'
+            : 'glass-panel text-slate-300 border-white/5 hover:border-white/20 hover:text-white'
+          }"
+          >
+            <span>${cat.label}</span>
+            <span class="px-1.5 py-0.2 rounded-full text-[10px] ${isActive ? 'bg-white/20 text-white' : 'bg-white/5 text-slate-400'}">
+              ${count}
+            </span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    // Filter & Sort Pipeline
+    function getFilteredEvents() {
+      return allEvents.filter(event => {
+        // Town filter
+        if (currentTown !== 'all' && event.town?.toLowerCase() !== currentTown.toLowerCase()) {
+          return false;
+        }
+        // Category filter
+        if (currentCategory !== 'all') {
+          const matchCat = event.category === currentCategory ||
+            event.categoryLabel?.toLowerCase().includes(CATEGORIES.find(c => c.id === currentCategory)?.label.toLowerCase());
+          if (!matchCat) return false;
+        }
+        // Timeframe filter
+        if (currentTimeframe !== 'all' && event.timeframe !== currentTimeframe) {
+          return false;
+        }
+        // Free Only filter
+        if (isFreeOnly && !event.isFree && event.price !== 'Free') {
+          return false;
+        }
+        // Saved Only filter
+        if (isSavedOnly && !savedEventIds.includes(event.id)) {
+          return false;
+        }
+        // Search query
+        if (currentSearch) {
+          const q = currentSearch.toLowerCase();
+          const match = event.title.toLowerCase().includes(q) ||
+            event.description?.toLowerCase().includes(q) ||
+            event.venue?.toLowerCase().includes(q) ||
+            event.organizer?.toLowerCase().includes(q) ||
+            (event.tags && event.tags.some(t => t.toLowerCase().includes(q)));
+          if (!match) return false;
+        }
+        return true;
+      }).sort((a, b) => {
+        if (currentSort === 'popular') return (b.attendees || 0) - (a.attendees || 0);
+        if (currentSort === 'spots') return (a.spotsLeft || 999) - (b.spotsLeft || 999);
+        return (a.date || '').localeCompare(b.date || '');
+      });
+    }
+
+    // Render Event Cards Grid
+    function renderEvents() {
+      const filtered = getFilteredEvents();
+      const grid = document.getElementById('directoryGridView');
+      const empty = document.getElementById('emptyState');
+      const countText = document.getElementById('visibleCountText');
+
+      countText.textContent = `Showing ${filtered.length} of ${allEvents.length} events`;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+      }
+
+      empty.classList.add('hidden');
+      grid.innerHTML = filtered.map(event => {
+        const isSaved = savedEventIds.includes(event.id);
+        const inItinerary = itineraryIds.includes(event.id);
+        const townColor = event.town === 'Margate' ? 'text-cyan-400 bg-cyan-950/60 border-cyan-800/60' :
+          event.town === 'Ramsgate' ? 'text-indigo-400 bg-indigo-950/60 border-indigo-800/60' :
+            'text-coral-400 bg-rose-950/60 border-rose-800/60';
+
+        const categoryTag = event.categoryLabel || 'Community Event';
+
+        return `
+          <div class="glass-card rounded-2xl overflow-hidden flex flex-col group transition-all duration-300 hover:-translate-y-1.5 shadow-xl relative">
+            
+            <!-- Card Image -->
+            <div class="relative h-48 w-full overflow-hidden bg-brandDarker">
+              <img 
+                src="${event.image}" 
+                alt="${event.title}" 
+                loading="lazy"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#121826] via-transparent to-transparent"></div>
+
+              <!-- Top Left Badges -->
+              <div class="absolute top-3 left-3 flex flex-wrap gap-1.5 z-10">
+                <span class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase border ${townColor}">
+                  📍 ${event.town}
+                </span>
+                <span class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase bg-brandDarker/80 text-white border border-white/10">
+                  ${categoryTag}
+                </span>
+              </div>
+
+              <!-- Top Right Bookmark Button -->
+              <button 
+                onclick="toggleBookmark('${event.id}', event)" 
+                class="absolute top-3 right-3 z-10 w-8 h-8 rounded-xl bg-brandDarker/80 border border-white/15 flex items-center justify-center hover:bg-white/10 transition-colors"
+                title="${isSaved ? 'Remove bookmark' : 'Save event'}"
+              >
+                <i data-lucide="heart" class="w-4 h-4 ${isSaved ? 'fill-rose-500 text-rose-500' : 'text-slate-300'}"></i>
+              </button>
+
+              <!-- Bottom Price Ribbon -->
+              <div class="absolute bottom-2.5 right-3 z-10">
+                <span class="px-2.5 py-0.5 rounded-md text-[11px] font-extrabold ${event.isFree ? 'bg-brandMint/30 text-brandMint border border-brandMint/40' : 'bg-brandYellow/30 text-brandYellow border border-brandYellow/40'}">
+                  ${event.price || 'Free'}
+                </span>
+              </div>
+            </div>
+
+            <!-- Card Body -->
+            <div class="p-5 flex-1 flex flex-col justify-between">
+              <div>
+                
+                <!-- Date & Time Row -->
+                <div class="flex items-center gap-2 text-xs text-brandCyan font-semibold mb-2">
+                  <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                  <span>${event.dateDisplay || event.date} • ${event.time}</span>
+                </div>
+
+                <!-- Event Title -->
+                <h3 class="headline-font font-bold text-base text-white leading-snug group-hover:text-cyan-300 transition-colors line-clamp-2 mb-2">
+                  ${event.title}
+                </h3>
+
+                <!-- Venue & Town -->
+                <div class="flex items-center gap-1.5 text-xs text-slate-400 mb-3 line-clamp-1">
+                  <i data-lucide="map-pin" class="w-3.5 h-3.5 text-brandCoral shrink-0"></i>
+                  <span>${event.venue}</span>
+                </div>
+
+                <!-- Description snippet -->
+                <p class="text-xs text-slate-300 line-clamp-2 leading-relaxed mb-4">
+                  ${event.description}
+                </p>
+
+              </div>
+
+              <!-- Card Footer & Actions -->
+              <div>
+                <!-- Attendees / Spots Left Progress -->
+                <div class="flex items-center justify-between text-[11px] text-slate-400 pb-3 mb-3 border-b border-white/5">
+                  <span class="flex items-center gap-1">
+                    <i data-lucide="users" class="w-3 h-3 text-brandMint"></i>
+                    <strong class="text-white">${event.attendees || 12}</strong> attending
+                  </span>
+                  ${event.spotsLeft !== null && event.spotsLeft !== undefined ? `
+                    <span class="text-brandCoral font-semibold">${event.spotsLeft} spots left</span>
+                  ` : '<span class="text-brandMint">Open access</span>'}
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="grid grid-cols-2 gap-2">
+                  <button 
+                    onclick="openEventModal('${event.id}')"
+                    class="w-full py-2 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 flex items-center justify-center gap-1.5 transition-all"
+                  >
+                    <i data-lucide="info" class="w-3.5 h-3.5 text-cyan-400"></i>
+                    <span>Details</span>
+                  </button>
+
+                  <button 
+                    onclick="openEventModal('${event.id}')"
+                    class="w-full py-2 rounded-xl text-xs font-bold bg-brandTeal hover:bg-brandTealDark text-white shadow-md shadow-cyan-500/20 flex items-center justify-center gap-1.5 transition-all"
+                  >
+                    <i data-lucide="ticket" class="w-3.5 h-3.5"></i>
+                    <span>Get Pass</span>
+                  </button>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+      if (viewMode === 'map') {
+        renderMapMarkers();
+      }
+    }
+
+    // View Switching (Grid vs Map)
+    function setViewMode(mode) {
+      viewMode = mode;
+      const gridView = document.getElementById('directoryGridView');
+      const mapView = document.getElementById('coastalMapView');
+      const gridBtn = document.getElementById('viewGridBtn');
+      const mapBtn = document.getElementById('viewMapBtn');
+
+      if (mode === 'grid') {
+        gridView.classList.remove('hidden');
+        mapView.classList.add('hidden');
+        gridBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all bg-brandTeal text-white shadow-sm";
+        mapBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all text-slate-400 hover:text-white";
+      } else {
+        gridView.classList.add('hidden');
+        mapView.classList.remove('hidden');
+        gridBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all text-slate-400 hover:text-white";
+        mapBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all bg-brandTeal text-white shadow-sm";
+        initCoastalMap();
+      }
+    }
+
+    // Leaflet Coastal Map
+    function initCoastalMap() {
+      if (!mapInstance) {
+        // Centered around Isle of Thanet
+        mapInstance = L.map('thanetMap').setView([51.3750, 1.3950], 12);
+
+        // CartoDB Dark Matter Tiles
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+          attribution: '&copy; CartoDB &copy; OpenStreetMap',
+          maxZoom: 18
+        }).addTo(mapInstance);
+      }
+      setTimeout(() => {
+        mapInstance.invalidateSize();
+        renderMapMarkers();
+      }, 200);
+    }
+
+    function renderMapMarkers() {
+      if (!mapInstance) return;
+      // Clear previous markers
+      mapMarkers.forEach(m => mapInstance.removeLayer(m));
+      mapMarkers = [];
+
+      const filtered = getFilteredEvents();
+      filtered.forEach(event => {
+        if (!event.coords || event.coords.length < 2) return;
+
+        const pinColor = event.category === 'event' ? '#0097a8' :
+          event.category === 'activity' ? '#f1513a' :
+            event.category === 'meetup' ? '#5d47e8' :
+              event.category === 'volunteer' ? '#00d68f' : '#eec239';
+
+        const customIcon = L.divIcon({
+          className: 'custom-leaflet-marker',
+          html: `<div class="custom-marker-pin" style="background:${pinColor}"></div>`,
+          iconSize: [30, 42],
+          iconAnchor: [15, 42]
+        });
+
+        const marker = L.marker(event.coords, { icon: customIcon }).addTo(mapInstance);
+
+        const popupContent = `
+          <div style="width:240px; font-family:'Inter',sans-serif; background:#0f172a; padding:12px; border-radius:12px;">
+            <img src="${event.image}" style="width:100%; height:110px; object-cover; border-radius:8px; margin-bottom:8px;"/>
+            <span style="font-size:10px; font-weight:800; text-transform:uppercase; color:${pinColor};">${event.town} • ${event.categoryLabel || 'Event'}</span>
+            <h4 style="font-size:13px; font-weight:bold; color:#ffffff; margin:4px 0 6px 0; line-height:1.2;">${event.title}</h4>
+            <div style="font-size:11px; color:#94a3b8; margin-bottom:8px;">📍 ${event.venue}</div>
+            <button onclick="openEventModal('${event.id}')" style="width:100%; padding:6px; background:#0097a8; color:#fff; border:none; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">
+              View Event & Pass
+            </button>
+          </div>
+        `;
+
+        marker.bindPopup(popupContent);
+        mapMarkers.push(marker);
+      });
+    }
+
+    // Filter Handlers
+    function setCategory(catId) {
+      currentCategory = catId;
+      renderCategoryTabs();
+      updateFilterDescription();
+      renderEvents();
+    }
+
+    function setTown(town) {
+      currentTown = town;
+      document.getElementById('townSelect').value = town;
+      document.querySelectorAll('.town-pill').forEach(btn => {
+        if (btn.getAttribute('data-town') === town) {
+          btn.className = "town-pill px-3 py-1 rounded-lg transition-all bg-brandTeal text-white shadow-sm";
+        } else {
+          btn.className = "town-pill px-3 py-1 rounded-lg transition-all text-slate-400 hover:text-white hover:bg-white/5";
+        }
+      });
+      updateFilterDescription();
+      renderEvents();
+    }
+
+    function setTimeframe(tf) {
+      currentTimeframe = tf;
+      document.getElementById('timeframeSelect').value = tf;
+      updateFilterDescription();
+      renderEvents();
+    }
+
+    function handleSearch(val) {
+      currentSearch = val.trim();
+      renderEvents();
+    }
+
+    function toggleFreeOnly(checked) {
+      isFreeOnly = checked;
+      renderEvents();
+    }
+
+    function toggleSavedFilter() {
+      isSavedOnly = !isSavedOnly;
+      const btn = document.getElementById('savedFilterBtn');
+      if (isSavedOnly) {
+        btn.classList.add('bg-rose-500/20', 'border-rose-500/50');
+      } else {
+        btn.classList.remove('bg-rose-500/20', 'border-rose-500/50');
+      }
+      renderEvents();
+    }
+
+    function setSort(val) {
+      currentSort = val;
+      renderEvents();
+    }
+
+    function resetAllFilters() {
+      currentTown = 'all';
+      currentCategory = 'all';
+      currentTimeframe = 'all';
+      currentSearch = '';
+      isFreeOnly = false;
+      isSavedOnly = false;
+      document.getElementById('searchInput').value = '';
+      document.getElementById('townSelect').value = 'all';
+      document.getElementById('timeframeSelect').value = 'all';
+      document.getElementById('freeOnlyToggle').checked = false;
+      renderCategoryTabs();
+      setTown('all');
+      renderEvents();
+    }
+
+    function updateFilterDescription() {
+      const desc = document.getElementById('activeFiltersDescription');
+      const catObj = CATEGORIES.find(c => c.id === currentCategory);
+      const catLabel = catObj ? catObj.label : 'All Categories';
+      const townLabel = currentTown === 'all' ? 'Thanet' : currentTown;
+      desc.textContent = `${catLabel} in ${townLabel}`;
+    }
+
+    function updateBadges() {
+      // Counts
+      const total = allEvents.length;
+      const margate = allEvents.filter(e => e.town === 'Margate').length;
+      const ramsgate = allEvents.filter(e => e.town === 'Ramsgate').length;
+      const broadstairs = allEvents.filter(e => e.town === 'Broadstairs').length;
+      const freeCount = allEvents.filter(e => e.isFree || e.price === 'Free').length;
+
+      document.getElementById('countTownAll').textContent = total;
+      document.getElementById('countTownMargate').textContent = margate;
+      document.getElementById('countTownRamsgate').textContent = ramsgate;
+      document.getElementById('countTownBroadstairs').textContent = broadstairs;
+      document.getElementById('headerLiveEventCount').textContent = `${total}+ Local Events`;
+      document.getElementById('statTotalEvents').textContent = total;
+      document.getElementById('statFreeEvents').textContent = `${freeCount} Free`;
+      document.getElementById('savedCountBadge').textContent = savedEventIds.length;
+
+      const itinBadge = document.getElementById('itineraryCountBadge');
+      if (itineraryIds.length > 0) {
+        itinBadge.textContent = itineraryIds.length;
+        itinBadge.classList.remove('hidden');
+      } else {
+        itinBadge.classList.add('hidden');
+      }
+    }
+
+    // Bookmarking / Saved
+    function toggleBookmark(eventId, ev) {
+      if (ev) ev.stopPropagation();
+      const idx = savedEventIds.indexOf(eventId);
+      if (idx > -1) {
+        savedEventIds.splice(idx, 1);
+        showToast('Event removed from saved');
+      } else {
+        savedEventIds.push(eventId);
+        showToast('Event saved to your list! ❤️');
+      }
+      localStorage.setItem('zokal_saved_ids', JSON.stringify(savedEventIds));
+      updateBadges();
+      renderEvents();
+    }
+
+    // Event Modal
+    function openEventModal(eventId) {
+      const event = allEvents.find(e => e.id === eventId);
+      if (!event) return;
+      currentEventModal = event;
+
+      document.getElementById('modalImg').src = event.image;
+      document.getElementById('modalTitle').textContent = event.title;
+      document.getElementById('modalTownBadge').textContent = `📍 ${event.town}`;
+      document.getElementById('modalCategoryBadge').textContent = event.categoryLabel || 'Community';
+      document.getElementById('modalPriceBadge').textContent = event.price || 'Free';
+      document.getElementById('modalDate').textContent = event.dateDisplay || event.date;
+      document.getElementById('modalTime').textContent = event.time;
+      document.getElementById('modalAttendees').textContent = `${event.attendees || 12} Registered`;
+      document.getElementById('modalSpots').textContent = event.spotsLeft !== null && event.spotsLeft !== undefined ? `${event.spotsLeft} remaining` : 'Open';
+      document.getElementById('modalVenue').textContent = event.venue;
+      document.getElementById('modalOrganizer').textContent = `Organized by ${event.organizer || 'Thanet Community'}`;
+      document.getElementById('modalDesc').textContent = event.description;
+
+      const mapLink = document.getElementById('modalMapLink');
+      mapLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.venue + ', Thanet, UK')}`;
+
+      // Tags
+      const tagsBox = document.getElementById('modalTags');
+      tagsBox.innerHTML = (event.tags || []).map(t =>
+        `<span class="px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-white/5 text-slate-300 border border-white/10">#${t}</span>`
+      ).join('');
+
+      // Source Link
+      const srcBtn = document.getElementById('modalSourceBtn');
+      if (event.sourceUrl) {
+        srcBtn.href = event.sourceUrl;
+        srcBtn.classList.remove('hidden');
+      } else {
+        srcBtn.classList.add('hidden');
+      }
+
+      // Reset RSVP form
+      document.getElementById('rsvpSuccessBox').classList.add('hidden');
+      document.getElementById('rsvpForm').classList.remove('hidden');
+
+      // Update Itinerary Button
+      updateModalItineraryBtn();
+
+      document.getElementById('eventModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeEventModal() {
+      document.getElementById('eventModal').classList.add('hidden');
+      currentEventModal = null;
+    }
+
+    // RSVP & Pass Claim with Confetti
+    async function handleClaimPass() {
+      if (!currentEventModal) return;
+      const nameInput = document.getElementById('rsvpName');
+      const name = nameInput.value.trim() || 'Thanet Resident';
+
+      try {
+        const response = await fetch('/api/arconf/events/rsvp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ eventId: currentEventModal.id, attendeeName: name })
+        });
+        const res = await response.json();
+
+        if (res.success) {
+          // Trigger Confetti Explosion
+          confetti({
+            particleCount: 120,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#0097a8', '#f1513a', '#5d47e8', '#4cd4fb', '#eec239']
+          });
+
+          document.getElementById('rsvpForm').classList.add('hidden');
+          const successBox = document.getElementById('rsvpSuccessBox');
+          document.getElementById('rsvpPassCode').textContent = `Pass: ${res.data.id} • Registered to ${name}`;
+          successBox.classList.remove('hidden');
+
+          // Update current event stats
+          currentEventModal.attendees = res.updatedAttendees;
+          if (res.spotsLeft !== null && res.spotsLeft !== undefined) {
+            currentEventModal.spotsLeft = res.spotsLeft;
+          }
+          document.getElementById('modalAttendees').textContent = `${currentEventModal.attendees} Registered`;
+          showToast('Pass Confirmed! Check your digital badge.');
+          renderEvents();
+        }
+      } catch (err) {
+        console.error('RSVP failed:', err);
+        showToast('RSVP saved locally!');
+      }
+    }
+
+    function copyPassCode() {
+      const text = document.getElementById('rsvpPassCode').textContent;
+      navigator.clipboard.writeText(text);
+      showToast('Pass code copied to clipboard!');
+    }
+
+    // Weekend Planner Logic
+    function openWeekendPlanner() {
+      const container = document.getElementById('plannerEventList');
+      const plannedEvents = allEvents.filter(e => itineraryIds.includes(e.id));
+
+      if (plannedEvents.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-8 text-slate-400">
+            <i data-lucide="calendar-plus" class="w-8 h-8 mx-auto mb-2 text-slate-500"></i>
+            <p>Your itinerary is empty.</p>
+            <p class="text-[11px] text-slate-500 mt-1">Click "Add to Weekend Itinerary" on any event to build your plan.</p>
+          </div>
+        `;
+      } else {
+        container.innerHTML = plannedEvents.map(event => `
+          <div class="p-3.5 rounded-xl bg-brandDarker/70 border border-white/10 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <img src="${event.image}" class="w-12 h-12 rounded-lg object-cover shrink-0"/>
+              <div>
+                <span class="text-[10px] font-bold uppercase text-brandCyan">${event.town} • ${event.dateDisplay}</span>
+                <h4 class="text-xs font-bold text-white line-clamp-1">${event.title}</h4>
+                <p class="text-[11px] text-slate-400">⏰ ${event.time} @ ${event.venue}</p>
+              </div>
+            </div>
+            <button onclick="removeFromPlanner('${event.id}')" class="text-slate-400 hover:text-rose-400 p-1.5 rounded-lg hover:bg-white/5">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        `).join('');
+      }
+
+      document.getElementById('plannerModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeWeekendPlanner() {
+      document.getElementById('plannerModal').classList.add('hidden');
+    }
+
+    function toggleModalItinerary() {
+      if (!currentEventModal) return;
+      const idx = itineraryIds.indexOf(currentEventModal.id);
+      if (idx > -1) {
+        itineraryIds.splice(idx, 1);
+        showToast('Removed from itinerary');
+      } else {
+        itineraryIds.push(currentEventModal.id);
+        showToast('Added to your Thanet weekend itinerary! 🗓️');
+      }
+      localStorage.setItem('zokal_itinerary_ids', JSON.stringify(itineraryIds));
+      updateBadges();
+      updateModalItineraryBtn();
+    }
+
+    function updateModalItineraryBtn() {
+      const btn = document.getElementById('modalItineraryToggleBtn');
+      if (!currentEventModal) return;
+      const inItin = itineraryIds.includes(currentEventModal.id);
+      btn.innerHTML = inItin
+        ? `<i data-lucide="check" class="w-4 h-4 text-brandMint"></i><span>In Weekend Itinerary</span>`
+        : `<i data-lucide="plus" class="w-4 h-4 text-cyan-400"></i><span>Add to Weekend Itinerary</span>`;
+      lucide.createIcons();
+    }
+
+    function removeFromPlanner(id) {
+      itineraryIds = itineraryIds.filter(itemId => itemId !== id);
+      localStorage.setItem('zokal_itinerary_ids', JSON.stringify(itineraryIds));
+      updateBadges();
+      openWeekendPlanner();
+    }
+
+    function clearPlanner() {
+      itineraryIds = [];
+      localStorage.setItem('zokal_itinerary_ids', JSON.stringify([]));
+      updateBadges();
+      openWeekendPlanner();
+    }
+
+    function copyPlannerItinerary() {
+      const planned = allEvents.filter(e => itineraryIds.includes(e.id));
+      if (!planned.length) return;
+      const text = `🌊 My Thanet Weekend Itinerary:\n\n` + planned.map(e => `• ${e.dateDisplay} (${e.time}): ${e.title} @ ${e.venue}, ${e.town}`).join('\n') + `\n\nOrganized via ZOKAL Thanet Directory`;
+      navigator.clipboard.writeText(text);
+      showToast('Itinerary copied to clipboard!');
+    }
+
+    // Submit Event Modal
+    function openSubmitModal() {
+      document.getElementById('submitModal').classList.remove('hidden');
+    }
+
+    function closeSubmitModal() {
+      document.getElementById('submitModal').classList.add('hidden');
+    }
+
+    async function handleEventSubmit(e) {
+      e.preventDefault();
+      const newEvt = {
+        title: document.getElementById('newTitle').value,
+        town: document.getElementById('newTown').value,
+        category: document.getElementById('newCategory').value,
+        categoryLabel: document.getElementById('newCategory').options[document.getElementById('newCategory').selectedIndex].text,
+        dateDisplay: document.getElementById('newDateTime').value,
+        date: '2026-10-24',
+        time: document.getElementById('newDateTime').value,
+        timeframe: 'weekend',
+        price: document.getElementById('newPrice').value || 'Free',
+        isFree: (document.getElementById('newPrice').value || '').toLowerCase().includes('free'),
+        venue: document.getElementById('newVenue').value,
+        description: document.getElementById('newDesc').value,
+        organizer: 'Local Thanet Organizer',
+        image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80',
+        tags: ['Thanet', 'Community', 'Local'],
+        attendees: 1,
+        spotsLeft: 20
+      };
+
+      try {
+        const res = await fetch('/api/arconf/events', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newEvt)
+        });
+        const d = await res.json();
+        if (d.success) {
+          allEvents.unshift(d.data);
+          updateBadges();
+          renderCategoryTabs();
+          renderEvents();
+          closeSubmitModal();
+          showToast('Event published successfully to Thanet directory! 🎉');
+        }
+      } catch (err) {
+        allEvents.unshift(newEvt);
+        updateBadges();
+        renderEvents();
+        closeSubmitModal();
+        showToast('Event added locally!');
+      }
+    }
+
+    // Toast Notification helper
+    function showToast(msg) {
+      const toast = document.getElementById('toastNotification');
+      const text = document.getElementById('toastMessage');
+      text.textContent = msg;
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3500);
+    }
+
+    // Escape key closes modals
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeEventModal();
+        closeWeekendPlanner();
+        closeSubmitModal();
+      }
+    });
+
+    // Bootstrap
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+
+</html>

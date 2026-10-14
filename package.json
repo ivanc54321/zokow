@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "server": "node server/index.js",
+    "arconf:server": "node server/arconf-server.js",
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview"

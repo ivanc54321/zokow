@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ARCONF — Control Center &amp; CMS</title>
+  
+  <!-- Tailwind CSS with Forms -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap"/>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandDark: '#090d16',
+            brandDarker: '#060910',
+            brandCardDark: '#121826',
+            brandCardHover: '#182032',
+            brandMagenta: '#b3458e',
+            brandTeal: '#0097a8',
+            brandIndigo: '#5d47e8',
+            brandCoral: '#f1513a',
+            brandYellow: '#eec239',
+            brandCyan: '#4cd4fb',
+            brandMint: '#00d68f',
+          },
+          fontFamily: {
+            headline: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #060910;
+      color: #ffffff;
+      -webkit-font-smoothing: antialiased;
+    }
+    .headline-font {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .glass-card {
+      background: rgba(18, 24, 38, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #232d42;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #090d16;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Top Navigation Bar -->
+  <header class="sticky top-0 z-40 bg-[#090d16]/95 backdrop-blur-md border-b border-white/10 px-6 py-3.5 flex items-center justify-between">
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2">
+        <span class="text-xl font-black tracking-wider text-white">AR<span class="text-brandCoral">C</span>NF</span>
+        <span class="text-xs uppercase px-2 py-0.5 rounded-md bg-brandMagenta/20 text-brandMagenta border border-brandMagenta/30 font-bold tracking-widest">
+          ADMIN CMS
+        </span>
+      </div>
+      <div class="h-4 w-px bg-white/20 hidden sm:block"></div>
+      <span class="text-xs text-gray-400 hidden sm:inline">Backend API: <span id="apiStatusBadge" class="text-emerald-400 font-semibold">● Connected (Port 3002)</span></span>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <a href="/arconf.html" target="_blank" class="text-xs px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium flex items-center gap-1.5 transition active:scale-95 border border-white/10">
+        <span>View Public Site</span>
+        <svg class="w-3.5 h-3.5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+      </a>
+      <button onclick="fetchAllData(true)" class="text-xs px-3 py-1.5 rounded-xl bg-brandIndigo hover:bg-brandIndigo/80 text-white font-bold flex items-center gap-1.5 transition active:scale-95 shadow">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        <span>Refresh</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col gap-6">
+
+    <!-- Tab Navigation Pills -->
+    <nav class="flex flex-wrap items-center gap-2 p-1.5 rounded-2xl bg-white/5 border border-white/10 text-xs font-semibold">
+      <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn px-4 py-2 rounded-xl text-white bg-white/15 font-bold transition shadow">
+        📊 Overview
+      </button>
+      <button onclick="switchTab('settings')" id="tab-settings" class="tab-btn px-4 py-2 rounded-xl text-gray-400 hover:text-white transition">
+        ⚙️ Event &amp; Countdown
+      </button>
+      <button onclick="switchTab('speakers')" id="tab-speakers" class="tab-btn px-4 py-2 rounded-xl text-gray-400 hover:text-white transition">
+        🎙️ Speakers &amp; Sessions
+      </button>
+      <button onclick="switchTab('stages')" id="tab-stages" class="tab-btn px-4 py-2 rounded-xl text-gray-400 hover:text-white transition">
+        🏟️ Stages &amp; Tracks
+      </button>
+      <button onclick="switchTab('poll')" id="tab-poll" class="tab-btn px-4 py-2 rounded-xl text-gray-400 hover:text-white transition">
+        🗳️ Live Polls
+      </button>
+      <button onclick="switchTab('passes')" id="tab-passes" class="tab-btn px-4 py-2 rounded-xl text-gray-400 hover:text-white transition">
+        🎟️ Attendees &amp; Passes
+      </button>
+    </nav>
+
+    <!-- ======================================================== -->
+    <!-- TAB 1: OVERVIEW -->
+    <!-- ======================================================== -->
+    <div id="section-overview" class="tab-content space-y-6">
+      
+      <!-- Metrics Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <div class="glass-card rounded-2xl p-5 border-l-4 border-brandTeal">
+          <div class="flex items-center justify-between text-gray-400 text-xs font-semibold uppercase">
+            <span>Confirmed Attendees</span>
+            <span class="text-brandTeal text-base">👥</span>
+          </div>
+          <div id="statAttendees" class="text-3xl font-black text-white mt-2">--</div>
+          <p class="text-[11px] text-gray-400 mt-1">Live attendee ticker value</p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-5 border-l-4 border-brandMagenta">
+          <div class="flex items-center justify-between text-gray-400 text-xs font-semibold uppercase">
+            <span>Passes Claimed</span>
+            <span class="text-brandMagenta text-base">🎟️</span>
+          </div>
+          <div id="statPasses" class="text-3xl font-black text-white mt-2">--</div>
+          <p class="text-[11px] text-gray-400 mt-1">Stored digital pass records</p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-5 border-l-4 border-brandIndigo">
+          <div class="flex items-center justify-between text-gray-400 text-xs font-semibold uppercase">
+            <span>Keynote Speakers</span>
+            <span class="text-brandIndigo text-base">🎤</span>
+          </div>
+          <div id="statSpeakers" class="text-3xl font-black text-white mt-2">--</div>
+          <p class="text-[11px] text-gray-400 mt-1">Across all 4 stage tracks</p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-5 border-l-4 border-brandCoral">
+          <div class="flex items-center justify-between text-gray-400 text-xs font-semibold uppercase">
+            <span>Live Poll Votes</span>
+            <span class="text-brandCoral text-base">🗳️</span>
+          </div>
+          <div id="statVotes" class="text-3xl font-black text-white mt-2">--</div>
+          <p class="text-[11px] text-gray-400 mt-1">Audience engagement votes</p>
+        </div>
+
+      </div>
+
+      <!-- Quick Actions and Status -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <div class="lg:col-span-2 glass-card rounded-2xl p-6">
+          <h3 class="headline-font text-lg font-bold text-white mb-4 flex items-center justify-between">
+            <span>Active Conference Snapshot</span>
+            <span class="text-xs font-mono px-2.5 py-1 rounded bg-white/10 text-brandCyan">LIVE BROADCAST READY</span>
+          </h3>
+          <div class="space-y-3 text-xs">
+            <div class="flex items-center justify-between py-2 border-b border-white/5">
+              <span class="text-gray-400">Conference Name</span>
+              <span id="quickTitle" class="font-bold text-white">ARCONF — WE COLLAB IT</span>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-white/5">
+              <span class="text-gray-400">Main Event Date</span>
+              <span id="quickDate" class="font-bold text-brandYellow">20 June 2026 • 06:00 PM GMT</span>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-white/5">
+              <span class="text-gray-400">Location</span>
+              <span id="quickLocation" class="font-bold text-white">London Olympia &amp; Metaverse Broadcast</span>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-white/5">
+              <span class="text-gray-400">Countdown Target</span>
+              <span id="quickCountdown" class="font-mono text-brandPink font-bold">2026-06-20T18:00:00Z</span>
+            </div>
+            <div class="flex items-center justify-between py-2">
+              <span class="text-gray-400">Accreditation Registration</span>
+              <span id="quickRegStatus" class="font-bold text-emerald-400">OPEN / ACCEPTING BADGES</span>
+            </div>
+          </div>
+          <div class="mt-5 flex gap-3">
+            <button onclick="switchTab('settings')" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition">
+              Edit Settings →
+            </button>
+            <button onclick="switchTab('speakers')" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition">
+              Manage Speakers →
+            </button>
+          </div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6 flex flex-col justify-between">
+          <div>
+            <h3 class="headline-font text-lg font-bold text-white mb-2">Registration Status</h3>
+            <p class="text-xs text-gray-400 leading-relaxed mb-4">
+              Toggle whether attendees can claim digital passes from the landing page.
+            </p>
+            <div class="p-4 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between">
+              <div>
+                <div class="text-xs font-bold text-white">Public Passes</div>
+                <div class="text-[11px] text-gray-400">Instant barcode creation</div>
+              </div>
+              <input type="checkbox" id="regToggleCheckbox" onchange="toggleRegistration(this.checked)" class="w-5 h-5 rounded text-brandMagenta focus:ring-brandMagenta bg-gray-900 border-gray-700"/>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-white/10">
+            <a href="/api/arconf/passes/export" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-2 transition active:scale-95 shadow">
+              <span>📥 Export Attendee Roster (CSV)</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- TAB 2: SETTINGS & COUNTDOWN -->
+    <!-- ======================================================== -->
+    <div id="section-settings" class="tab-content hidden space-y-6">
+      
+      <div class="glass-card rounded-2xl p-6">
+        <h3 class="headline-font text-xl font-bold text-white mb-2">Event Configuration &amp; Announcements</h3>
+        <p class="text-xs text-gray-400 mb-6">Modify header announcements, event location, countdown timestamps, and hero details.</p>
+
+        <form id="settingsForm" onsubmit="saveSettings(event)" class="space-y-4 text-xs">
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block font-bold text-gray-300 uppercase tracking-wider mb-1">Conference Title</label>
+              <input type="text" id="set_title" class="w-full bg-white/5 border border-white/15 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-brandMagenta"/>
+            </div>
+            <div>
+              <label class="block font-bold text-gray-300 uppercase tracking-wider mb-1">Subtitle / Tagline</label>
+              <input type="text" id="set_subtitle" class="w-full bg-white/5 border border-white/15 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-brandMagenta"/>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block font-bold text-gray-300 uppercase tracking-wider mb-1">Top Sticky Banner</label>
+              <input type="text" id="set_bannerText" class="w-full bg-white/5 border border-white/15 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-brandMagenta"/>
+            </div>
+            <div>
+              <label class="block font-bold text-gray-300 uppercase tracking-wider mb-1">Location / Venue</label>
+              <input type="text" id="set_location" class="w-full bg-white/5 border border-white/15 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-brandMagenta"/>
+            </div>
+            <div>
+              <label class="block font-bold text-gray-300 uppercase tracking-wider mb-1">Hero Edition Badge</label>
+              <input type="text" id="set_editionBadge" class="w-full bg-white/5 border border-white/15 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-brandMagenta"/>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block font-bold text-gray-300 uppercase tracking-wider mb-1">Event Date (Display)</label>
+              <input type="text" id="set_dateFormatted" placeholder="20 June 2026" class="w-full bg-white/5 border border-white/15 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-brandMagenta"/>
+            </div>
+            <div>
+              <label class="block font-bold text-gray-300 uppercase tracking-wider mb-1">Event Time (Display)</label>
+              <input type="text" id="set_timeFormatted" placeholder="06:00 PM GMT" class="w-full bg-white/5 border border-white/15 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-brandMagenta"/>
+            </div>
+            <div>
+              <label class="block font-bold text-gray-300 uppercase tracking-wider mb-1">Stream Status Badge</label>
+              <input type="text" id="set_streamStatus" placeholder="STREAMS LIVE" class="w-full bg-white/5 border border-white/15 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-brandMagenta"/>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block font-bold text-gray-300 uppercase tracking-wider mb-1">Countdown Target (ISO-8601 UTC)</label>
+              <input type="text" id="set_countdownTarget" placeholder="2026-06-20T18:00:00Z" class="w-full font-mono bg-white/5 border border-white/15 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-brandMagenta"/>
+            </div>
+            <div>
+              <label class="block font-bold text-gray-300 uppercase tracking-wider mb-1">Confirmed Attendees Initial Ticker</label>
+              <input type="number" id="set_confirmedCount" class="w-full bg-white/5 border border-white/15 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-brandMagenta"/>
+            </div>
+          </div>
+
+          <div class="pt-4 flex items-center justify-end gap-3 border-t border-white/10">
+            <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-brandMagenta to-brandIndigo hover:brightness-110 text-white font-extrabold text-xs transition active:scale-95 shadow">
+              💾 Save Event Settings
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- TAB 3: SPEAKERS & SESSIONS (CRUD) -->
+    <!-- ======================================================== -->
+    <div id="section-speakers" class="tab-content hidden space-y-6">
+      
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="headline-font text-xl font-bold text-white">Speakers &amp; Keynotes Roster</h3>
+          <p class="text-xs text-gray-400">Manage featured keynote speakers, stage assignments, talk titles, and bios.</p>
+        </div>
+        <button onclick="openSpeakerModal()" class="px-4 py-2 rounded-xl bg-brandTeal hover:bg-brandTeal/80 text-white font-bold text-xs flex items-center gap-1.5 transition active:scale-95 shadow">
+          <span>+ Add Speaker</span>
+        </button>
+      </div>
+
+      <!-- Speakers Grid -->
+      <div id="speakersContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Rendered via JS -->
+      </div>
+
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- TAB 4: STAGES & TRACKS -->
+    <!-- ======================================================== -->
+    <div id="section-stages" class="tab-content hidden space-y-6">
+      <h3 class="headline-font text-xl font-bold text-white">Stage &amp; Color Track Details</h3>
+      <p class="text-xs text-gray-400">Configure content, talk titles, and descriptions for each colored track.</p>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="stagesContainer">
+        <!-- Rendered dynamically via JS -->
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- TAB 5: LIVE POLLS -->
+    <!-- ======================================================== -->
+    <div id="section-poll" class="tab-content hidden space-y-6">
+      
+      <div class="glass-card rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="headline-font text-xl font-bold text-white">Interactive Audience Poll</h3>
+            <p class="text-xs text-gray-400">Real-time voting widget embedded in the Indigo Stage section.</p>
+          </div>
+          <button onclick="resetPollVotes()" class="px-3.5 py-1.5 rounded-xl bg-rose-600/30 hover:bg-rose-600/50 text-rose-300 font-bold text-xs border border-rose-500/30 transition">
+            🔄 Reset All Votes to 0
+          </button>
+        </div>
+
+        <form id="pollForm" onsubmit="savePoll(event)" class="space-y-4 text-xs">
+          <div>
+            <label class="block font-bold text-gray-300 uppercase tracking-wider mb-1">Poll Question</label>
+            <input type="text" id="pollQuestionInput" class="w-full bg-white/5 border border-white/15 rounded-xl px-3.5 py-2.5 text-white text-sm focus:outline-none focus:border-brandMagenta"/>
+          </div>
+
+          <div class="pt-2">
+            <label class="block font-bold text-gray-300 uppercase tracking-wider mb-2">Options &amp; Live Tally</label>
+            <div id="pollOptionsList" class="space-y-3">
+              <!-- Options rendered via JS -->
+            </div>
+          </div>
+
+          <div class="pt-4 flex items-center justify-between border-t border-white/10">
+            <span class="text-xs text-gray-400">Total Votes: <strong id="pollTotalVotesDisplay" class="text-white">0</strong></span>
+            <button type="submit" class="px-5 py-2 rounded-xl bg-brandIndigo hover:bg-brandIndigo/80 text-white font-bold text-xs transition">
+              Save Poll Changes
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- TAB 6: PASSES & ATTENDEES -->
+    <!-- ======================================================== -->
+    <div id="section-passes" class="tab-content hidden space-y-6">
+      
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h3 class="headline-font text-xl font-bold text-white">Claimed Accreditation Passes</h3>
+          <p class="text-xs text-gray-400">Review all generated digital passes, search attendees, and export roster.</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <input type="text" id="passSearchInput" oninput="filterPasses()" placeholder="Search attendee or badge #..." class="bg-white/5 border border-white/15 rounded-xl px-3.5 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-brandMagenta"/>
+          <a href="/api/arconf/passes/export" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 transition">
+            <span>CSV Export</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="glass-card rounded-2xl overflow-hidden border border-white/10">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-white/5 text-gray-400 uppercase font-semibold border-b border-white/10">
+              <tr>
+                <th class="px-4 py-3">Badge Number</th>
+                <th class="px-4 py-3">Attendee Name</th>
+                <th class="px-4 py-3">Role / Discipline</th>
+                <th class="px-4 py-3">Pass Tier</th>
+                <th class="px-4 py-3">Theme</th>
+                <th class="px-4 py-3">Claimed Date</th>
+              </tr>
+            </thead>
+            <tbody id="passesTableBody" class="divide-y divide-white/5 text-gray-200">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: ADD / EDIT SPEAKER -->
+  <!-- ======================================================== -->
+  <div id="speakerModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="glass-card rounded-3xl max-w-lg w-full p-6 text-white relative shadow-2xl">
+      <button onclick="closeSpeakerModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-gray-400 hover:text-white transition">
+        ✕
+      </button>
+
+      <h3 id="speakerModalTitle" class="headline-font text-xl font-bold mb-4">Add Keynote Speaker</h3>
+
+      <form id="speakerForm" onsubmit="saveSpeaker(event)" class="space-y-3.5 text-xs">
+        <input type="hidden" id="spk_id"/>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-gray-300 uppercase mb-1">Speaker Name *</label>
+            <input type="text" id="spk_name" required class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandMagenta"/>
+          </div>
+          <div>
+            <label class="block font-bold text-gray-300 uppercase mb-1">Role &amp; Company</label>
+            <input type="text" id="spk_role" placeholder="Design Architect" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandMagenta"/>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-gray-300 uppercase mb-1">Track Assignment</label>
+            <input type="text" id="spk_track" placeholder="Teal Stage • Session 101" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandMagenta"/>
+          </div>
+          <div>
+            <label class="block font-bold text-gray-300 uppercase mb-1">Badge Tag</label>
+            <input type="text" id="spk_badge" placeholder="Keynote" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandMagenta"/>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-gray-300 uppercase mb-1">Stage Key</label>
+            <select id="spk_stageId" class="w-full bg-[#121826] border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandMagenta">
+              <option value="hero">Hero (Alex / Elena)</option>
+              <option value="teal">Teal Stage</option>
+              <option value="indigo">Indigo Stage</option>
+              <option value="coral">Coral Stage</option>
+              <option value="yellow">Yellow Lounge</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-gray-300 uppercase mb-1">Schedule Time</label>
+            <input type="text" id="spk_time" placeholder="7:15 PM GMT" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandMagenta"/>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-gray-300 uppercase mb-1">Photo Image URL</label>
+          <input type="url" id="spk_img" placeholder="https://..." class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandMagenta"/>
+        </div>
+
+        <div>
+          <label class="block font-bold text-gray-300 uppercase mb-1">Session / Keynote Title *</label>
+          <input type="text" id="spk_title" required placeholder="Build Your Business Brand Style" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandMagenta"/>
+        </div>
+
+        <div>
+          <label class="block font-bold text-gray-300 uppercase mb-1">Session Abstract &amp; Description</label>
+          <textarea id="spk_desc" rows="3" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandMagenta"></textarea>
+        </div>
+
+        <div class="pt-3 flex items-center justify-end gap-2 border-t border-white/10">
+          <button type="button" onclick="closeSpeakerModal()" class="px-4 py-2 rounded-xl bg-white/10 text-white font-bold text-xs hover:bg-white/20 transition">
+            Cancel
+          </button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-brandTeal hover:bg-brandTeal/80 text-white font-bold text-xs transition">
+            Save Speaker
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 px-4 py-3 rounded-2xl bg-[#121826] border border-white/20 text-white text-xs font-semibold shadow-2xl transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2">
+    <span id="toastIcon">✅</span>
+    <span id="toastMsg">Changes saved!</span>
+  </div>
+
+  <script>
+    let appState = null;
+    let allPasses = [];
+
+    // Toast helper
+    function showToast(msg, icon = '✅') {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').textContent = msg;
+      document.getElementById('toastIcon').textContent = icon;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3200);
+    }
+
+    // Tab switcher
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-white/15', 'text-white', 'font-bold');
+        btn.classList.add('text-gray-400');
+      });
+      const activeBtn = document.getElementById(`tab-${tabName}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-white/15', 'text-white', 'font-bold');
+        activeBtn.classList.remove('text-gray-400');
+      }
+
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+      const activeSection = document.getElementById(`section-${tabName}`);
+      if (activeSection) activeSection.classList.remove('hidden');
+    }
+
+    // Fetch unified state from backend
+    async function fetchAllData(showNotification = false) {
+      try {
+        const res = await fetch('/api/arconf/state');
+        const json = await res.json();
+        if (json.success) {
+          appState = json.data;
+          renderOverview();
+          renderSettings();
+          renderSpeakers();
+          renderStages();
+          renderPoll();
+          fetchPasses();
+          if (showNotification) showToast('Refreshed data from server!');
+        }
+      } catch (err) {
+        console.error('Failed to load state:', err);
+        document.getElementById('apiStatusBadge').innerHTML = '<span class="text-rose-400">● Server Disconnected</span>';
+      }
+    }
+
+    // 1. Overview
+    function renderOverview() {
+      if (!appState) return;
+      document.getElementById('statAttendees').textContent = (appState.settings.confirmedCount || 3840).toLocaleString();
+      document.getElementById('statPasses').textContent = (appState.passesCount || 0).toLocaleString();
+      document.getElementById('statSpeakers').textContent = (appState.speakers || []).length;
+      document.getElementById('statVotes').textContent = appState.poll ? appState.poll.totalVotes : 0;
+
+      document.getElementById('quickTitle').textContent = appState.settings.title;
+      document.getElementById('quickDate').textContent = `${appState.settings.dateFormatted} • ${appState.settings.timeFormatted}`;
+      document.getElementById('quickLocation').textContent = appState.settings.location;
+      document.getElementById('quickCountdown').textContent = appState.settings.countdownTarget;
+      
+      const isOpen = appState.settings.registrationOpen !== false;
+      document.getElementById('regToggleCheckbox').checked = isOpen;
+      document.getElementById('quickRegStatus').textContent = isOpen ? 'OPEN / ACCEPTING BADGES' : 'CLOSED / RESTRICTED';
+      document.getElementById('quickRegStatus').className = isOpen ? 'font-bold text-emerald-400' : 'font-bold text-rose-400';
+    }
+
+    async function toggleRegistration(checked) {
+      try {
+        const res = await fetch('/api/arconf/settings', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ registrationOpen: checked })
+        });
+        const json = await res.json();
+        if (json.success) {
+          appState.settings.registrationOpen = checked;
+          renderOverview();
+          showToast(`Pass registration is now ${checked ? 'OPEN' : 'CLOSED'}`);
+        }
+      } catch (e) {
+        showToast('Error updating status', '❌');
+      }
+    }
+
+    // 2. Settings
+    function renderSettings() {
+      if (!appState || !appState.settings) return;
+      const s = appState.settings;
+      document.getElementById('set_title').value = s.title || '';
+      document.getElementById('set_subtitle').value = s.subtitle || '';
+      document.getElementById('set_bannerText').value = s.bannerText || '';
+      document.getElementById('set_location').value = s.location || '';
+      document.getElementById('set_editionBadge').value = s.editionBadge || '';
+      document.getElementById('set_dateFormatted').value = s.dateFormatted || '';
+      document.getElementById('set_timeFormatted').value = s.timeFormatted || '';
+      document.getElementById('set_streamStatus').value = s.streamStatus || '';
+      document.getElementById('set_countdownTarget').value = s.countdownTarget || '';
+      document.getElementById('set_confirmedCount').value = s.confirmedCount || 3840;
+    }
+
+    async function saveSettings(e) {
+      e.preventDefault();
+      const updated = {
+        title: document.getElementById('set_title').value,
+        subtitle: document.getElementById('set_subtitle').value,
+        bannerText: document.getElementById('set_bannerText').value,
+        location: document.getElementById('set_location').value,
+        editionBadge: document.getElementById('set_editionBadge').value,
+        dateFormatted: document.getElementById('set_dateFormatted').value,
+        timeFormatted: document.getElementById('set_timeFormatted').value,
+        streamStatus: document.getElementById('set_streamStatus').value,
+        countdownTarget: document.getElementById('set_countdownTarget').value,
+        confirmedCount: parseInt(document.getElementById('set_confirmedCount').value, 10) || 3840
+      };
+
+      try {
+        const res = await fetch('/api/arconf/settings', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updated)
+        });
+        const json = await res.json();
+        if (json.success) {
+          appState.settings = json.data;
+          renderOverview();
+          showToast('Event settings saved & broadcasted!');
+        }
+      } catch (err) {
+        showToast('Error saving settings', '❌');
+      }
+    }
+
+    // 3. Speakers
+    function renderSpeakers() {
+      const container = document.getElementById('speakersContainer');
+      if (!appState || !appState.speakers) return;
+
+      container.innerHTML = appState.speakers.map(spk => `
+        <div class="glass-card rounded-2xl p-4 flex flex-col justify-between border border-white/10 hover:border-white/20 transition">
+          <div>
+            <div class="flex items-start gap-3">
+              <img src="${spk.img}" alt="${spk.name}" class="w-14 h-16 rounded-xl object-cover bg-white/5 flex-shrink-0 border border-white/10"/>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-white/10 text-brandCyan">${spk.badge || 'Speaker'}</span>
+                  <span class="text-[10px] text-gray-400 font-mono">${spk.time || ''}</span>
+                </div>
+                <h4 class="font-extrabold text-white text-base truncate mt-1">${spk.name}</h4>
+                <p class="text-xs text-gray-400 truncate">${spk.role}</p>
+              </div>
+            </div>
+
+            <div class="mt-3 pt-3 border-t border-white/5">
+              <div class="text-[11px] font-bold text-brandYellow truncate">${spk.title}</div>
+              <p class="text-[11px] text-gray-300 mt-1 line-clamp-2 leading-relaxed">${spk.desc}</p>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
+            <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">${spk.track}</span>
+            <div class="flex gap-1.5">
+              <button onclick="editSpeaker('${spk.id}')" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition">
+                Edit
+              </button>
+              <button onclick="deleteSpeaker('${spk.id}')" class="px-2.5 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-xs font-semibold transition">
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openSpeakerModal(speaker = null) {
+      document.getElementById('speakerForm').reset();
+      if (speaker) {
+        document.getElementById('speakerModalTitle').textContent = 'Edit Keynote Speaker';
+        document.getElementById('spk_id').value = speaker.id;
+        document.getElementById('spk_name').value = speaker.name;
+        document.getElementById('spk_role').value = speaker.role || '';
+        document.getElementById('spk_track').value = speaker.track || '';
+        document.getElementById('spk_badge').value = speaker.badge || 'Keynote';
+        document.getElementById('spk_stageId').value = speaker.stageId || 'teal';
+        document.getElementById('spk_time').value = speaker.time || '';
+        document.getElementById('spk_img').value = speaker.img || '';
+        document.getElementById('spk_title').value = speaker.title || '';
+        document.getElementById('spk_desc').value = speaker.desc || '';
+      } else {
+        document.getElementById('speakerModalTitle').textContent = 'Add Keynote Speaker';
+        document.getElementById('spk_id').value = '';
+      }
+      document.getElementById('speakerModal').classList.remove('hidden');
+    }
+
+    function closeSpeakerModal() {
+      document.getElementById('speakerModal').classList.add('hidden');
+    }
+
+    function editSpeaker(id) {
+      const spk = appState.speakers.find(s => s.id === id);
+      if (spk) openSpeakerModal(spk);
+    }
+
+    async function saveSpeaker(e) {
+      e.preventDefault();
+      const id = document.getElementById('spk_id').value;
+      const payload = {
+        name: document.getElementById('spk_name').value,
+        role: document.getElementById('spk_role').value,
+        track: document.getElementById('spk_track').value,
+        badge: document.getElementById('spk_badge').value,
+        stageId: document.getElementById('spk_stageId').value,
+        time: document.getElementById('spk_time').value,
+        img: document.getElementById('spk_img').value,
+        title: document.getElementById('spk_title').value,
+        desc: document.getElementById('spk_desc').value
+      };
+
+      try {
+        const url = id ? `/api/arconf/speakers/${id}` : '/api/arconf/speakers';
+        const method = id ? 'PUT' : 'POST';
+        const res = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const json = await res.json();
+        if (json.success) {
+          closeSpeakerModal();
+          fetchAllData();
+          showToast(id ? 'Speaker updated!' : 'Speaker added!');
+        } else {
+          showToast(json.error || 'Failed to save', '❌');
+        }
+      } catch (err) {
+        showToast('Error saving speaker', '❌');
+      }
+    }
+
+    async function deleteSpeaker(id) {
+      if (!confirm('Are you sure you want to delete this speaker?')) return;
+      try {
+        const res = await fetch(`/api/arconf/speakers/${id}`, { method: 'DELETE' });
+        const json = await res.json();
+        if (json.success) {
+          fetchAllData();
+          showToast('Speaker deleted');
+        }
+      } catch (err) {
+        showToast('Error deleting speaker', '❌');
+      }
+    }
+
+    // 4. Stages
+    function renderStages() {
+      const container = document.getElementById('stagesContainer');
+      if (!appState || !appState.stages) return;
+
+      const stages = appState.stages;
+      container.innerHTML = Object.keys(stages).map(key => {
+        const st = stages[key];
+        return `
+          <div class="glass-card rounded-2xl p-5 border border-white/10 space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full" style="background-color: ${st.themeColor}"></span>
+                <span class="font-extrabold text-white text-base">${st.name}</span>
+              </div>
+              <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-white/10 text-gray-300">${st.trackNumber}</span>
+            </div>
+
+            <div class="space-y-3 text-xs">
+              <div>
+                <label class="block text-gray-400 font-semibold mb-1">Track Badge</label>
+                <input type="text" id="stage_badge_${key}" value="${st.badge || ''}" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white"/>
+              </div>
+
+              <div>
+                <label class="block text-gray-400 font-semibold mb-1">Main Talk Title / Headline</label>
+                <input type="text" id="stage_title_${key}" value="${st.title || st.headline || ''}" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white"/>
+              </div>
+
+              <div>
+                <label class="block text-gray-400 font-semibold mb-1">Track Abstract &amp; Details</label>
+                <textarea id="stage_desc_${key}" rows="2" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white">${st.description || ''}</textarea>
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-white/10 flex justify-end">
+              <button onclick="saveStage('${key}')" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition active:scale-95">
+                Save ${st.name}
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function saveStage(key) {
+      const payload = {
+        badge: document.getElementById(`stage_badge_${key}`).value,
+        title: document.getElementById(`stage_title_${key}`).value,
+        description: document.getElementById(`stage_desc_${key}`).value
+      };
+      if (key === 'yellow') payload.headline = payload.title;
+
+      try {
+        const res = await fetch(`/api/arconf/stages/${key}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const json = await res.json();
+        if (json.success) {
+          showToast(`${key.toUpperCase()} Stage updated!`);
+        }
+      } catch (err) {
+        showToast('Error saving stage', '❌');
+      }
+    }
+
+    // 5. Poll
+    function renderPoll() {
+      if (!appState || !appState.poll) return;
+      const poll = appState.poll;
+      document.getElementById('pollQuestionInput').value = poll.question;
+      document.getElementById('pollTotalVotesDisplay').textContent = (poll.totalVotes || 0).toLocaleString();
+
+      const container = document.getElementById('pollOptionsList');
+      container.innerHTML = poll.options.map((opt, i) => `
+        <div class="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between gap-3">
+          <div class="flex-1">
+            <input type="text" value="${opt.label}" data-opt-id="${opt.id}" class="poll-opt-input w-full bg-transparent border-0 text-white text-xs font-semibold focus:ring-0 p-0"/>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-bold text-brandCyan">${opt.percent || 0}%</span>
+            <span class="text-xs text-gray-400 font-mono">(${opt.votes || 0} votes)</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function savePoll(e) {
+      e.preventDefault();
+      const question = document.getElementById('pollQuestionInput').value;
+      const inputs = document.querySelectorAll('.poll-opt-input');
+      const updatedOptions = [];
+
+      inputs.forEach(inp => {
+        const id = inp.getAttribute('data-opt-id');
+        const existing = appState.poll.options.find(o => o.id === id);
+        updatedOptions.push({
+          id,
+          label: inp.value,
+          votes: existing ? existing.votes : 0
+        });
+      });
+
+      try {
+        const res = await fetch('/api/arconf/poll', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question, options: updatedOptions })
+        });
+        const json = await res.json();
+        if (json.success) {
+          appState.poll = json.data;
+          renderPoll();
+          showToast('Live poll updated!');
+        }
+      } catch (err) {
+        showToast('Error updating poll', '❌');
+      }
+    }
+
+    async function resetPollVotes() {
+      if (!confirm('Are you sure you want to reset all poll votes to 0?')) return;
+      try {
+        const res = await fetch('/api/arconf/poll/reset', { method: 'POST' });
+        const json = await res.json();
+        if (json.success) {
+          appState.poll = json.data;
+          renderPoll();
+          renderOverview();
+          showToast('Poll votes reset to 0');
+        }
+      } catch (e) {
+        showToast('Failed to reset votes', '❌');
+      }
+    }
+
+    // 6. Passes
+    async function fetchPasses() {
+      try {
+        const res = await fetch('/api/arconf/passes');
+        const json = await res.json();
+        if (json.success) {
+          allPasses = json.data || [];
+          renderPassesTable(allPasses);
+        }
+      } catch (err) {
+        console.error('Failed to fetch passes:', err);
+      }
+    }
+
+    function renderPassesTable(passes) {
+      const tbody = document.getElementById('passesTableBody');
+      if (passes.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-gray-400">No passes registered yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = passes.map(p => {
+        const dateStr = p.claimedAt ? new Date(p.claimedAt).toLocaleString() : 'N/A';
+        return `
+          <tr class="hover:bg-white/5 transition">
+            <td class="px-4 py-3 font-mono text-brandCyan font-bold">${p.badgeNumber || p.id}</td>
+            <td class="px-4 py-3 font-semibold text-white">${p.name}</td>
+            <td class="px-4 py-3 text-gray-300">${p.role || 'Attendee'}</td>
+            <td class="px-4 py-3">
+              <span class="px-2 py-0.5 rounded bg-brandMagenta/20 text-brandMagenta font-bold text-[10px] border border-brandMagenta/30">
+                ${p.tier || 'ALL-ACCESS'}
+              </span>
+            </td>
+            <td class="px-4 py-3 font-mono text-gray-400 capitalize">${p.theme || 'holo'}</td>
+            <td class="px-4 py-3 text-gray-400 text-[11px]">${dateStr}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filterPasses() {
+      const q = document.getElementById('passSearchInput').value.toLowerCase().trim();
+      if (!q) {
+        renderPassesTable(allPasses);
+        return;
+      }
+      const filtered = allPasses.filter(p => 
+        (p.name && p.name.toLowerCase().includes(q)) ||
+        (p.badgeNumber && p.badgeNumber.toLowerCase().includes(q)) ||
+        (p.role && p.role.toLowerCase().includes(q))
+      );
+      renderPassesTable(filtered);
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchAllData();
+    });
+  </script>
+</body>
+</html>
