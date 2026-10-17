@@ -167,7 +167,7 @@ export const INITIAL_EVENTS = [
     source: "community",
     sourceName: "Direct Community",
     sourceUrl: "https://windmillcommunitygardensmargate.org.uk",
-    image: "https://images.unsplash.com/photo-1592417817098-8f3d69109853?auto=format&fit=crop&w=1200&q=80",
+    image: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80",
     description: "Get your hands in the soil! Volunteer with our community permaculture garden. We are prepping winter beds, harvesting late squash and herbs, and building compost heaps. Tea and homemade herbal infusions provided. No gardening experience necessary.",
     attendees: 22,
     spotsLeft: 5,

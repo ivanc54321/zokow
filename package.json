@@ -9,7 +9,8 @@
     "arconf:server": "node server/arconf-server.js",
     "build": "vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "restore-point": "node scripts/create-restore-point.js"
   },
   "dependencies": {
     "cors": "^2.8.6",

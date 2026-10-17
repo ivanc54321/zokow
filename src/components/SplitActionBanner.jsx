@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Utensils, CalendarDays, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export default function SplitActionBanner({ onSelectCategory, onScrollToDirectory }) {
   const handleFoodClick = () => {
@@ -10,7 +10,7 @@ export default function SplitActionBanner({ onSelectCategory, onScrollToDirector
 
   const handleEventsClick = () => {
     if (onSelectCategory) onSelectCategory('all');
-    const el = document.getElementById('carousels-section');
+    const el = document.getElementById('upcoming-events-showcase') || document.getElementById('carousels-section');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
     else if (onScrollToDirectory) onScrollToDirectory();
   };

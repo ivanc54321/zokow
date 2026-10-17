@@ -1,312 +1,328 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Sparkles, 
-  Users, 
-  Compass, 
-  Music, 
-  HeartHandshake, 
-  Calendar, 
-  Sun, 
-  Waves,
-  Rss,
-  Activity,
-  Tag,
-  Dog,
-  Smile,
-  ChevronLeft,
-  ChevronRight,
-  Flame
-} from 'lucide-react';
-import { CATEGORIES, TIME_FILTERS, AMENITY_FILTERS, VENUES } from '../data/eventsData';
+import React from 'react';
+import { Sun, Moon } from 'lucide-react';
+import './ArconaHero.css';
 
-const HERO_SLIDES = [
-  {
-    title: "WELCOME TO THANET SOCIAL & NIGHTLIFE",
-    tagline: "Live Music, Craft Taprooms & Coastal Happenings",
-    lead: "Experience world-class concerts at Dreamland, cosy acoustic gigs in Ramsgate harbour vaults, and vibrant social meetups across the coast.",
-    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=1920&q=80",
-    badge: "FEATURED HIGHLIGHT",
-    highlightTown: "Margate & Ramsgate"
-  },
-  {
-    title: "DREAMLAND STAGES & SUNSET GIGS",
-    tagline: "Scenic Stage Festivals & Hall By The Sea",
-    lead: "From international touring headliners and retro roller room discos to street food courts overlooking Margate sands.",
-    image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1920&q=80",
-    badge: "LIVE STAGE",
-    highlightTown: "Margate"
-  },
-  {
-    title: "HARBOUR SPEAKEASIES & CRAFT DINING",
-    tagline: "Cocktail Lounges, Taprooms & Woodfired Catch",
-    lead: "Indulge in fresh seafood platters, natural wine cellars, and warm community dining beneath historic seaside arches.",
-    image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1920&q=80",
-    badge: "FOOD & DRINKS",
-    highlightTown: "Broadstairs & Ramsgate"
-  },
-  {
-    title: "COASTAL SWIMS & FLOODLIT 5-A-SIDE",
-    tagline: "Hartsdown Sports, Tidal Pools & Outdoor Action",
-    lead: "Join weekend wild swimmers at Walpole Bay tidal pool, football leagues under the lights, or scenic trail runs along Botany Bay chalk cliffs.",
-    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80",
-    badge: "ACTIVE THANET",
-    highlightTown: "Cliftonville"
-  }
-];
+// Custom SVG Monogram for ZOKAL Thanet (Coastal Arch + Wave Mark)
+const ZokalMonogram = () => (
+  <svg 
+    width="28" 
+    height="34" 
+    viewBox="0 0 32 38" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg"
+    className="arcona-logo-mark"
+    title="ZOKAL Thanet Social Directory"
+  >
+    {/* Arch frame */}
+    <path 
+      d="M6 35V16C6 10.4772 10.4772 6 16 6C21.5228 6 26 10.4772 26 16V35" 
+      stroke="currentColor" 
+      strokeWidth="3.5" 
+      strokeLinecap="round" 
+    />
+    {/* Stylized Coastal Z wave */}
+    <path 
+      d="M11 17H21L11 27H21" 
+      stroke="currentColor" 
+      strokeWidth="3" 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+    />
+  </svg>
+);
 
-export default function Hero({ 
-  selectedCategory, 
-  onSelectCategory, 
-  selectedTimeFilter, 
+// Miniature High-Detail QR Code SVG Icon
+const QrCodeIcon = ({ color = '#ffffff' }) => (
+  <svg 
+    width="22" 
+    height="22" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg"
+    className="arcona-qr-icon"
+    aria-hidden="true"
+  >
+    <rect x="2" y="2" width="7" height="7" rx="1.5" stroke={color} strokeWidth="1.8" />
+    <rect x="4.5" y="4.5" width="2" height="2" fill={color} />
+    <rect x="15" y="2" width="7" height="7" rx="1.5" stroke={color} strokeWidth="1.8" />
+    <rect x="17.5" y="4.5" width="2" height="2" fill={color} />
+    <rect x="2" y="15" width="7" height="7" rx="1.5" stroke={color} strokeWidth="1.8" />
+    <rect x="4.5" y="17.5" width="2" height="2" fill={color} />
+    {/* Data dots */}
+    <rect x="11" y="2.5" width="2" height="2" fill={color} />
+    <rect x="11" y="7" width="2" height="2" fill={color} />
+    <rect x="11" y="11" width="2" height="2" fill={color} />
+    <rect x="2.5" y="11" width="2" height="2" fill={color} />
+    <rect x="7" y="11" width="2" height="2" fill={color} />
+    <rect x="15" y="11" width="2" height="2" fill={color} />
+    <rect x="19.5" y="11" width="2" height="2" fill={color} />
+    <rect x="11" y="15" width="2" height="2" fill={color} />
+    <rect x="15" y="15" width="2" height="2" fill={color} />
+    <rect x="19.5" y="15" width="2" height="2" fill={color} />
+    <rect x="11" y="19.5" width="2" height="2" fill={color} />
+    <rect x="15" y="19.5" width="2" height="2" fill={color} />
+    <rect x="19.5" y="19.5" width="2" height="2" fill={color} />
+  </svg>
+);
+
+// Mouse Cursor Arrow SVG Icon
+const CursorArrow = ({ color = '#fbb929' }) => (
+  <svg 
+    width="20" 
+    height="20" 
+    viewBox="0 0 24 24" 
+    fill={color} 
+    xmlns="http://www.w3.org/2000/svg"
+    className="arcona-cursor-icon"
+    aria-hidden="true"
+  >
+    <path 
+      d="M3 3L10.5 21L13.8 13.8L21 10.5L3 3Z" 
+      stroke="rgba(0,0,0,0.15)" 
+      strokeWidth="1.2" 
+      strokeLinejoin="round" 
+    />
+  </svg>
+);
+
+export default function Hero({
+  selectedCategory,
+  onSelectCategory,
+  selectedTimeFilter,
   onSelectTimeFilter,
   selectedTown,
   onSelectTown,
   selectedAmenities = [],
   onToggleAmenity,
-  onOpenVenue
+  onOpenVenue,
+  onOpenBurgerMenu,
+  theme = 'dark',
+  onToggleTheme
 }) {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  // Auto-advance slides smoothly every 8 seconds
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide(prev => (prev + 1) % HERO_SLIDES.length);
-    }, 8000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const nextSlide = () => {
-    setCurrentSlide(prev => (prev + 1) % HERO_SLIDES.length);
+  const handleScrollToDirectory = () => {
+    const el = document.querySelector('.directory-grid-section') || document.getElementById('upcoming-events-showcase');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
-
-  const prevSlide = () => {
-    setCurrentSlide(prev => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
-  };
-
-  const getCategoryIcon = (iconName) => {
-    switch (iconName) {
-      case 'Activity': return Activity;
-      case 'Users': return Users;
-      case 'Compass': return Compass;
-      case 'Music': return Music;
-      case 'HeartHandshake': return HeartHandshake;
-      default: return Sparkles;
-    }
-  };
-
-  const getAmenityIcon = (iconName) => {
-    switch (iconName) {
-      case 'Tag': return Tag;
-      case 'Sun': return Sun;
-      case 'PawPrint': return Dog;
-      case 'Smile': return Smile;
-      default: return Sparkles;
-    }
-  };
-
-  const activeSlideData = HERO_SLIDES[currentSlide];
 
   return (
-    <section className="hero-section modern-hero">
-      {/* Background Slides with Atmospheric Fade */}
-      <div className="hero-slides-wrapper">
-        {HERO_SLIDES.map((slide, idx) => (
-          <div 
-            key={idx}
-            className={`hero-slide-bg ${idx === currentSlide ? 'active' : ''}`}
-            style={{ backgroundImage: `url(${slide.image})` }}
+    <section className="arcona-hero-section">
+      {/* Top Header / Brand Bar */}
+      <header className="arcona-top-header">
+        <div 
+          className="arcona-logo-wrapper"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          title="ZOKAL — Thanet Social Directory"
+        >
+          <span className="arcona-brand-text">ZOKAL</span>
+          <span className="arcona-brand-cross">✕</span>
+          <ZokalMonogram />
+        </div>
+
+        {/* Top-Right Header Actions (Theme Toggle & Menu) */}
+        <div className="arcona-top-header-actions">
+          <button 
+            className={`arcona-theme-trigger ${theme === 'light' ? 'is-light' : 'is-dark'}`}
+            onClick={onToggleTheme}
+            title={theme === 'light' ? "Switch to Dark Version" : "Switch to Light Version"}
+            aria-label={theme === 'light' ? "Switch to Dark Version" : "Switch to Light Version"}
           >
-            <div className="hero-gradient-scrim"></div>
-            <div className="hero-neon-bokeh"></div>
-          </div>
-        ))}
-      </div>
+            {theme === 'light' ? <Moon size={15} /> : <Sun size={15} />}
+            <span className="arcona-theme-label">{theme === 'light' ? 'Dark' : 'Light'}</span>
+          </button>
 
-      {/* Hero Carousel Navigation Chevrons */}
-      <button 
-        className="hero-nav-arrow arrow-left" 
-        onClick={prevSlide}
-        aria-label="Previous slide"
-      >
-        <ChevronLeft size={28} />
-      </button>
-
-      <button 
-        className="hero-nav-arrow arrow-right" 
-        onClick={nextSlide}
-        aria-label="Next slide"
-      >
-        <ChevronRight size={28} />
-      </button>
-
-      {/* Main Hero Container */}
-      <div className="hero-content">
-        
-        {/* Coastal / Live badge */}
-        <div className="hero-top-status-row">
-          <div className="hero-status-pill">
-            <span className="pill-pulse-dot"></span>
-            <Sun size={14} className="pill-icon" />
-            <span className="pill-text">Thanet Coastline • 18°C Mild Breezes</span>
-            <span className="pill-divider">•</span>
-            <Waves size={14} className="pill-icon" />
-            <span className="pill-text">Low Tide 16:40 (Walpole Bay Open)</span>
-          </div>
-
-          <div className="slide-badge-pill">
-            <Flame size={13} className="slide-badge-icon" />
-            <span>{activeSlideData.badge}</span>
-          </div>
+          {/* Top-Right Burger Navigation Trigger */}
+          <button 
+            className="arcona-burger-trigger"
+            onClick={onOpenBurgerMenu}
+            aria-label="Open Explore & Filters Navigation Menu"
+            title="Explore & Filters Menu"
+          >
+            <div className="burger-icon-bars" aria-hidden="true">
+              <span className="burger-bar" />
+              <span className="burger-bar" />
+              <span className="burger-bar" />
+            </div>
+            <span className="burger-trigger-label">Menu</span>
+          </button>
         </div>
+      </header>
 
-        {/* Large Bold Centerpiece Title inspired by reference */}
-        <div className="hero-centerpiece">
-          <h1 className="hero-headline-large">
-            {activeSlideData.title}
-          </h1>
-          <p className="hero-tagline-sub">
-            {activeSlideData.tagline}
-          </p>
-          <p className="hero-lead">
-            {activeSlideData.lead}
-          </p>
-        </div>
-
-        {/* Slide Indicators Dots */}
-        <div className="hero-indicators-row">
-          {HERO_SLIDES.map((_, idx) => (
-            <button
-              key={idx}
-              className={`indicator-dot ${idx === currentSlide ? 'active' : ''}`}
-              onClick={() => setCurrentSlide(idx)}
-              aria-label={`Go to slide ${idx + 1}`}
+      {/* Main Two-Column Canvas */}
+      <div className="arcona-hero-canvas">
+        {/* Left Column: Geometric Cutouts & Large Typography */}
+        <div className="arcona-left-stage">
+          {/* Top Magenta Arch Cutout (Live Gigs & Festival Goer) */}
+          <div className="arcona-arch-purple" title="Live Music & Nightlife in Thanet">
+            <img 
+              src="/arcona/man-purple.jpg" 
+              alt="Thanet live music enthusiast with audio earbud"
+              className="arcona-cutout-img"
+              loading="eager"
             />
-          ))}
+          </div>
+
+          {/* Floating Coral Circle (Coastal Sunset Sun) */}
+          <div className="arcona-coral-circle" aria-hidden="true" title="Thanet Coastal Sun" />
+
+          {/* Giant Bold Headline */}
+          <h1 className="arcona-headline">
+            <span className="headline-line line-things">THINGS</span>
+            <span className="headline-line line-to">TO</span>
+            <span className="headline-line line-do">DO</span>
+          </h1>
+
+          {/* Bottom Yellow Cutout (Outdoor Beach Swimmer / Wellness) */}
+          <div className="arcona-arch-yellow" title="Outdoor Coastal Wellness & Beach Days">
+            <img 
+              src="/arcona/woman-yellow.jpg" 
+              alt="Joyful coastal swimmer smiling in Thanet sunshine"
+              className="arcona-cutout-img"
+              loading="eager"
+            />
+          </div>
+
+          {/* Bottom-Left Floating Two-Tone Date Badge */}
+          <div 
+            className="arcona-floating-date-badge"
+            onClick={handleScrollToDirectory}
+            style={{ cursor: 'pointer' }}
+            title="Explore This Weekend's Guide"
+          >
+            <div className="badge-pill badge-white">THANET COAST</div>
+            <div className="badge-pill badge-magenta">30+ HAPPENINGS</div>
+          </div>
         </div>
 
-        {/* Sources Citation Bar */}
-        <div className="sources-callout">
-          <div className="sources-callout-inner">
-            <Rss size={13} className="sources-rss" />
-            <span className="sources-label">LIVE AGGREGATION FROM:</span>
-            <div className="sources-tags">
-              <span className="source-tag meetup-tag">Meetup.com</span>
-              <span className="source-tag instagram-tag">Instagram</span>
-              <span className="source-tag facebook-tag">Facebook Events</span>
-              <span className="source-tag eventbrite-tag">Eventbrite</span>
-              <span className="source-tag community-tag">Local Submissions</span>
+        {/* Right Column: 3 Stacked Event & Activity Cards */}
+        <div className="arcona-right-cards">
+          {/* Card 1: Ocean Teal — Outdoor & Tidal Swims */}
+          <article 
+            className="arcona-card card-teal"
+            onClick={() => {
+              if (onSelectCategory) onSelectCategory('activity');
+              if (onSelectTown) onSelectTown('Margate');
+              handleScrollToDirectory();
+            }}
+            role="button"
+            tabIndex={0}
+            aria-label="Walpole Bay Sunrise Tidal Swim & Coffee Social in Margate"
+          >
+            <div className="card-photo-frame">
+              <img 
+                src="/arcona/card-swim.jpg" 
+                alt="Wild swimmer at Walpole Bay tidal pool sunrise"
+                className="card-photo-img"
+                loading="eager"
+              />
             </div>
-          </div>
-        </div>
-
-        {/* Town Quick Switcher */}
-        <div className="town-buttons-row">
-          <button 
-            className={`town-btn ${selectedTown === 'all' ? 'active' : ''}`}
-            onClick={() => onSelectTown('all')}
-          >
-            All Thanet
-          </button>
-          <button 
-            className={`town-btn ${selectedTown === 'Margate' ? 'active' : ''}`}
-            onClick={() => onSelectTown('Margate')}
-          >
-            Margate & Cliftonville
-          </button>
-          <button 
-            className={`town-btn ${selectedTown === 'Ramsgate' ? 'active' : ''}`}
-            onClick={() => onSelectTown('Ramsgate')}
-          >
-            Ramsgate Harbour
-          </button>
-          <button 
-            className={`town-btn ${selectedTown === 'Broadstairs' ? 'active' : ''}`}
-            onClick={() => onSelectTown('Broadstairs')}
-          >
-            Broadstairs Bays
-          </button>
-        </div>
-
-        {/* Primary Category Filters */}
-        <div className="category-filters-container">
-          <div className="category-filters-scroll">
-            {CATEGORIES.map((cat) => {
-              const IconComp = getCategoryIcon(cat.icon);
-              const isActive = selectedCategory === cat.id;
-              return (
-                <button
-                  key={cat.id}
-                  className={`category-pill-btn ${isActive ? 'active' : ''}`}
-                  onClick={() => onSelectCategory(cat.id)}
-                >
-                  <IconComp size={16} />
-                  <span>{cat.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Time filters & Amenity Vibe Pills */}
-        <div className="filters-secondary-row">
-          <div className="time-filter-row">
-            <span className="time-label">
-              <Calendar size={13} />
-              When:
-            </span>
-            <div className="time-pills">
-              {TIME_FILTERS.map((tf) => (
-                <button
-                  key={tf.id}
-                  className={`time-pill ${selectedTimeFilter === tf.id ? 'active' : ''}`}
-                  onClick={() => onSelectTimeFilter(tf.id)}
-                >
-                  {tf.label}
-                </button>
-              ))}
+            <div className="card-content">
+              <span className="card-eyebrow">OUTDOOR & WELLNESS</span>
+              <h2 className="card-title">
+                Walpole Bay<br />
+                Sunrise Tidal<br />
+                Swim & Coffee.
+              </h2>
+              <div className="card-meta-row">
+                <div className="qr-date-group">
+                  <QrCodeIcon color="#ffffff" />
+                  <div className="qr-text">
+                    <span>Sunday 07:30</span>
+                    <span>Walpole Pool</span>
+                  </div>
+                </div>
+                <div className="speaker-pill-wrapper">
+                  <CursorArrow color="#fbb929" />
+                  <span className="speaker-badge badge-yellow">Thanet Swimmers</span>
+                </div>
+              </div>
             </div>
-          </div>
+          </article>
 
-          {/* Quick Amenity / Vibe Filters */}
-          <div className="amenity-filters-row">
-            <span className="amenity-label">Vibes:</span>
-            <div className="amenity-pills">
-              {AMENITY_FILTERS.map((af) => {
-                const IconComp = getAmenityIcon(af.icon);
-                const isActive = selectedAmenities.includes(af.id);
-                return (
-                  <button
-                    key={af.id}
-                    className={`amenity-pill ${isActive ? 'active' : ''}`}
-                    onClick={() => onToggleAmenity(af.id)}
-                  >
-                    <IconComp size={12} />
-                    <span>{af.label}</span>
-                  </button>
-                );
-              })}
+          {/* Card 2: Royal Violet — Live Gigs & Harbour Music */}
+          <article 
+            className="arcona-card card-violet"
+            onClick={() => {
+              if (onSelectCategory) onSelectCategory('event');
+              if (onSelectTown) onSelectTown('Ramsgate');
+              if (onOpenVenue) onOpenVenue('ramsgatemusichall');
+            }}
+            role="button"
+            tabIndex={0}
+            aria-label="Harbour Arches Acoustic Sessions & Craft Tap at Ramsgate Music Hall"
+          >
+            <div className="card-photo-frame">
+              <img 
+                src="/arcona/card-music.jpg" 
+                alt="Musician playing acoustic guitar in Ramsgate arches"
+                className="card-photo-img"
+                loading="eager"
+              />
             </div>
-          </div>
-        </div>
+            <div className="card-content">
+              <span className="card-eyebrow">LIVE MUSIC & GIGS</span>
+              <h2 className="card-title">
+                Harbour Arches<br />
+                Acoustic Sessions<br />
+                & Craft Tap.
+              </h2>
+              <div className="card-meta-row">
+                <div className="qr-date-group">
+                  <QrCodeIcon color="#ffffff" />
+                  <div className="qr-text">
+                    <span>Tonight 20:00</span>
+                    <span>Ramsgate Arches</span>
+                  </div>
+                </div>
+                <div className="speaker-pill-wrapper">
+                  <CursorArrow color="#f5b3d6" />
+                  <span className="speaker-badge badge-pink">Music Hall Vaults</span>
+                </div>
+              </div>
+            </div>
+          </article>
 
-        {/* Popular Venues Spotlight Strip */}
-        <div className="venues-spotlight-bar">
-          <span className="spotlight-label">Iconic Venues:</span>
-          <div className="spotlight-chips">
-            {VENUES.map(venue => (
-              <button 
-                key={venue.id}
-                className="venue-chip-btn"
-                onClick={() => onOpenVenue && onOpenVenue(venue.id)}
-                title={`View ${venue.name} hub guide and gigs`}
-              >
-                <span>{venue.name.split(' ')[0]}</span>
-                <span className="venue-chip-town">({venue.town})</span>
-              </button>
-            ))}
-          </div>
+          {/* Card 3: Coral Red — Sports & Floodlit 5-a-Side */}
+          <article 
+            className="arcona-card card-coral"
+            onClick={() => {
+              if (onSelectCategory) onSelectCategory('activity');
+              if (onOpenVenue) onOpenVenue('hartsdown');
+            }}
+            role="button"
+            tabIndex={0}
+            aria-label="Hartsdown Park Floodlit 5-a-Side Football League"
+          >
+            <div className="card-photo-frame">
+              <img 
+                src="/arcona/card-sports.jpg" 
+                alt="Football player with ball on floodlit 5-a-side turf at Hartsdown"
+                className="card-photo-img"
+                loading="eager"
+              />
+            </div>
+            <div className="card-content">
+              <span className="card-eyebrow">SPORTS & COMMUNITY</span>
+              <h2 className="card-title">
+                Hartsdown Park<br />
+                Floodlit 5-a-Side<br />
+                Football League.
+              </h2>
+              <div className="card-meta-row">
+                <div className="qr-date-group">
+                  <QrCodeIcon color="#ffffff" />
+                  <div className="qr-text">
+                    <span>Thursday 19:30</span>
+                    <span>Hartsdown Park</span>
+                  </div>
+                </div>
+                <div className="speaker-pill-wrapper">
+                  <CursorArrow color="#67cbfa" />
+                  <span className="speaker-badge badge-blue">Thanet 5s Squad</span>
+                </div>
+              </div>
+            </div>
+          </article>
         </div>
-
       </div>
     </section>
   );

@@ -1,0 +1,566 @@
+/* ==========================================================================
+   ARCONA PIXEL-PERFECT HERO SECTION & SCROLL REVEAL STYLES
+   ========================================================================== */
+
+/* Navbar Scroll-Reveal Behavior (Seamless pristine Hero at top) */
+.navbar-floating-wrapper {
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s;
+}
+
+.navbar-floating-wrapper:not(.scrolled-active) {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none !important;
+  transform: translateY(-24px);
+}
+
+.navbar-floating-wrapper:not(.scrolled-active) * {
+  pointer-events: none !important;
+}
+
+.navbar-floating-wrapper.scrolled-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Base Canvas for ARCONA Hero */
+.arcona-hero-section {
+  background-color: #0b0e1a;
+  color: #ffffff;
+  padding: 24px 32px 48px 32px;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  user-select: none;
+}
+
+/* TOP CENTER HEADER & ARCONA LOGO */
+.arcona-top-header {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 0;
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.arcona-top-header-actions {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 1001;
+}
+
+.arcona-theme-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.arcona-theme-trigger:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.arcona-theme-trigger.is-light {
+  color: #fab828;
+  border-color: rgba(250, 184, 40, 0.4);
+}
+
+.arcona-theme-label {
+  line-height: 1;
+}
+
+.arcona-top-header-actions .arcona-burger-trigger {
+  position: static;
+  transform: none;
+}
+
+.arcona-top-header-actions .arcona-burger-trigger:hover {
+  transform: none;
+}
+
+.arcona-logo-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: transform 0.25s ease;
+}
+
+.arcona-logo-wrapper:hover {
+  transform: scale(1.03);
+}
+
+.arcona-brand-text {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.arcona-brand-cross {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 300;
+  line-height: 1;
+}
+
+.arcona-logo-mark {
+  display: block;
+}
+
+/* MAIN TWO-COLUMN CANVAS */
+.arcona-hero-canvas {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 36px;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 530px;
+}
+
+/* ==========================================================================
+   LEFT COLUMN: ARTISTIC GEOMETRIC CUTOUTS & OVERLAPPING HEADLINE
+   ========================================================================== */
+.arcona-left-stage {
+  position: relative;
+  height: 510px;
+  width: 100%;
+}
+
+/* Upper Magenta/Purple Arch */
+.arcona-arch-purple {
+  position: absolute;
+  top: 0;
+  left: 6px;
+  width: 234px;
+  height: 262px;
+  background-color: #a8438b;
+  border-radius: 117px 117px 0 0;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Floating Coral Circle */
+.arcona-coral-circle {
+  position: absolute;
+  top: 112px;
+  left: 316px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #f1513a;
+  z-index: 1;
+}
+
+/* Giant Bold Headline */
+.arcona-headline {
+  position: absolute;
+  top: 140px;
+  left: 156px;
+  z-index: 5;
+  margin: 0;
+  padding: 0;
+  line-height: 0.88;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  color: #ffffff;
+  pointer-events: none;
+}
+
+.arcona-headline .headline-line {
+  display: block;
+  font-size: 88px;
+}
+
+.arcona-headline .line-things {
+  letter-spacing: -0.035em;
+}
+
+.arcona-headline .line-to {
+  margin-top: 4px;
+  letter-spacing: -0.025em;
+}
+
+.arcona-headline .line-do {
+  margin-top: 4px;
+  letter-spacing: -0.025em;
+}
+
+/* Lower Golden Yellow Arch */
+.arcona-arch-yellow {
+  position: absolute;
+  bottom: 16px;
+  left: 242px;
+  width: 224px;
+  height: 248px;
+  background-color: #fab828;
+  border-radius: 112px 112px 0 0;
+  overflow: hidden;
+  z-index: 2;
+}
+
+/* Shared image styles inside arch cutouts */
+.arcona-cutout-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+/* Floating Date Badge at bottom left */
+.arcona-floating-date-badge {
+  position: absolute;
+  bottom: 28px;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  align-items: flex-start;
+}
+
+.arcona-floating-date-badge .badge-pill {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  padding: 5px 14px;
+  border-radius: 2px;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.arcona-floating-date-badge .badge-white {
+  background-color: #ffffff;
+  color: #0b0e1a;
+  z-index: 2;
+}
+
+.arcona-floating-date-badge .badge-magenta {
+  background-color: #b3458e;
+  color: #ffffff;
+  margin-left: -4px;
+  margin-top: 12px;
+  z-index: 1;
+}
+
+/* ==========================================================================
+   RIGHT COLUMN: 3 STACKED VIBRANT CARDS
+   ========================================================================== */
+.arcona-right-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  justify-content: center;
+}
+
+.arcona-card {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  border-radius: 12px;
+  padding: 16px 20px;
+  color: #ffffff;
+  min-height: 154px;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  outline: none;
+}
+
+.arcona-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+}
+
+/* Card Themes */
+.card-teal {
+  background-color: #0097a8;
+}
+
+.card-violet {
+  background-color: #5d47e8;
+}
+
+.card-coral {
+  background-color: #f1513a;
+}
+
+/* Card Photo Frame (Arch cutout on left) */
+.card-photo-frame {
+  width: 114px;
+  min-width: 114px;
+  height: 136px;
+  border-radius: 57px 57px 0 0;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.15);
+  margin-right: 22px;
+  align-self: flex-end;
+  flex-shrink: 0;
+}
+
+.card-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+/* Card Content (Right of arch) */
+.card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  padding: 1px 0;
+}
+
+.card-eyebrow {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+/* Override any inherited ellipsis or line-clamps */
+.arcona-card .card-title {
+  display: block !important;
+  -webkit-line-clamp: unset !important;
+  -webkit-box-orient: unset !important;
+  overflow: visible !important;
+  white-space: normal !important;
+  font-size: 22px !important;
+  font-weight: 800 !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.015em !important;
+  margin: 0 0 6px 0 !important;
+  color: #ffffff !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.card-meta-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+
+/* QR Code & Date Group */
+.qr-date-group {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.arcona-qr-icon {
+  flex-shrink: 0;
+}
+
+.qr-text {
+  display: flex;
+  flex-direction: column;
+  font-size: 9.5px;
+  font-weight: 700;
+  line-height: 1.18;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: 0.02em;
+}
+
+/* Speaker Badge & Stylized Mouse Cursor */
+.speaker-pill-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.arcona-cursor-icon {
+  transform: rotate(45deg);
+  margin-right: 2px;
+  flex-shrink: 0;
+}
+
+.speaker-badge {
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 4px 13px;
+  border-radius: 3px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.badge-yellow {
+  background-color: #fbb929;
+  color: #0c101d;
+}
+
+.badge-pink {
+  background-color: #f5b3d6;
+  color: #0c101d;
+}
+
+.badge-blue {
+  background-color: #67cbfa;
+  color: #0c101d;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN BREAKPOINTS
+   ========================================================================== */
+@media (max-width: 1080px) {
+  .arcona-hero-canvas {
+    grid-template-columns: 1fr;
+    gap: 44px;
+    max-width: 680px;
+  }
+
+  .arcona-left-stage {
+    margin: 0 auto;
+    max-width: 500px;
+  }
+}
+
+@media (max-width: 600px) {
+  .arcona-hero-section {
+    padding: 16px 16px 36px 16px;
+  }
+
+  .arcona-brand-text {
+    font-size: 21px;
+  }
+
+  .arcona-left-stage {
+    height: 400px;
+    max-width: 100%;
+  }
+
+  .arcona-arch-purple {
+    width: 180px;
+    height: 206px;
+    border-radius: 90px 90px 0 0;
+  }
+
+  .arcona-coral-circle {
+    top: 90px;
+    left: 245px;
+    width: 54px;
+    height: 54px;
+  }
+
+  .arcona-headline {
+    top: 110px;
+    left: 120px;
+  }
+
+  .arcona-headline .headline-line {
+    font-size: 64px;
+  }
+
+  .arcona-arch-yellow {
+    width: 175px;
+    height: 195px;
+    border-radius: 87px 87px 0 0;
+    left: 185px;
+  }
+
+  .arcona-card .card-title {
+    font-size: 18px !important;
+  }
+
+  .card-photo-frame {
+    width: 92px;
+    min-width: 92px;
+    height: 112px;
+    border-radius: 46px 46px 0 0;
+    margin-right: 14px;
+  }
+}
+
+/* ==========================================================================
+   ARCONA HERO LIGHT MODE STYLES
+   ========================================================================== */
+[data-theme="light"] .arcona-hero-section {
+  background-color: #f0f3f8;
+  color: #0f172a;
+}
+
+[data-theme="light"] .arcona-brand-text {
+  color: #0f172a;
+}
+
+[data-theme="light"] .arcona-brand-cross {
+  color: rgba(15, 23, 42, 0.45);
+}
+
+[data-theme="light"] .arcona-logo-mark {
+  color: #0f172a;
+}
+
+[data-theme="light"] .arcona-headline {
+  color: #0f172a;
+}
+
+[data-theme="light"] .arcona-floating-date-badge .badge-white {
+  background-color: #0f172a;
+  color: #ffffff;
+}
+
+[data-theme="light"] .arcona-burger-trigger {
+  color: #0f172a;
+}
+
+[data-theme="light"] .arcona-burger-trigger:hover {
+  color: #e04f0f;
+}
+
+[data-theme="light"] .arcona-theme-trigger {
+  background: rgba(15, 23, 42, 0.06);
+  border-color: rgba(15, 23, 42, 0.14);
+  color: #0f172a;
+}
+
+[data-theme="light"] .arcona-theme-trigger:hover {
+  background: rgba(15, 23, 42, 0.12);
+  color: #0f172a;
+}
+
+[data-theme="light"] .arcona-card {
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1);
+}
+
+[data-theme="light"] .arcona-card:hover {
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.16);
+}

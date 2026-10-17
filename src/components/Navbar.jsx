@@ -7,9 +7,10 @@ import {
   RefreshCw, 
   Calendar, 
   Map, 
-  Grid,
-  Menu,
-  X
+  Menu, 
+  X,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { TOWNS } from '../data/eventsData';
 
@@ -26,10 +27,12 @@ export default function Navbar({
   viewMode,
   onToggleViewMode,
   itineraryCount,
-  onOpenPlanner
+  onOpenPlanner,
+  onOpenBurgerMenu,
+  theme = 'dark',
+  onToggleTheme
 }) {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
   useEffect(() => {
@@ -41,7 +44,6 @@ export default function Navbar({
   }, []);
 
   const scrollToSection = (id) => {
-    setMobileMenuOpen(false);
     const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
@@ -49,7 +51,7 @@ export default function Navbar({
   };
 
   return (
-    <div className="navbar-floating-wrapper">
+    <div className={`navbar-floating-wrapper ${scrolled ? 'scrolled-active' : ''}`}>
       <header className={`navbar-floating-capsule ${scrolled ? 'is-scrolled' : ''}`}>
         
         {/* Left: Brand Logo & Live Pulse */}
@@ -182,76 +184,48 @@ export default function Navbar({
             <RefreshCw size={13} className={isSyncing ? 'spin-icon' : ''} />
           </button>
 
-          {/* Signature Rounded Pill CTA Button (like "Launch App" in the reference) */}
+          {/* Theme Mode Toggle Pill (Light / Dark) */}
+          <button 
+            className={`nav-icon-pill nav-theme-toggle-pill ${theme === 'light' ? 'is-light' : 'is-dark'}`}
+            onClick={onToggleTheme}
+            title={theme === 'light' ? "Switch to Dark Mode" : "Switch to Light Mode"}
+            aria-label={theme === 'light' ? "Switch to Dark Mode" : "Switch to Light Mode"}
+          >
+            {theme === 'light' ? (
+              <Moon size={14} className="theme-toggle-icon moon-icon" />
+            ) : (
+              <Sun size={14} className="theme-toggle-icon sun-icon" />
+            )}
+          </button>
+
+          {/* Post Event Quick Pill CTA */}
           <button 
             className="nav-cta-pill-btn"
             onClick={onOpenSubmit}
+            title="Post a local Thanet event"
           >
             <PlusCircle size={15} />
             <span>Post Event</span>
           </button>
 
-          {/* Mobile Hamburger Toggle */}
+          {/* Desktop & Mobile Burger Drawer Menu Button (Far Right) */}
           <button 
-            className="nav-mobile-toggle"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle mobile menu"
+            className="nav-burger-menu-btn"
+            onClick={onOpenBurgerMenu}
+            title="Open Explore & Directory Navigation Menu"
+            aria-label="Open Explore & Directory Navigation Menu"
           >
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            <div className="nav-burger-bars" aria-hidden="true">
+              <span className="nav-burger-bar" />
+              <span className="nav-burger-bar" />
+              <span className="nav-burger-bar" />
+            </div>
+            <span className="nav-burger-label">Menu</span>
           </button>
 
         </div>
 
       </header>
-
-      {/* Mobile Drawer / Glass Dropdown */}
-      {mobileMenuOpen && (
-        <div className="nav-mobile-glass-dropdown">
-          <button className="mobile-nav-item" onClick={() => scrollToSection('atmosphere-section')}>
-            Vibes & Atmosphere
-          </button>
-          <button className="mobile-nav-item" onClick={() => scrollToSection('carousels-section')}>
-            Upcoming Happenings
-          </button>
-          <button className="mobile-nav-item" onClick={() => scrollToSection('about-scene-section')}>
-            About the Scene
-          </button>
-          <button 
-            className="mobile-nav-item"
-            onClick={() => {
-              if (viewMode !== 'map') onToggleViewMode('map');
-              setTimeout(() => scrollToSection('map-section-anchor'), 100);
-            }}
-          >
-            Interactive Coast Map
-          </button>
-          
-          <div className="mobile-nav-divider"></div>
-          
-          <div className="mobile-nav-controls">
-            <button className="mobile-control-btn" onClick={() => { setMobileMenuOpen(false); onOpenPlanner(); }}>
-              <Calendar size={15} />
-              <span>Weekend Schedule ({itineraryCount})</span>
-            </button>
-            <button className="mobile-control-btn" onClick={() => { setMobileMenuOpen(false); onOpenSaved(); }}>
-              <Heart size={15} color="#ff5e14" fill={savedCount > 0 ? "#ff5e14" : "none"} />
-              <span>Bookmarks ({savedCount})</span>
-            </button>
-            <button className="mobile-control-btn" onClick={() => { setMobileMenuOpen(false); onOpenScrapers(); }}>
-              <RefreshCw size={15} />
-              <span>Data Feeds</span>
-            </button>
-          </div>
-
-          <button 
-            className="mobile-cta-btn" 
-            onClick={() => { setMobileMenuOpen(false); onOpenSubmit(); }}
-          >
-            <PlusCircle size={16} />
-            <span>Post New Event</span>
-          </button>
-        </div>
-      )}
     </div>
   );
 }

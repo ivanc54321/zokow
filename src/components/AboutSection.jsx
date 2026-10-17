@@ -31,15 +31,15 @@ export default function AboutSection({ onOpenVenue }) {
           </div>
 
           <div className="about-stats-row">
-            <div className="about-stat-item">
+            <div className="about-stat-item stat-teal">
               <span className="stat-number">40+</span>
               <span className="stat-label">Active Venues</span>
             </div>
-            <div className="about-stat-item">
+            <div className="about-stat-item stat-violet">
               <span className="stat-number">120+</span>
               <span className="stat-label">Monthly Gigs & Meetups</span>
             </div>
-            <div className="about-stat-item">
+            <div className="about-stat-item stat-gold">
               <span className="stat-number">3</span>
               <span className="stat-label">Iconic Coastal Towns</span>
             </div>

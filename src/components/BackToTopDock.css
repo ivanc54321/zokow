@@ -1,0 +1,173 @@
+/* ==========================================================================
+   BACK TO TOP & QUICK ACTION DOCK STYLES
+   ========================================================================== */
+
+.back-to-top-dock {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 998;
+  animation: dockFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes dockFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Quick Action Pills (Plan & Saved) */
+.dock-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border-radius: 9999px;
+  background: rgba(18, 24, 38, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dock-pill-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+}
+
+.dock-planner-btn:hover {
+  border-color: #fab828;
+  color: #fab828;
+}
+
+.dock-saved-btn:hover {
+  border-color: #ff5e14;
+  color: #ff5e14;
+}
+
+.dock-pill-badge {
+  font-size: 0.7rem;
+  padding: 1px 7px;
+  border-radius: 9999px;
+  background: var(--brand-orange, #ff5e14);
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.dock-planner-btn .dock-pill-badge {
+  background: #fab828;
+  color: #0b0e1a;
+}
+
+/* Main Circular Scroll to Top Button */
+.dock-scroll-top-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(18, 24, 38, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dock-arrow-icon {
+  transition: transform 0.25s ease;
+}
+
+.dock-top-text {
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-top: -2px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: #94a3b8;
+}
+
+.dock-scroll-top-btn:hover {
+  background: var(--brand-orange, #ff5e14);
+  border-color: var(--brand-orange, #ff5e14);
+  color: #ffffff;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 28px rgba(255, 94, 20, 0.4);
+}
+
+.dock-scroll-top-btn:hover .dock-arrow-icon {
+  transform: translateY(-2px);
+}
+
+.dock-scroll-top-btn:hover .dock-top-text {
+  color: #ffffff;
+}
+
+@media (max-width: 600px) {
+  .back-to-top-dock {
+    bottom: 18px;
+    right: 18px;
+    gap: 8px;
+  }
+  .dock-pill-btn {
+    padding: 7px 11px;
+    font-size: 0.75rem;
+  }
+  .dock-scroll-top-btn {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* ==========================================================================
+   BACK TO TOP DOCK LIGHT MODE STYLES
+   ========================================================================== */
+[data-theme="light"] .dock-pill-btn {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(15, 23, 42, 0.12);
+  color: #0f172a;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1);
+}
+
+[data-theme="light"] .dock-pill-btn:hover {
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.16);
+}
+
+[data-theme="light"] .dock-scroll-top-btn {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(15, 23, 42, 0.14);
+  color: #0f172a;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+}
+
+[data-theme="light"] .dock-top-text {
+  color: #64748b;
+}
+
+[data-theme="light"] .dock-scroll-top-btn:hover {
+  background: var(--brand-orange, #ff5e14);
+  border-color: var(--brand-orange, #ff5e14);
+  color: #ffffff;
+}
+
+[data-theme="light"] .dock-scroll-top-btn:hover .dock-top-text {
+  color: #ffffff;
+}

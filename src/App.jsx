@@ -14,6 +14,9 @@ import ThanetMapView from './components/ThanetMapView';
 import WeekendPlannerModal from './components/WeekendPlannerModal';
 import VenueModal from './components/VenueModal';
 import ContactRibbon from './components/ContactRibbon';
+import BurgerMenuDrawer from './components/BurgerMenuDrawer';
+import DirectoryQuickFilterBar from './components/DirectoryQuickFilterBar';
+import BackToTopDock from './components/BackToTopDock';
 import { useScrollReveal } from './hooks/useScrollReveal';
 import { INITIAL_EVENTS } from './data/eventsData';
 import { 
@@ -21,19 +24,15 @@ import {
   HeartHandshake, 
   Users, 
   Compass, 
-  Calendar, 
   Filter, 
-  Heart, 
-  ExternalLink, 
-  ArrowRight,
-  MapPin,
   CheckCircle2,
   Layers,
   Activity,
-  Map as MapIcon,
-  Tag
+  Map as MapIcon
 } from 'lucide-react';
 import './App.css';
+
+const CURRENT_YEAR = new Date().getFullYear();
 
 const InstagramIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -97,8 +96,38 @@ export default function App() {
   const [isPlannerOpen, setIsPlannerOpen] = useState(false);
   const [isSubmitOpen, setIsSubmitOpen] = useState(false);
   const [isScrapersOpen, setIsScrapersOpen] = useState(false);
+  const [isBurgerDrawerOpen, setIsBurgerDrawerOpen] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
+
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem('zokal_theme');
+    if (saved === 'light' || saved === 'dark') return saved;
+    if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+      return 'light';
+    }
+    return 'dark';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('zokal_theme', theme);
+    document.documentElement.setAttribute('data-theme', theme);
+    if (theme === 'light') {
+      document.body.classList.add('theme-light');
+      document.body.classList.remove('theme-dark');
+    } else {
+      document.body.classList.add('theme-dark');
+      document.body.classList.remove('theme-light');
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => {
+      const next = prev === 'light' ? 'dark' : 'light';
+      showToast(next === 'light' ? "Switched to Light Version" : "Switched to Dark Version");
+      return next;
+    });
+  };
 
   useEffect(() => {
     localStorage.setItem('zokal_events', JSON.stringify(events));
@@ -240,6 +269,15 @@ export default function App() {
     return events.filter(e => (selectedTown === 'all' || e.town === selectedTown) && e.category === 'activity');
   }, [events, selectedTown]);
 
+  const townCounts = useMemo(() => {
+    const counts = { all: events.length, margate: 0, ramsgate: 0, broadstairs: 0 };
+    events.forEach(e => {
+      const t = (e.town || '').toLowerCase();
+      if (counts[t] !== undefined) counts[t]++;
+    });
+    return counts;
+  }, [events]);
+
   const isFiltering = selectedCategory !== 'all' || selectedTimeFilter !== 'all' || selectedTown !== 'all' || searchQuery.trim() !== '' || showSavedOnly || selectedAmenities.length > 0;
 
   const resetFilters = () => {
@@ -252,7 +290,7 @@ export default function App() {
   };
 
   return (
-    <div className="app-container">
+    <div className="app-container" data-theme={theme}>
       {/* Toast Notification */}
       {toastMessage && (
         <div className="toast-notification">
@@ -276,6 +314,9 @@ export default function App() {
         onToggleViewMode={setViewMode}
         itineraryCount={itineraryIds.length}
         onOpenPlanner={() => setIsPlannerOpen(true)}
+        onOpenBurgerMenu={() => setIsBurgerDrawerOpen(true)}
+        theme={theme}
+        onToggleTheme={toggleTheme}
       />
 
       <main className="main-content">
@@ -293,6 +334,9 @@ export default function App() {
           selectedAmenities={selectedAmenities}
           onToggleAmenity={toggleAmenity}
           onOpenVenue={(vid) => setSelectedVenueId(vid)}
+          onOpenBurgerMenu={() => setIsBurgerDrawerOpen(true)}
+          theme={theme}
+          onToggleTheme={toggleTheme}
         />
 
         {/* 1. Full-Width Split Action Banner (inspired by reference) */}
@@ -316,9 +360,25 @@ export default function App() {
           onOpenVenue={(vid) => setSelectedVenueId(vid)}
         />
 
-        {/* 4. Editorial "About the Scene" section with Framed Atmospheric Bar photo */}
-        <div id="about-scene-section">
-          <AboutSection onOpenVenue={(vid) => setSelectedVenueId(vid)} />
+        {/* 4. Interactive In-Page Directory Filter Hub */}
+        <div id="quick-filter-bar-anchor" className="quick-filter-bar-wrapper">
+          <DirectoryQuickFilterBar 
+            selectedTown={selectedTown}
+            onSelectTown={setSelectedTown}
+            selectedCategory={selectedCategory}
+            onSelectCategory={setSelectedCategory}
+            selectedTimeFilter={selectedTimeFilter}
+            onSelectTimeFilter={setSelectedTimeFilter}
+            selectedAmenities={selectedAmenities}
+            onToggleAmenity={toggleAmenity}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            viewMode={viewMode}
+            onToggleViewMode={setViewMode}
+            totalEventsCount={events.length}
+            filteredCount={filteredEvents.length}
+            townCounts={townCounts}
+          />
         </div>
 
         {/* Active Filter Indicators */}
@@ -397,7 +457,19 @@ export default function App() {
             />
           </section>
         ) : (
-          <>
+          <div id="upcoming-events-showcase" className="upcoming-events-showcase">
+            {/* Events Showcase Header */}
+            <div className="events-showcase-header reveal-on-scroll">
+              <div className="showcase-header-left">
+                <span className="events-badge-pill">UPCOMING GIGS & HAPPENINGS</span>
+                <h2 className="events-showcase-title">WHAT'S ON IN THANET</h2>
+              </div>
+              <div className="events-quick-stats">
+                <span className="events-stat-pill"><strong>{events.length}</strong> Live Listings</span>
+                <span className="events-stat-pill highlight">Margate • Ramsgate • Broadstairs</span>
+              </div>
+            </div>
+
             {/* When NOT heavily filtered, show the signature Carousels with individual color themes */}
             {!searchQuery && selectedCategory === 'all' && selectedAmenities.length === 0 && !showSavedOnly && (
               <div id="carousels-section">
@@ -522,8 +594,13 @@ export default function App() {
                 </div>
               )}
             </section>
-          </>
+          </div>
         )}
+
+        {/* Editorial "About the Scene" section with Framed Atmospheric Bar photo */}
+        <div id="about-scene-section">
+          <AboutSection onOpenVenue={(vid) => setSelectedVenueId(vid)} />
+        </div>
 
       </main>
 
@@ -604,7 +681,7 @@ export default function App() {
             <span>•</span>
             <a href="#contact">Support</a>
           </div>
-          <p className="copyright-text">© {new Date().getFullYear()} ZOKAL — Thanet Social & Nightlife Directory. Crafted with passion for coastal culture.</p>
+          <p className="copyright-text">© {CURRENT_YEAR} ZOKAL — Thanet Social & Nightlife Directory. Crafted with passion for coastal culture.</p>
         </div>
       </footer>
 
@@ -648,6 +725,47 @@ export default function App() {
         isOpen={isScrapersOpen}
         onClose={() => setIsScrapersOpen(false)}
         onSyncComplete={handleSyncComplete}
+      />
+
+      {/* Slide-over Burger Navigation & Filter Drawer */}
+      <BurgerMenuDrawer 
+        isOpen={isBurgerDrawerOpen}
+        onClose={() => setIsBurgerDrawerOpen(false)}
+        selectedTown={selectedTown}
+        onSelectTown={setSelectedTown}
+        selectedCategory={selectedCategory}
+        onSelectCategory={setSelectedCategory}
+        selectedTimeFilter={selectedTimeFilter}
+        onSelectTimeFilter={setSelectedTimeFilter}
+        selectedAmenities={selectedAmenities}
+        onToggleAmenity={toggleAmenity}
+        onOpenVenue={(vid) => setSelectedVenueId(vid)}
+        viewMode={viewMode}
+        onToggleViewMode={setViewMode}
+        itineraryCount={itineraryIds.length}
+        onOpenPlanner={() => setIsPlannerOpen(true)}
+        savedCount={savedEventIds.length}
+        showSavedOnly={showSavedOnly}
+        onOpenSaved={() => setShowSavedOnly(!showSavedOnly)}
+        onOpenSubmit={() => setIsSubmitOpen(true)}
+        onOpenScrapers={() => setIsScrapersOpen(true)}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        onResetFilters={resetFilters}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+      />
+
+      {/* Floating Action Dock: Back to Top & Quick Plan/Saved Launcher */}
+      <BackToTopDock 
+        itineraryCount={itineraryIds.length}
+        onOpenPlanner={() => setIsPlannerOpen(true)}
+        savedCount={savedEventIds.length}
+        onOpenSaved={() => {
+          setShowSavedOnly(true);
+          const el = document.querySelector('.directory-grid-section') || document.getElementById('upcoming-events-showcase');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }}
       />
     </div>
   );

@@ -53,6 +53,7 @@ export default function CarouselSection({
             {Icon && <Icon className={`section-icon icon-${theme}`} size={22} />}
             <h2 className="section-title">{title}</h2>
             {badgeText && <span className={`section-badge badge-${theme}`}>{badgeText}</span>}
+            <span className="carousel-count-pill">{events.length} listings</span>
           </div>
           {subtitle && <p className="section-subtitle">{subtitle}</p>}
         </div>
@@ -63,6 +64,7 @@ export default function CarouselSection({
             onClick={() => scroll('left')}
             disabled={!canScrollLeft}
             aria-label="Scroll left"
+            title="Previous events"
           >
             <ChevronLeft size={20} />
           </button>
@@ -71,6 +73,7 @@ export default function CarouselSection({
             onClick={() => scroll('right')}
             disabled={!canScrollRight}
             aria-label="Scroll right"
+            title="Next events"
           >
             <ChevronRight size={20} />
           </button>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Utensils, GlassWater, Sparkles, Music2 } from 'lucide-react';
+import { ArrowRight, Utensils, GlassWater, Music2 } from 'lucide-react';
 
 export default function AtmospherePillarsSection({ onFilterPillar, onOpenVenue }) {
   const handlePillarClick = (categoryKey, venueId) => {
