@@ -480,6 +480,15 @@ export default function BurgerMenuDrawer({
                 <span>Become a Member (Free Pass)</span>
               </button>
 
+              <a 
+                href="/preview.html"
+                className="drawer-tool-btn"
+                style={{ borderColor: 'rgba(255, 214, 0, 0.4)', color: '#ffd600' }}
+              >
+                <Sparkles size={16} />
+                <span>⚡ Graphic Vibe Preview (New)</span>
+              </a>
+
               <button 
                 className={`drawer-tool-btn ${viewMode === 'about' ? 'active-tool' : ''}`}
                 onClick={() => {

@@ -20,7 +20,9 @@ export default defineConfig({
         main: resolve(import.meta.dirname, 'index.html'),
         about: resolve(import.meta.dirname, 'about.html'),
         admin: resolve(import.meta.dirname, 'admin.html'),
-        arconf: resolve(import.meta.dirname, 'arconf.html')
+        arconf: resolve(import.meta.dirname, 'arconf.html'),
+        preview: resolve(import.meta.dirname, 'preview.html'),
+        vibe: resolve(import.meta.dirname, 'vibe.html')
       }
     }
   }

@@ -858,6 +858,8 @@ export default function App() {
               About Us & Manifesto
             </button>
             <span>•</span>
+            <a href="/preview.html" style={{ color: '#ffd600', fontWeight: '800' }}>⚡ Vibe Preview (New)</a>
+            <span>•</span>
             <a href="#terms">Terms of Use</a>
             <span>•</span>
             <a href="#privacy">Privacy Policy</a>
