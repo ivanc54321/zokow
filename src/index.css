@@ -68,7 +68,7 @@
   /* Gradients */
   --gradient-brand: linear-gradient(135deg, #ff5e14 0%, #ff8c38 60%, #fbbf24 100%);
   --gradient-split-action: linear-gradient(90deg, #ff5e14 0%, #f05a22 50%, #e04810 100%);
-  --gradient-card-overlay: linear-gradient(to top, rgba(8, 9, 12, 0.98) 0%, rgba(8, 9, 12, 0.5) 55%, transparent 100%);
+  --gradient-card-overlay: linear-gradient(to top, rgba(8, 9, 12, 0.7) 0%, rgba(8, 9, 12, 0.1) 20%, transparent 35%);
   --gradient-hero-ambient: radial-gradient(circle at 50% 25%, rgba(255, 94, 20, 0.22) 0%, rgba(217, 70, 239, 0.12) 40%, rgba(8, 9, 12, 0.95) 75%);
   --gradient-glow-food: radial-gradient(circle at center, rgba(245, 158, 11, 0.2) 0%, transparent 70%);
   --gradient-glow-drink: radial-gradient(circle at center, rgba(217, 70, 239, 0.2) 0%, transparent 70%);
@@ -127,7 +127,7 @@ body.theme-light {
   --text-dark: #0f172a;
 
   /* Gradients */
-  --gradient-card-overlay: linear-gradient(to top, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.6) 55%, transparent 100%);
+  --gradient-card-overlay: linear-gradient(to top, rgba(15, 23, 42, 0.2) 0%, transparent 18%);
   --gradient-hero-ambient: radial-gradient(circle at 50% 25%, rgba(255, 94, 20, 0.12) 0%, rgba(217, 70, 239, 0.06) 40%, rgba(240, 243, 248, 0.95) 75%);
 
   /* Light Elevation Shadows */
@@ -220,24 +220,74 @@ a {
   transform: translateY(0);
 }
 
+.reveal-fade-left {
+  opacity: 0;
+  transform: translateX(-36px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-fade-left.is-revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-fade-right {
+  opacity: 0;
+  transform: translateX(36px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-fade-right.is-revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 .reveal-scale {
   opacity: 0;
-  transform: scale(0.94);
+  transform: scale(0.92) translateY(18px);
   transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
 
 .reveal-scale.is-revealed {
   opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.reveal-pop {
+  opacity: 0;
+  transform: scale(0.86);
+  transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-pop.is-revealed {
+  opacity: 1;
   transform: scale(1);
 }
 
+.delay-50  { transition-delay: 50ms; }
 .delay-100 { transition-delay: 100ms; }
 .delay-150 { transition-delay: 150ms; }
 .delay-200 { transition-delay: 200ms; }
 .delay-250 { transition-delay: 250ms; }
 .delay-300 { transition-delay: 300ms; }
 .delay-400 { transition-delay: 400ms; }
+.delay-500 { transition-delay: 500ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll,
+  .reveal-fade-left,
+  .reveal-fade-right,
+  .reveal-scale,
+  .reveal-pop {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
 
 /* Subtle Ambient Glow keyframes */
 @keyframes ambientPulse {

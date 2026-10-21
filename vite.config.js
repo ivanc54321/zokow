@@ -1,3 +1,4 @@
+import { resolve } from 'path'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
@@ -10,6 +11,14 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:3001',
         changeOrigin: true
+      }
+    }
+  },
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(import.meta.dirname, 'index.html'),
+        about: resolve(import.meta.dirname, 'about.html')
       }
     }
   }

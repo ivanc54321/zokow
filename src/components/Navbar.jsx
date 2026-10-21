@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Search, 
-  MapPin, 
   Heart, 
   PlusCircle, 
   RefreshCw, 
   Calendar, 
   Map, 
   Menu, 
-  X,
-  Sun,
-  Moon
+  X, 
+  Sun, 
+  Moon 
 } from 'lucide-react';
-import { TOWNS } from '../data/eventsData';
 
 export default function Navbar({ 
   selectedTown, 
@@ -54,69 +52,62 @@ export default function Navbar({
     <div className={`navbar-floating-wrapper ${scrolled ? 'scrolled-active' : ''}`}>
       <header className={`navbar-floating-capsule ${scrolled ? 'is-scrolled' : ''}`}>
         
-        {/* Left: Brand Logo & Live Pulse */}
-        <div className="nav-brand-section" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <div className="brand-logo-capsule">
-            <span className="brand-title">ZOKAL</span>
-            <span className="brand-dot"></span>
-          </div>
-          <div className="nav-live-pill" title="Live Thanet Feed">
-            <span className="live-pulse-dot"></span>
-            <span className="live-pulse-text">LIVE</span>
-          </div>
-        </div>
-
-        {/* Center: Clean Spaced Navigation Links (like the reference picture) */}
-        <nav className="nav-center-menu" aria-label="Main Navigation">
+        {/* Left: Navigation Menu Links */}
+        <nav className="nav-left-section" aria-label="Main Navigation">
           <button 
-            className="nav-center-link" 
-            onClick={() => scrollToSection('atmosphere-section')}
+            className="nav-left-link" 
+            onClick={() => {
+              if (viewMode === 'about') onToggleViewMode('directory');
+              setTimeout(() => scrollToSection('atmosphere-section'), 50);
+            }}
           >
             Vibes
           </button>
           <button 
-            className="nav-center-link" 
-            onClick={() => scrollToSection('carousels-section')}
+            className="nav-left-link" 
+            onClick={() => {
+              if (viewMode === 'about') onToggleViewMode('directory');
+              setTimeout(() => scrollToSection('carousels-section'), 50);
+            }}
           >
             Happenings
           </button>
           <button 
-            className="nav-center-link" 
-            onClick={() => scrollToSection('about-scene-section')}
+            className={`nav-left-link ${viewMode === 'about' ? 'is-active-tab' : ''}`} 
+            onClick={() => onToggleViewMode && onToggleViewMode('about')}
           >
             About
           </button>
           <button 
-            className={`nav-center-link ${viewMode === 'map' ? 'is-active-tab' : ''}`}
+            className={`nav-left-link ${viewMode === 'map' ? 'is-active-tab' : ''}`}
             onClick={() => {
+              if (viewMode === 'about') onToggleViewMode('directory');
               if (viewMode !== 'map') onToggleViewMode('map');
               setTimeout(() => scrollToSection('map-section-anchor'), 100);
             }}
           >
             <Map size={13} className="nav-inline-icon" />
-            Coast Map
+            <span>Coast Map</span>
           </button>
         </nav>
 
+        {/* Center: Brand Logo (Centered) */}
+        <div 
+          className="nav-brand-section" 
+          onClick={() => {
+            if (viewMode === 'about' && onToggleViewMode) onToggleViewMode('directory');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          title="VERGE — Local Social Guide"
+        >
+          <div className="brand-logo-capsule">
+            <span className="brand-title">VERGE</span>
+            <span className="brand-dot"></span>
+          </div>
+        </div>
+
         {/* Right: Actions, Utilities & Signature Pill CTA Button (like "Launch App") */}
         <div className="nav-right-actions">
-          
-          {/* Town Quick Selector Glass Pill */}
-          <div className="nav-town-pill">
-            <MapPin size={13} className="town-pill-icon" />
-            <select 
-              value={selectedTown} 
-              onChange={(e) => onSelectTown(e.target.value)}
-              className="town-pill-select"
-              aria-label="Select town"
-            >
-              {TOWNS.map(town => (
-                <option key={town.id} value={town.id}>
-                  {town.label}
-                </option>
-              ))}
-            </select>
-          </div>
 
           {/* Search Trigger / Input Pill */}
           <div className={`nav-search-capsule ${searchOpen || searchQuery ? 'expanded' : ''}`}>
@@ -202,7 +193,7 @@ export default function Navbar({
           <button 
             className="nav-cta-pill-btn"
             onClick={onOpenSubmit}
-            title="Post a local Thanet event"
+            title="Post a local event"
           >
             <PlusCircle size={15} />
             <span>Post Event</span>

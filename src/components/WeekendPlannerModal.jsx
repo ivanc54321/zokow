@@ -52,7 +52,7 @@ export default function WeekendPlannerModal({
     let icsContent = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
-      'PRODID:-//Zokal//Thanet Weekend Planner//EN'
+      'PRODID:-//Verge//Thanet Weekend Planner//EN'
     ];
 
     plannedEvents.forEach(evt => {
@@ -82,7 +82,7 @@ export default function WeekendPlannerModal({
 
   const handleShareItinerary = () => {
     const textLines = [
-      '🌊 My Thanet Weekend Plan (via Zokal):',
+      '🌊 My Thanet Weekend Plan (via Verge):',
       ''
     ];
 
@@ -91,7 +91,7 @@ export default function WeekendPlannerModal({
     });
 
     textLines.push('');
-    textLines.push('Plan yours on Zokal: http://localhost:5173/');
+    textLines.push('Plan yours on Verge: http://localhost:5173/');
 
     navigator.clipboard.writeText(textLines.join('\n'));
     setCopied(true);

@@ -23,7 +23,8 @@ import {
   ExternalLink,
   ChevronRight,
   RotateCcw,
-  Moon
+  Moon,
+  Award
 } from 'lucide-react';
 import { CATEGORIES, TOWNS, TIME_FILTERS, AMENITY_FILTERS, VENUES } from '../data/eventsData';
 import './BurgerMenuDrawer.css';
@@ -78,6 +79,7 @@ export default function BurgerMenuDrawer({
   showSavedOnly,
   onOpenSaved,
   onOpenSubmit,
+  onOpenSignUp,
   onOpenScrapers,
   searchQuery,
   onSearchChange,
@@ -152,7 +154,7 @@ export default function BurgerMenuDrawer({
         {/* Drawer Header */}
         <div className="drawer-header">
           <div className="drawer-header-brand">
-            <span className="drawer-logo-text">ZOKAL</span>
+            <span className="drawer-logo-text">VERGE</span>
             <span className="drawer-logo-tag">EXPLORE & DIRECTORY</span>
           </div>
           <div className="drawer-header-controls">
@@ -464,6 +466,29 @@ export default function BurgerMenuDrawer({
               >
                 <PlusCircle size={16} />
                 <span>Submit Local Event</span>
+              </button>
+
+              <button 
+                className="drawer-tool-btn drawer-tool-member-btn"
+                onClick={() => {
+                  onClose();
+                  if (onOpenSignUp) onOpenSignUp();
+                }}
+                style={{ borderColor: 'rgba(255, 94, 20, 0.35)', color: '#ff5e14' }}
+              >
+                <Award size={16} />
+                <span>Become a Member (Free Pass)</span>
+              </button>
+
+              <button 
+                className={`drawer-tool-btn ${viewMode === 'about' ? 'active-tool' : ''}`}
+                onClick={() => {
+                  onClose();
+                  if (onToggleViewMode) onToggleViewMode('about');
+                }}
+              >
+                <Sparkles size={16} />
+                <span>About Us & Manifesto</span>
               </button>
 
               <button 

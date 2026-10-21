@@ -27,7 +27,40 @@
       "Coast"
     ],
     "featured": false,
-    "trending": true
+    "trending": true,
+    "archived": true
+  },
+  {
+    "id": "meetup-crawl-3",
+    "title": "The Judgement-Free Tattoo Learning & Practice Community",
+    "category": "meetup",
+    "categoryLabel": "Meetup & Networking",
+    "town": "Margate",
+    "venue": "Marine Studios & Creative Quarter, Margate",
+    "date": "2026-10-18",
+    "dateDisplay": "Sunday, Oct 18",
+    "time": "14:00 - 17:00",
+    "timeframe": "weekend",
+    "price": "Free (RSVP)",
+    "isFree": true,
+    "organizer": "The Judgement-Free Tattoo Learning Community",
+    "source": "meetup",
+    "sourceName": "Meetup.com",
+    "sourceUrl": "https://www.meetup.com/thanet-tattoo-practice/",
+    "image": "https://secure.meetupstatic.com/photos/event/9/d/f/7/600_534760439.jpeg",
+    "description": "Welcome to a dedicated, judgement-free space for apprentice and learner tattooists across Thanet! Practice on fake skin, hone your linework in sketchbooks, share advice on hygiene, machine tuning, and technique without industry gatekeeping. Bring your gear, flash sheets, and current projects to connect with 31+ fellow local artists.",
+    "attendees": 31,
+    "spotsLeft": 9,
+    "tags": [
+      "Tattoo",
+      "Creative",
+      "Apprentice",
+      "Linework",
+      "Margate"
+    ],
+    "featured": true,
+    "trending": true,
+    "archived": true
   },
   {
     "id": "meetup-crawl-2",
@@ -57,7 +90,8 @@
       "Ramsgate"
     ],
     "featured": false,
-    "trending": false
+    "trending": false,
+    "archived": true
   },
   {
     "id": "meetup-crawl-1",
@@ -87,7 +121,8 @@
       "Margate"
     ],
     "featured": false,
-    "trending": true
+    "trending": true,
+    "archived": true
   },
   {
     "id": "evt-sports-3",
@@ -118,7 +153,8 @@
       "Fitness"
     ],
     "featured": true,
-    "trending": false
+    "trending": false,
+    "archived": true
   },
   {
     "id": "evt-hartsdown-2",
@@ -149,7 +185,8 @@
       "Margate"
     ],
     "featured": false,
-    "trending": true
+    "trending": true,
+    "archived": true
   },
   {
     "id": "evt-hartsdown-1",
@@ -180,7 +217,8 @@
       "Fitness"
     ],
     "featured": true,
-    "trending": true
+    "trending": true,
+    "archived": true
   },
   {
     "id": "evt-dreamland-bbc90s",
@@ -459,6 +497,7 @@
       "PosterScraped"
     ],
     "featured": true,
-    "trending": true
+    "trending": true,
+    "archived": true
   }
 ]

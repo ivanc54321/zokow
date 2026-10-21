@@ -11,6 +11,470 @@
   },
   "events": [
     {
+      "id": "evt-shed-1",
+      "title": "Ramsgate Town Shed: Adult Woodwork, DIY & Practical Skills Community Workshop",
+      "category": "volunteer",
+      "categoryLabel": "Volunteering & Community",
+      "town": "Ramsgate",
+      "venue": "Ramsgate Town Shed, 12 School Lane",
+      "date": "2026-10-21",
+      "dateDisplay": "Wednesday, Oct 21",
+      "time": "10:00 - 13:00",
+      "timeframe": "upcoming",
+      "price": "Free (Drop-in)",
+      "isFree": true,
+      "organizer": "Ramsgate Town Shed",
+      "source": "community",
+      "sourceName": "Visit Ramsgate",
+      "sourceUrl": "https://www.visitramsgate.co.uk/ramsgate-town-shed/",
+      "image": "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80",
+      "description": "Free, welcoming adult woodwork and DIY community workshop. Work on your own personal projects or shared town community builds, learn practical carpentry skills from peers, and naturally chat and connect while working with your hands. Monday & Wednesday daytime sessions.",
+      "attendees": 19,
+      "spotsLeft": 6,
+      "tags": [
+        "Woodwork",
+        "Community",
+        "DIY",
+        "PracticalSkills",
+        "Ramsgate",
+        "MentalHealth"
+      ],
+      "featured": true,
+      "trending": true,
+      "coords": [
+        51.3368,
+        1.4162
+      ]
+    },
+    {
+      "id": "evt-rusty-rackets",
+      "title": "Rusty Rackets: Adult Beginner & Returner Tennis (4 Weeks Free Tuition)",
+      "category": "activity",
+      "categoryLabel": "Sports & Fitness",
+      "town": "Margate",
+      "venue": "Margate Lawn Tennis Club & Broadstairs LTC",
+      "date": "2026-10-24",
+      "dateDisplay": "Saturday, Oct 24",
+      "time": "10:30 - 12:00",
+      "timeframe": "weekend",
+      "price": "Free (4 Weeks Free Tuition)",
+      "isFree": true,
+      "organizer": "Infinity Tennis",
+      "source": "infinitytennis",
+      "sourceName": "Infinity Tennis",
+      "sourceUrl": "https://www.infinity-tennis.co.uk/rusty-rackets",
+      "image": "https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?auto=format&fit=crop&w=1200&q=80",
+      "description": "Designed specifically for adult beginners and ex-players looking to dust off the cobwebs. Enjoy 4 weeks of completely free LTA-qualified tuition. A fantastic 'get fitter and see the same friendly faces weekly' community group across Margate and Broadstairs.",
+      "attendees": 24,
+      "spotsLeft": 4,
+      "tags": [
+        "Tennis",
+        "Beginners",
+        "FreeTuition",
+        "Fitness",
+        "Margate",
+        "Broadstairs"
+      ],
+      "featured": true,
+      "trending": true,
+      "coords": [
+        51.3810,
+        1.3780
+      ]
+    },
+    {
+      "id": "evt-indoor-bowls",
+      "title": "Thanet Indoor Bowls: Social Roll-Up & Welcoming Visitors Taster",
+      "category": "activity",
+      "categoryLabel": "Sports & Fitness",
+      "town": "Margate",
+      "venue": "Thanet Indoor Bowls Centre, Fifth Avenue, Cliftonville",
+      "date": "2026-10-22",
+      "dateDisplay": "Thursday, Oct 22",
+      "time": "14:00 - 16:30",
+      "timeframe": "upcoming",
+      "price": "Free Taster / £3 Visitors",
+      "isFree": true,
+      "organizer": "Thanet Indoor Bowls Club",
+      "source": "thanetibc",
+      "sourceName": "Thanet IBC",
+      "sourceUrl": "https://thanetibc.com/",
+      "image": "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1200&q=80",
+      "description": "Not flashy, but a genuinely social, accessible sport with an open, friendly visitors' setup. Low fitness barrier, easy natural conversation, and great camaraderie on the carpet rinks. Free bowls hire and coaching on hand for first-timers.",
+      "attendees": 32,
+      "spotsLeft": 8,
+      "tags": [
+        "Bowls",
+        "IndoorSport",
+        "Social",
+        "Cliftonville",
+        "GentleExercise",
+        "Margate"
+      ],
+      "featured": false,
+      "trending": true,
+      "coords": [
+        51.3888,
+        1.4085
+      ]
+    },
+    {
+      "id": "evt-tcdt-clubs",
+      "title": "TCDT Community Workshops: Cookery, Craft & Thanet History Clubs",
+      "category": "meetup",
+      "categoryLabel": "Meetup & Networking",
+      "town": "Ramsgate",
+      "venue": "Hereson Family & Community Centre, Lillian Road, Ramsgate",
+      "date": "2026-10-20",
+      "dateDisplay": "Tuesday, Oct 20",
+      "time": "11:00 - 13:30",
+      "timeframe": "upcoming",
+      "price": "Free / Community Donation",
+      "isFree": true,
+      "organizer": "Thanet Community Development Trust",
+      "source": "tcdt",
+      "sourceName": "TCDT",
+      "sourceUrl": "https://www.tcdt.org.uk/what-we-do/courses-clubs/",
+      "image": "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=1200&q=80",
+      "description": "Engaging weekly cookery, craft, and local coastal history clubs run by the Thanet Community Development Trust. Better for genuine human connection than one-off nightlife because you share an active, focused project to talk about together.",
+      "attendees": 18,
+      "spotsLeft": 5,
+      "tags": [
+        "Craft",
+        "Cooking",
+        "History",
+        "Community",
+        "Ramsgate",
+        "Learning"
+      ],
+      "featured": false,
+      "trending": false,
+      "coords": [
+        51.3412,
+        1.4180
+      ]
+    },
+    {
+      "id": "evt-sunken-garden",
+      "title": "The Sunken Garden: Volunteer Coastal Gardening & Green Care Day",
+      "category": "volunteer",
+      "categoryLabel": "Volunteering & Community",
+      "town": "Margate",
+      "venue": "The Sunken Garden, Royal Esplanade, Westbrook",
+      "date": "2026-10-25",
+      "dateDisplay": "Sunday, Oct 25",
+      "time": "10:00 - 12:30",
+      "timeframe": "weekend",
+      "price": "Free",
+      "isFree": true,
+      "organizer": "The Sunken Garden Society",
+      "source": "sunkengarden",
+      "sourceName": "The Sunken Garden",
+      "sourceUrl": "https://thesunkengarden.co.uk/",
+      "image": "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80",
+      "description": "Volunteer community gardening on the clifftops of Westbrook. Physical, purposeful, outdoor activity surrounded by sea air with a relaxed, welcoming crowd. Gloves, trowels, pruning gear, and tea & biscuits provided. Calm and grounding.",
+      "attendees": 22,
+      "spotsLeft": null,
+      "tags": [
+        "Gardening",
+        "Volunteering",
+        "Nature",
+        "Westbrook",
+        "Margate",
+        "Outdoors"
+      ],
+      "featured": true,
+      "trending": true,
+      "coords": [
+        51.3850,
+        1.3650
+      ]
+    },
+    {
+      "id": "evt-board-at-home",
+      "title": "Board at Home: Structured Tabletop & Board Game Social Club",
+      "category": "meetup",
+      "categoryLabel": "Meetup & Networking",
+      "town": "Ramsgate",
+      "venue": "Board at Home, 107A High Street, Ramsgate",
+      "date": "2026-10-21",
+      "dateDisplay": "Wednesday, Oct 21",
+      "time": "18:30 - 21:30",
+      "timeframe": "upcoming",
+      "price": "£3 Table Fee",
+      "isFree": false,
+      "organizer": "Board at Home Gaming",
+      "source": "meetup",
+      "sourceName": "Meetup / Board at Home",
+      "sourceUrl": "https://www.meetup.com/board-at-home-board-games-club/",
+      "image": "https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=1200&q=80",
+      "description": "Specifically designed for people to come solo as well as with friends! Over 300 modern board games, friendly game hosts who teach all the rules, and a relaxed, structured social setting with none of the awkward small talk.",
+      "attendees": 26,
+      "spotsLeft": 7,
+      "tags": [
+        "BoardGames",
+        "Social",
+        "SoloFriendly",
+        "Ramsgate",
+        "GamesNight"
+      ],
+      "featured": true,
+      "trending": true,
+      "coords": [
+        51.3385,
+        1.4175
+      ]
+    },
+    {
+      "id": "evt-active-thanet",
+      "title": "Active Thanet: Inclusive Community Sports & Taster Sessions",
+      "category": "activity",
+      "categoryLabel": "Sports & Fitness",
+      "town": "Margate",
+      "venue": "Thanet Parks & Community Centres (Margate, Ramsgate & Broadstairs)",
+      "date": "2026-10-24",
+      "dateDisplay": "Saturday, Oct 24",
+      "time": "10:00 - 12:00",
+      "timeframe": "weekend",
+      "price": "Free",
+      "isFree": true,
+      "organizer": "Active Thanet & Thanet District Council",
+      "source": "thanetgov",
+      "sourceName": "Thanet District Council",
+      "sourceUrl": "https://www.thanet.gov.uk/info-pages/active-thanet/",
+      "image": "https://images.unsplash.com/photo-1517649763962-0c623266ddc0?auto=format&fit=crop&w=1200&q=80",
+      "description": "A brilliant route into inclusive sports you would not normally think to search for! Active Thanet coordinates free taster sessions across the district, including street sports, multi-sports, walking football, and disability-accessible activities.",
+      "attendees": 38,
+      "spotsLeft": 12,
+      "tags": [
+        "ActiveThanet",
+        "Inclusive",
+        "TasterSessions",
+        "MultiSport",
+        "CommunityFitness"
+      ],
+      "featured": false,
+      "trending": true,
+      "coords": [
+        51.3780,
+        1.3710
+      ]
+    },
+    {
+      "id": "evt-simply-connect",
+      "title": "Simply Connect Thanet: Social Prescribing & Community Volunteering Hub",
+      "category": "volunteer",
+      "categoryLabel": "Volunteering & Community",
+      "town": "Margate",
+      "venue": "Thanet Community Hub & Digital Directory, Isle of Thanet",
+      "date": "2026-10-23",
+      "dateDisplay": "Friday, Oct 23",
+      "time": "10:00 - 15:00",
+      "timeframe": "upcoming",
+      "price": "Free",
+      "isFree": true,
+      "organizer": "Simply Connect Thanet",
+      "source": "simplyconnect",
+      "sourceName": "Simply Connect",
+      "sourceUrl": "https://thanet.simplyconnect.uk/",
+      "image": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=1200&q=80",
+      "description": "The quickest way to find volunteering, gardening projects, craft circles, peer support groups, and community projects across Margate, Ramsgate, and Broadstairs. Accredited local social prescribing gateway connecting you to grassroots activities.",
+      "attendees": 55,
+      "spotsLeft": null,
+      "tags": [
+        "Volunteering",
+        "SocialPrescribing",
+        "Directory",
+        "ThanetCommunity",
+        "Wellbeing"
+      ],
+      "featured": true,
+      "trending": true,
+      "coords": [
+        51.3680,
+        1.4100
+      ]
+    },
+    {
+      "id": "evt-beyond30-lido",
+      "title": "80s & 90s Over 30s Daytime Clubbing - Margate (Beyond 30 Day Party)",
+      "category": "event",
+      "categoryLabel": "Club Nights & DJs",
+      "town": "Margate",
+      "venue": "The Drill Shed, Margate Lido Complex",
+      "date": "2026-12-05",
+      "dateDisplay": "Saturday, Dec 5",
+      "time": "16:00 - 21:00 (Last entry 18:30)",
+      "timeframe": "upcoming",
+      "price": "£11 - £13.75",
+      "isFree": false,
+      "organizer": "Beyond 30 Events",
+      "source": "fatsoma",
+      "sourceName": "Fatsoma / Beyond 30",
+      "sourceUrl": "https://www.fatsoma.com/e/gpwjtzxz/80s-90s-over-30s-daytime-clubbing-margate",
+      "image": "/events/beyond30-margate.jpg",
+      "description": "The UK's smash-hit over-30s daytime clubbing sensation lands in Margate! Party hard to non-stop 80s & 90s retro bangers and club classics at The Drill Shed inside the historic Margate Lido Complex. 4:00 PM to 9:00 PM means all the euphoria of a massive night out with NO late nights and NO hangxiety! Age 25+.",
+      "attendees": 185,
+      "spotsLeft": 24,
+      "tags": [
+        "Over30s",
+        "80s",
+        "90s",
+        "DayParty",
+        "MargateLido",
+        "DrillShed",
+        "Clubbing"
+      ],
+      "featured": true,
+      "trending": true,
+      "coords": [
+        51.3920,
+        1.3985
+      ]
+    },
+    {
+      "id": "evt-fis-heidi",
+      "title": "Heidi (Jackathon) Live: House Music That Never Forgets to Be Fun",
+      "category": "event",
+      "categoryLabel": "Club Nights & DJs",
+      "town": "Margate",
+      "venue": "Faith In Strangers, 17 Ethelbert Crescent, Cliftonville",
+      "date": "2026-11-28",
+      "dateDisplay": "Saturday, Nov 28",
+      "time": "21:00 - 02:00",
+      "timeframe": "upcoming",
+      "price": "£16.50",
+      "isFree": false,
+      "organizer": "Faith In Strangers",
+      "source": "faithinstrangers",
+      "sourceName": "Faith In Strangers",
+      "sourceUrl": "https://faithinstrangers.co.uk",
+      "image": "/events/faith-in-strangers-heidi.jpg",
+      "description": "House music that never forgets to be fun. World-renowned DJ and Jackathon creator Heidi headlines the cliffside discotheque loft at Faith In Strangers. Experience high-octane house grooves powered by the custom-built Poseidon Sound System overlooking panoramic North Sea waves.",
+      "attendees": 140,
+      "spotsLeft": 18,
+      "tags": [
+        "HouseMusic",
+        "Heidi",
+        "FaithInStrangers",
+        "Cliftonville",
+        "Margate",
+        "Nightlife"
+      ],
+      "featured": true,
+      "trending": true,
+      "coords": [
+        51.3916,
+        1.3963
+      ]
+    },
+    {
+      "id": "evt-rewd-padel-intro",
+      "title": "REWD Intro to Padel: Beginner Masterclass & Social Play",
+      "category": "activity",
+      "categoryLabel": "Sports & Fitness",
+      "town": "Margate",
+      "venue": "REWD Padel & Wellness Lounge, Cargo Way",
+      "date": "2026-10-24",
+      "dateDisplay": "Saturday, Oct 24",
+      "time": "10:00 - 11:30",
+      "timeframe": "weekend",
+      "price": "£10",
+      "isFree": false,
+      "organizer": "REWD Padel Thanet",
+      "source": "nettla",
+      "sourceName": "Nettla / REWD Padel",
+      "sourceUrl": "https://rewdpadel.co.uk",
+      "image": "/events/rewd-padel-lounge.jpg",
+      "description": "Designed for complete beginners, these sessions are the perfect way to learn padel basics, racket techniques, and build court confidence. Step onto our brand new panoramic indoor courts in a fun, relaxed, and welcoming environment. No membership required to enjoy the club! Bring your leaflet for a FREE coffee at the REWD Lounge.",
+      "attendees": 16,
+      "spotsLeft": 4,
+      "tags": [
+        "Padel",
+        "Beginners",
+        "REWD",
+        "Social",
+        "FreeCoffeeVoucher",
+        "Thanet"
+      ],
+      "featured": true,
+      "trending": true,
+      "coords": [
+        51.3565,
+        1.4050
+      ]
+    },
+    {
+      "id": "evt-rewd-pilates-intro",
+      "title": "REWD Intro to Pilates: Core Strength & Mobility Reset",
+      "category": "activity",
+      "categoryLabel": "Sports & Fitness",
+      "town": "Margate",
+      "venue": "REWD Pilates Studio, Cargo Way",
+      "date": "2026-10-22",
+      "dateDisplay": "Thursday, Oct 22",
+      "time": "18:00 - 19:00",
+      "timeframe": "upcoming",
+      "price": "£10",
+      "isFree": false,
+      "organizer": "REWD Pilates",
+      "source": "nettla",
+      "sourceName": "Nettla / REWD",
+      "sourceUrl": "https://rewdpadel.co.uk",
+      "image": "/events/rewd-classes-leaflet.jpg",
+      "description": "Build strength, improve mobility, and reset your body with REWD Pilates classes. Designed for all fitness levels with a specialized focus on core strength, spinal posture, flexibility, and post-workout recovery. Bookable via Nettla.",
+      "attendees": 12,
+      "spotsLeft": 3,
+      "tags": [
+        "Pilates",
+        "Core",
+        "Mobility",
+        "REWD",
+        "Wellness"
+      ],
+      "featured": false,
+      "trending": true,
+      "coords": [
+        51.3565,
+        1.4050
+      ]
+    },
+    {
+      "id": "evt-rewd-spin",
+      "title": "REWD Spin: High-Energy Coastal Ride & Full-Body Workout",
+      "category": "activity",
+      "categoryLabel": "Sports & Fitness",
+      "town": "Margate",
+      "venue": "REWD Spin Suite, Cargo Way",
+      "date": "2026-10-25",
+      "dateDisplay": "Sunday, Oct 25",
+      "time": "09:30 - 10:20",
+      "timeframe": "weekend",
+      "price": "£10",
+      "isFree": false,
+      "organizer": "REWD Fitness",
+      "source": "nettla",
+      "sourceName": "Nettla / REWD",
+      "sourceUrl": "https://rewdpadel.co.uk",
+      "image": "/events/rewd-classes-leaflet.jpg",
+      "description": "High-energy spin classes designed to build endurance, boost cardio fitness, and leave you feeling energized for the week. Expect great music, motivating coaches, and a full-body workout for all levels. Complimentary recovery coffee at REWD Lounge with promotion leaflet.",
+      "attendees": 18,
+      "spotsLeft": 2,
+      "tags": [
+        "Spin",
+        "Cycling",
+        "Cardio",
+        "REWD",
+        "HighEnergy"
+      ],
+      "featured": false,
+      "trending": false,
+      "coords": [
+        51.3565,
+        1.4050
+      ]
+    },
+    {
       "id": "evt-1",
       "title": "Walpole Bay Sunrise Tidal Swim & Coffee Social",
       "category": "activity",
@@ -1056,8 +1520,44 @@
         1.3789
       ],
       "address": "Marine Terrace, Margate CT9 1XJ",
-      "image": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80",
+      "image": "/margate/dreamland-neon-dusk.jpg",
       "description": "Iconic seaside amusement park and world-class live music venue featuring the Scenic Stage and Hall By The Sea."
+    },
+    {
+      "id": "drillshed",
+      "name": "The Drill Shed (Margate Lido Complex)",
+      "town": "Margate",
+      "coords": [
+        51.3920,
+        1.3985
+      ],
+      "address": "Ethelbert Terrace, Cliftonville, Margate CT9 1RX",
+      "image": "/margate/margate-lido-coast.jpg",
+      "description": "Historic seaside cavern and subterranean events hall nestled into the Margate Lido coastal complex in Cliftonville."
+    },
+    {
+      "id": "faithinstrangers",
+      "name": "Faith In Strangers",
+      "town": "Margate",
+      "coords": [
+        51.3916,
+        1.3963
+      ],
+      "address": "17 Ethelbert Crescent, Cliftonville, Margate CT9 2DY",
+      "image": "/events/faith-in-strangers-heidi.jpg",
+      "description": "Seafront discotheque loft, cultural space, and music venue overlooking the Cliftonville coastline with custom Poseidon Sound System."
+    },
+    {
+      "id": "rewdpadel",
+      "name": "REWD Padel & Wellness Lounge",
+      "town": "Margate",
+      "coords": [
+        51.3565,
+        1.4050
+      ],
+      "address": "Unit 1 Cargo Way, Westwood / Ramsgate-Margate CT12 5NP",
+      "image": "/events/rewd-padel-lounge.jpg",
+      "description": "Thanet's premier purpose-built indoor padel club, reformer Pilates studio, high-energy spin room, and relaxing social café lounge."
     },
     {
       "id": "walpole",
@@ -1068,7 +1568,7 @@
         1.4034
       ],
       "address": "Eastern Esplanade, Cliftonville, Margate CT9 2HE",
-      "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+      "image": "/margate/margate-coast-promenade.jpg",
       "description": "The UK's largest tidal swimming pool, Grade II listed saltwater haven for year-round swimmers and sunrise coffee."
     },
     {
@@ -1080,7 +1580,7 @@
         1.3852
       ],
       "address": "Rendezvous, Margate CT9 1HG",
-      "image": "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&q=80",
+      "image": "/margate/margate-main-sands-turner.jpg",
       "description": "Celebrated modern art gallery on Margate seafront hosting international exhibitions, late nights, and workshops."
     },
     {
@@ -1130,6 +1630,66 @@
       "address": "Hartsdown Road, Margate CT9 5QZ",
       "image": "https://images.unsplash.com/photo-1529900248061-5652ab58872f?auto=format&fit=crop&w=800&q=80",
       "description": "3G all-weather floodlit pitches, grass sports grounds, and community recreation pavilion."
+    },
+    {
+      "id": "ramsgatetownshed",
+      "name": "Ramsgate Town Shed",
+      "town": "Ramsgate",
+      "coords": [
+        51.3368,
+        1.4162
+      ],
+      "address": "12 School Lane, Ramsgate CT11 8QX",
+      "image": "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80",
+      "description": "Volunteer-led adult woodwork and DIY community workshop for practical carpentry and friendly connection."
+    },
+    {
+      "id": "sunkengarden",
+      "name": "The Sunken Garden",
+      "town": "Margate",
+      "coords": [
+        51.3850,
+        1.3650
+      ],
+      "address": "Royal Esplanade, Westbrook, Margate CT9 5EJ",
+      "image": "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=800&q=80",
+      "description": "Sheltered seafront cliff garden offering peaceful volunteer gardening and green care."
+    },
+    {
+      "id": "boardathome",
+      "name": "Board at Home Gaming Hub",
+      "town": "Ramsgate",
+      "coords": [
+        51.3385,
+        1.4175
+      ],
+      "address": "107A High Street, Ramsgate CT11 9RH",
+      "image": "https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=800&q=80",
+      "description": "Ramsgate tabletop gaming lounge with 300+ board games, designed for solo and group visitors."
+    },
+    {
+      "id": "thanetbowls",
+      "name": "Thanet Indoor Bowls Centre",
+      "town": "Margate",
+      "coords": [
+        51.3888,
+        1.4085
+      ],
+      "address": "Fifth Avenue, Cliftonville, Margate CT9 3AB",
+      "image": "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=800&q=80",
+      "description": "Championship indoor carpet bowls rink offering friendly social roll-ups and low barrier exercise."
+    },
+    {
+      "id": "tcdtcentre",
+      "name": "Hereson Community Centre (TCDT)",
+      "town": "Ramsgate",
+      "coords": [
+        51.3412,
+        1.4180
+      ],
+      "address": "Lillian Road, Ramsgate CT11 7DT",
+      "image": "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80",
+      "description": "Thanet Community Development Trust grassroots hub for cookery, crafts, and heritage learning."
     }
   ],
   "passes": [

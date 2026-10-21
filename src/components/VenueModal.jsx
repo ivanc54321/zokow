@@ -21,6 +21,14 @@ export default function VenueModal({ venueId, onClose, events, onSelectEvent }) 
   // Filter events matching this venue
   const venueEvents = events.filter(e => {
     const text = (e.venue + ' ' + e.title).toLowerCase();
+    if (venue.id === 'drillshed') return text.includes('drill shed') || text.includes('lido') || text.includes('beyond 30');
+    if (venue.id === 'faithinstrangers') return text.includes('faith in strangers');
+    if (venue.id === 'rewdpadel') return text.includes('rewd') || text.includes('padel') || text.includes('cargo way');
+    if (venue.id === 'ramsgatetownshed') return text.includes('town shed');
+    if (venue.id === 'sunkengarden') return text.includes('sunken garden');
+    if (venue.id === 'boardathome') return text.includes('board at home');
+    if (venue.id === 'thanetbowls') return text.includes('indoor bowls');
+    if (venue.id === 'tcdtcentre') return text.includes('tcdt') || text.includes('hereson');
     if (venue.id === 'dreamland') return text.includes('dreamland') || text.includes('hall by the sea') || text.includes('scenic stage');
     if (venue.id === 'hartsdown') return text.includes('hartsdown');
     if (venue.id === 'walpole') return text.includes('walpole');

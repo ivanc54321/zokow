@@ -3,7 +3,7 @@ import { MapPin, Clock, Phone, Mail, Navigation } from 'lucide-react';
 
 export default function ContactRibbon({ onOpenMap }) {
   return (
-    <section className="contact-orange-ribbon reveal-on-scroll">
+    <section className="contact-orange-ribbon reveal-scale">
       <div className="contact-ribbon-container">
         
         {/* Column 1: Location & Directions */}
@@ -54,7 +54,7 @@ export default function ContactRibbon({ onOpenMap }) {
             </p>
             <p className="ribbon-subtext">
               <Mail size={13} className="inline-icon" />
-              <a href="mailto:events@zokal.thanet.uk" className="ribbon-contact-link">events@zokal.thanet.uk</a>
+              <a href="mailto:events@verge.thanet.uk" className="ribbon-contact-link">events@verge.thanet.uk</a>
             </p>
             <span className="ribbon-highlight-pill">Free Event Submissions Open</span>
           </div>

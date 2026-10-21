@@ -1,10 +1,13 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 
-export default function SplitActionBanner({ onSelectCategory, onScrollToDirectory }) {
-  const handleFoodClick = () => {
-    if (onSelectCategory) onSelectCategory('activity'); // Or scroll to food/dining
-    const el = document.getElementById('atmosphere-section');
+export default function SplitActionBanner({ onSelectCategory, onScrollToDirectory, onBecomeMember }) {
+  const handleMemberClick = () => {
+    if (onBecomeMember) {
+      onBecomeMember();
+      return;
+    }
+    const el = document.getElementById('about-scene-section') || document.getElementById('atmosphere-section');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -16,17 +19,17 @@ export default function SplitActionBanner({ onSelectCategory, onScrollToDirector
   };
 
   return (
-    <section className="split-action-banner reveal-on-scroll">
+    <section className="split-action-banner">
       <div className="split-action-container">
-        {/* Left Action: Food & Drinks */}
+        {/* Left Action: Become a Member */}
         <button 
-          className="split-action-half split-food"
-          onClick={handleFoodClick}
-          aria-label="Explore Food and Drinks"
+          className="split-action-half split-food split-member reveal-fade-left"
+          onClick={handleMemberClick}
+          aria-label="Become a member"
         >
           <div className="split-action-content">
             <span className="split-action-title">
-              OUR FOOD & DRINKS
+              BECOME A MEMBER
             </span>
             <ArrowRight size={22} className="split-action-arrow" />
           </div>
@@ -38,7 +41,7 @@ export default function SplitActionBanner({ onSelectCategory, onScrollToDirector
 
         {/* Right Action: Upcoming Events */}
         <button 
-          className="split-action-half split-events"
+          className="split-action-half split-events reveal-fade-right"
           onClick={handleEventsClick}
           aria-label="Explore Upcoming Events and Gigs"
         >

@@ -6,34 +6,36 @@ import { useEffect } from 'react';
  */
 export function useScrollReveal(deps = []) {
   useEffect(() => {
-    // If IntersectionObserver is not supported, reveal all immediately
-    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
-      document.querySelectorAll('.reveal-on-scroll, .reveal-scale').forEach(el => {
+    const SELECTOR = '.reveal-on-scroll, .reveal-scale, .reveal-fade-left, .reveal-fade-right, .reveal-pop';
+
+    if (typeof window === 'undefined') return;
+
+    // Fallback if IntersectionObserver is unsupported
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll(SELECTOR).forEach(el => {
         el.classList.add('is-revealed');
       });
       return;
     }
 
-    const observerCallback = (entries, observer) => {
+    const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('is-revealed');
-          observer.unobserve(entry.target);
+          obs.unobserve(entry.target);
         }
       });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, {
+    }, {
       root: null,
-      rootMargin: '120px 0px 120px 0px',
-      threshold: 0.01
+      rootMargin: '0px 0px -40px 0px',
+      threshold: 0.05
     });
 
-    const elements = document.querySelectorAll('.reveal-on-scroll:not(.is-revealed), .reveal-scale:not(.is-revealed)');
+    const elements = document.querySelectorAll(`${SELECTOR}:not(.is-revealed)`);
     elements.forEach(el => {
-      // Check if already in viewport or above it
       const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight + 100) {
+      // Only reveal immediately if already in active view on screen
+      if (rect.top < window.innerHeight - 40 && rect.bottom > 0) {
         el.classList.add('is-revealed');
       } else {
         observer.observe(el);

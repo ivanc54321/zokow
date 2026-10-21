@@ -13,8 +13,8 @@ export default function AtmospherePillarsSection({ onFilterPillar, onOpenVenue }
   };
 
   return (
-    <section id="atmosphere-section" className="atmosphere-pillars-section reveal-on-scroll">
-      <div className="section-header-centered">
+    <section id="atmosphere-section" className="atmosphere-pillars-section">
+      <div className="section-header-centered reveal-on-scroll">
         <span className="section-pill-tag">THREE PILLARS OF THANET CULTURE</span>
         <h2 className="section-title-large">EXPERIENCE THE VIBE</h2>
         <p className="section-subtitle-large">
@@ -26,7 +26,7 @@ export default function AtmospherePillarsSection({ onFilterPillar, onOpenVenue }
         
         {/* Pillar 1: FOOD (Warm Roasted Amber / Gold Theme) */}
         <div 
-          className="pillar-card pillar-food"
+          className="pillar-card pillar-food reveal-on-scroll delay-100"
           onClick={() => handlePillarClick('activity', 'dreamland')}
         >
           <div className="pillar-image-container">
@@ -57,7 +57,7 @@ export default function AtmospherePillarsSection({ onFilterPillar, onOpenVenue }
 
         {/* Pillar 2: DRINK (Electric Neon Violet / Magenta Theme) */}
         <div 
-          className="pillar-card pillar-drink"
+          className="pillar-card pillar-drink reveal-on-scroll delay-200"
           onClick={() => handlePillarClick('meetup', 'ramsgatemusichall')}
         >
           <div className="pillar-image-container">
@@ -88,13 +88,13 @@ export default function AtmospherePillarsSection({ onFilterPillar, onOpenVenue }
 
         {/* Pillar 3: EVENT (Cyber Cyan / Emerald Stage Laser Theme) */}
         <div 
-          className="pillar-card pillar-event"
+          className="pillar-card pillar-event reveal-on-scroll delay-300"
           onClick={() => handlePillarClick('event', 'dreamland')}
         >
           <div className="pillar-image-container">
             <img 
-              src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=900&q=80" 
-              alt="Live concert, festival stage and DJ event" 
+              src="/margate/dreamland-neon-dusk.jpg" 
+              alt="Dreamland Margate illuminated neon tower and seaside nightlife" 
               className="pillar-img"
             />
             <div className="pillar-overlay pillar-event-overlay"></div>

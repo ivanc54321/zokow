@@ -1,0 +1,750 @@
+/* ========================================================
+   ZOKAL — SIGN UP & MEMBER PASS MODAL STYLES
+   ======================================================== */
+
+.sign-up-backdrop {
+  z-index: 2100;
+  background: rgba(3, 7, 18, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 16px;
+}
+
+.sign-up-dialog {
+  max-width: 520px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  background: #0d121f;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.65), 0 0 50px rgba(255, 94, 20, 0.15);
+  position: relative;
+  padding: 0;
+  color: #f8fafc;
+  animation: modalPopIn 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.sign-up-dialog::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sign-up-dialog::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sign-up-dialog::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+@keyframes modalPopIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Light Mode Overrides */
+[data-theme="light"] .sign-up-dialog,
+.theme-light .sign-up-dialog {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.18), 0 0 35px rgba(255, 94, 20, 0.12);
+  color: #0f172a;
+}
+
+/* Modal Close Button */
+.sign-up-close-btn {
+  top: 18px;
+  right: 18px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #f8fafc;
+  cursor: pointer;
+  z-index: 20;
+}
+
+.sign-up-close-btn:hover {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: #ffffff;
+  transform: rotate(90deg);
+}
+
+[data-theme="light"] .sign-up-close-btn,
+.theme-light .sign-up-close-btn {
+  background: rgba(15, 23, 42, 0.06);
+  border-color: rgba(15, 23, 42, 0.12);
+  color: #1e293b;
+}
+
+/* Inner Container */
+.sign-up-content {
+  padding: 34px 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Header Area */
+.sign-up-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sign-up-tag-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sign-up-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px;
+  background: rgba(255, 94, 20, 0.12);
+  border: 1px solid rgba(255, 94, 20, 0.35);
+  color: #ff5e14;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sign-up-free-badge {
+  padding: 4px 9px;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #10b981;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.sign-up-heading {
+  font-family: var(--font-display, inherit);
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+[data-theme="light"] .sign-up-heading,
+.theme-light .sign-up-heading {
+  color: #0f172a;
+}
+
+.sign-up-subheading {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #94a3b8;
+  margin: 0;
+}
+
+[data-theme="light"] .sign-up-subheading,
+.theme-light .sign-up-subheading {
+  color: #64748b;
+}
+
+/* Perks Checklist */
+.sign-up-perks-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+}
+
+[data-theme="light"] .sign-up-perks-grid,
+.theme-light .sign-up-perks-grid {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+.perk-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.perk-icon-wrap {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon-coffee {
+  background: rgba(250, 184, 40, 0.16);
+  color: #fab828;
+}
+
+.icon-ticket {
+  background: rgba(93, 71, 232, 0.16);
+  color: #8b5cf6;
+}
+
+.icon-waves {
+  background: rgba(0, 151, 168, 0.16);
+  color: #0097a8;
+}
+
+.perk-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.perk-text strong {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+[data-theme="light"] .perk-text strong,
+.theme-light .perk-text strong {
+  color: #1e293b;
+}
+
+.perk-text span {
+  font-size: 0.77rem;
+  color: #94a3b8;
+}
+
+[data-theme="light"] .perk-text span,
+.theme-light .perk-text span {
+  color: #64748b;
+}
+
+/* Social Google Button */
+.social-auth-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.google-signup-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #1f2937;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border: 1px solid #d1d5db;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.google-signup-btn:hover {
+  background: #f9fafb;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  transform: translateY(-1px);
+}
+
+.google-signup-btn:active {
+  transform: translateY(0);
+}
+
+.google-signup-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Divider */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 4px 0;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="light"] .divider-line,
+.theme-light .divider-line {
+  background: #e2e8f0;
+}
+
+.divider-text {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+/* Form */
+.sign-up-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sign-up-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sign-up-input-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #cbd5e1;
+}
+
+[data-theme="light"] .sign-up-input-group label,
+.theme-light .sign-up-input-group label {
+  color: #334155;
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-icon .input-icon {
+  position: absolute;
+  left: 14px;
+  color: #64748b;
+  pointer-events: none;
+}
+
+.input-with-icon input,
+.input-with-icon select {
+  width: 100%;
+  padding: 12px 14px 12px 42px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 0.92rem;
+  transition: all 0.2s ease;
+  outline: none;
+  font-family: inherit;
+}
+
+.input-with-icon select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.input-with-icon select option {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+[data-theme="light"] .input-with-icon input,
+[data-theme="light"] .input-with-icon select,
+.theme-light .input-with-icon input,
+.theme-light .input-with-icon select {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+[data-theme="light"] .input-with-icon select option,
+.theme-light .input-with-icon select option {
+  background: #ffffff;
+  color: #0f172a;
+}
+
+.input-with-icon input:focus,
+.input-with-icon select:focus {
+  border-color: #ff5e14;
+  background: rgba(255, 94, 20, 0.04);
+  box-shadow: 0 0 0 3px rgba(255, 94, 20, 0.18);
+}
+
+.sign-up-submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 24px;
+  margin-top: 6px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, #fab828 0%, #f1513a 100%);
+  color: #ffffff;
+  font-family: var(--font-display, inherit);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 10px 25px -5px rgba(241, 81, 58, 0.4);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sign-up-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px -4px rgba(241, 81, 58, 0.55);
+}
+
+.sign-up-submit-btn:active {
+  transform: translateY(0);
+}
+
+.sign-up-submit-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Footer & Switcher */
+.sign-up-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 16px;
+}
+
+[data-theme="light"] .sign-up-footer,
+.theme-light .sign-up-footer {
+  border-color: #e2e8f0;
+}
+
+.privacy-pledge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.mode-toggle-row {
+  font-size: 0.82rem;
+  color: #94a3b8;
+}
+
+[data-theme="light"] .mode-toggle-row,
+.theme-light .mode-toggle-row {
+  color: #64748b;
+}
+
+.inline-mode-btn {
+  background: none;
+  border: none;
+  color: #ff5e14;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  font-size: inherit;
+}
+
+.inline-mode-btn:hover {
+  color: #fab828;
+}
+
+/* ========================================================
+   SUCCESS STATE: HOLOGRAPHIC PASS
+   ======================================================== */
+
+.sign-up-success-view {
+  padding: 40px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  text-align: center;
+}
+
+.success-badge-pulse {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #10b981;
+  animation: pulseGlow 1.8s infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 14px rgba(16, 185, 129, 0);
+  }
+}
+
+.success-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.success-pill {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #10b981;
+  padding: 3px 10px;
+  background: rgba(16, 185, 129, 0.12);
+  border-radius: 999px;
+}
+
+.success-title {
+  font-family: var(--font-display, inherit);
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin: 0;
+}
+
+[data-theme="light"] .success-title,
+.theme-light .success-title {
+  color: #0f172a;
+}
+
+.success-desc {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #94a3b8;
+  max-width: 420px;
+  margin: 0;
+}
+
+[data-theme="light"] .success-desc,
+.theme-light .success-desc {
+  color: #64748b;
+}
+
+/* Digital Pass */
+.digital-member-pass {
+  width: 100%;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #182238 0%, #0c1222 100%);
+  border: 1px solid rgba(255, 94, 20, 0.35);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  text-align: left;
+}
+
+.member-pass-glow {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, rgba(255, 94, 20, 0.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.member-pass-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+  padding-bottom: 12px;
+}
+
+.pass-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.pass-logo {
+  font-family: var(--font-display, inherit);
+  font-weight: 900;
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.pass-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #ff5e14;
+}
+
+.pass-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.12);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  animation: pulseDot 1.4s infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+.member-pass-body {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.pass-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fab828 0%, #f1513a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(241, 81, 58, 0.3);
+}
+
+.pass-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.pass-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.pass-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.76rem;
+  color: #94a3b8;
+}
+
+.pass-town {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: #cbd5e1;
+}
+
+.pass-tier {
+  color: #fab828;
+  font-weight: 600;
+}
+
+.member-pass-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px dashed rgba(255, 255, 255, 0.12);
+  padding-top: 12px;
+}
+
+.pass-id-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.pass-id-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #64748b;
+}
+
+.pass-id-number {
+  font-family: monospace;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #f8fafc;
+  letter-spacing: 0.06em;
+}
+
+.pass-perks-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  background: rgba(250, 184, 40, 0.12);
+  border: 1px solid rgba(250, 184, 40, 0.25);
+  border-radius: 999px;
+  color: #fab828;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.success-actions {
+  width: 100%;
+}
+
+.success-btn {
+  margin-top: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 580px) {
+  .sign-up-content {
+    padding: 26px 20px 22px;
+  }
+  .sign-up-heading {
+    font-size: 1.55rem;
+  }
+  .sign-up-success-view {
+    padding: 30px 18px 24px;
+  }
+  .digital-member-pass {
+    padding: 18px;
+  }
+}

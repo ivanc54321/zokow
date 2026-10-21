@@ -32,7 +32,8 @@ export default function EventCard({
   isInItinerary, 
   onToggleItinerary, 
   onOpenVenue,
-  cardTheme = 'default'
+  cardTheme = 'default',
+  className = ''
 }) {
   const getSourceBadgeColor = (source) => {
     switch (source) {
@@ -68,9 +69,10 @@ export default function EventCard({
 
   return (
     <div 
-      className={`event-card ${themeClass}`}
+      className={`event-card ${themeClass} ${className}`.trim()}
       onClick={() => onSelect(event)}
     >
+      {/* 1. Clean Photo Section — Unobstructed, pristine photography */}
       <div className="card-media">
         <img 
           src={event.image || "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80"} 
@@ -82,135 +84,140 @@ export default function EventCard({
             e.currentTarget.src = "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80";
           }}
         />
-        <div className="card-overlay-gradient"></div>
-        
-        {/* Authentic Ticket-Style Date Badge */}
+        <div className="card-media-vignette" />
+
+        {/* Minimalist Top Anchors: Date Badge (Left) & Heart Button (Right) */}
         <div className="ticket-date-badge">
           <span className="ticket-month">{ticketDate.month}</span>
           <span className="ticket-day">{ticketDate.day}</span>
         </div>
 
-        {/* Source badge */}
-        <div 
-          className="source-badge"
-          style={{ 
-            backgroundColor: badgeStyle.bg, 
-            color: badgeStyle.text,
-            borderColor: badgeStyle.border 
+        <button 
+          className={`save-btn ${isSaved ? 'saved' : ''}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleSave(event.id);
           }}
-          title={`Aggregated from ${event.sourceName}`}
+          aria-label={isSaved ? "Remove from bookmarks" : "Save event"}
+          title={isSaved ? "Saved to your list" : "Save event"}
         >
-          <span className="source-dot" style={{ backgroundColor: badgeStyle.text }}></span>
-          {event.sourceName}
-        </div>
-
-        {/* Action icons group: Save & Itinerary */}
-        <div className="card-actions-top">
-          {onToggleItinerary && (
-            <button 
-              className={`itinerary-card-btn ${isInItinerary ? 'active' : ''}`}
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleItinerary(event.id);
-              }}
-              title={isInItinerary ? "In Weekend Schedule" : "Add to Weekend Schedule"}
-              aria-label="Toggle weekend plan"
-            >
-              {isInItinerary ? <Check size={13} /> : <Plus size={13} />}
-              <span className="itinerary-card-btn-text">{isInItinerary ? "Weekend" : "Plan"}</span>
-            </button>
-          )}
-
-          {/* Save button */}
-          <button 
-            className={`save-btn ${isSaved ? 'saved' : ''}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggleSave(event.id);
-            }}
-            aria-label={isSaved ? "Remove from bookmarks" : "Save event"}
-            title={isSaved ? "Saved to your list" : "Save event"}
-          >
-            <Heart size={15} fill={isSaved ? "#ff5e14" : "none"} color={isSaved ? "#ff5e14" : "#ffffff"} />
-          </button>
-        </div>
-
-        {/* Price Overlay Badge on Image */}
-        <div className={`card-price-overlay ${event.isFree ? 'is-free' : ''}`}>
-          <Ticket size={11} className="price-ticket-icon" />
-          <span>{event.price}</span>
-        </div>
-
-        {/* Town pill & Category */}
-        <div className="card-media-bottom-row">
-          <div className="town-badge">
-            <MapPin size={11} />
-            <span>{event.town}</span>
-          </div>
-          <div className="category-pill">
-            {event.categoryLabel}
-          </div>
-        </div>
+          <Heart size={15} fill={isSaved ? "#ff5e14" : "none"} color={isSaved ? "#ff5e14" : "#ffffff"} />
+        </button>
       </div>
 
+      {/* 2. Structured Bottom Content: Resting title + Hover reveal details */}
       <div className="card-body">
-        <div className="card-date-row">
-          <span className="date-highlight">
-            <Calendar size={13} />
-            {event.dateDisplay}
-          </span>
-          <span className="time-highlight">
-            <Clock size={13} />
-            {event.time.split(' - ')[0]}
-          </span>
+        {/* Title is always visible at the top of the body (Resting State) */}
+        <div className="card-title-wrap">
+          <h3 className="card-title" title={event.title}>
+            {event.title}
+          </h3>
         </div>
 
-        <h3 className="card-title" title={event.title}>
-          {event.title}
-        </h3>
-
-        <p className="card-venue">
-          <MapPin size={13} className="venue-pin" />
-          {venueId && onOpenVenue ? (
-            <button 
-              className="card-venue-link"
-              onClick={(e) => {
-                e.stopPropagation();
-                onOpenVenue(venueId);
-              }}
-              title={`View ${event.venue} spotlight`}
-            >
-              {event.venue}
-            </button>
-          ) : (
-            <span>{event.venue}</span>
-          )}
-        </p>
-
-        <p className="card-desc">
-          {event.description}
-        </p>
-
-        <div className="card-tags">
-          {event.tags.slice(0, 3).map((tag, idx) => (
-            <span key={idx} className="tag-chip">
-              #{tag}
+        {/* More Info on Hover */}
+        <div className="card-hover-details">
+          {/* Badges & Labels Row: Category, Town, Price, Source */}
+          <div className="card-bottom-labels-row">
+            <span className="category-pill">
+              {event.categoryLabel}
             </span>
-          ))}
-        </div>
-
-        <div className="card-footer">
-          <div className="attendee-info">
-            <Users size={13} />
-            <span>{event.attendees} going</span>
-            {event.spotsLeft && (
-              <span className="spots-left">• {event.spotsLeft} left</span>
-            )}
+            <span className="town-badge">
+              <MapPin size={11} />
+              <span>{event.town}</span>
+            </span>
+            <span className={`card-price-pill ${event.isFree ? 'is-free' : ''}`}>
+              <Ticket size={11} className="price-ticket-icon" />
+              <span>{event.price}</span>
+            </span>
+            <span 
+              className="source-badge"
+              style={{ 
+                backgroundColor: badgeStyle.bg, 
+                color: badgeStyle.text,
+                borderColor: badgeStyle.border 
+              }}
+              title={`Aggregated from ${event.sourceName}`}
+            >
+              <span className="source-dot" style={{ backgroundColor: badgeStyle.text }} />
+              {event.sourceName}
+            </span>
           </div>
-          
-          <div className="card-action-cta">
-            <span>Details</span>
-            <ArrowRight size={13} className="cta-arrow" />
+
+          {/* Venue & Time Row */}
+          <div className="card-venue-row">
+            <div className="card-venue">
+              <MapPin size={12} className="venue-pin" />
+              {venueId && onOpenVenue ? (
+                <button 
+                  className="card-venue-link"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onOpenVenue(venueId);
+                  }}
+                  title={`View ${event.venue} spotlight`}
+                >
+                  {event.venue}
+                </button>
+              ) : (
+                <span>{event.venue}</span>
+              )}
+            </div>
+            <span className="card-dot-sep">•</span>
+            <div className="time-highlight">
+              <Clock size={11} />
+              <span>{event.time.split(' - ')[0]}</span>
+            </div>
+          </div>
+
+          {/* Short Description */}
+          {event.description && (
+            <p className="card-desc">
+              {event.description}
+            </p>
+          )}
+
+          {/* Tags Row at Bottom */}
+          {event.tags && event.tags.length > 0 && (
+            <div className="card-tags">
+              {event.tags.slice(0, 3).map((tag, idx) => (
+                <span key={idx} className="tag-chip">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Card Footer: Attendees count & Schedule button / Details CTA */}
+          <div className="card-footer">
+            <div className="attendee-info">
+              <Users size={12} />
+              <span>{event.attendees} going</span>
+              {event.spotsLeft && (
+                <span className="spots-left">• {event.spotsLeft} left</span>
+              )}
+            </div>
+            
+            <div className="card-footer-actions">
+              {onToggleItinerary && (
+                <button 
+                  className={`itinerary-card-btn ${isInItinerary ? 'active' : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onToggleItinerary(event.id);
+                  }}
+                  title={isInItinerary ? "In Weekend Schedule" : "Add to Weekend Schedule"}
+                  aria-label="Toggle weekend plan"
+                >
+                  {isInItinerary ? <Check size={12} /> : <Plus size={12} />}
+                  <span className="itinerary-card-btn-text">{isInItinerary ? "Saved" : "Plan"}</span>
+                </button>
+              )}
+
+              <div className="card-action-cta">
+                <span>Details</span>
+                <ArrowRight size={13} className="cta-arrow" />
+              </div>
+            </div>
           </div>
         </div>
       </div>

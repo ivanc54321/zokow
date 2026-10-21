@@ -88,7 +88,7 @@ export default function SubmitEventModal({ isOpen, onClose, onAddEvent }) {
         {submitted ? (
           <div className="submit-success-state">
             <CheckCircle size={56} className="success-icon" />
-            <h3>Event Added to Zokal!</h3>
+            <h3>Event Added to VERGE!</h3>
             <p>Your listing is now live in the Thanet directory feed.</p>
           </div>
         ) : (

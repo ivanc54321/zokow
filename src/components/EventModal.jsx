@@ -35,7 +35,7 @@ export default function EventModal({
     const icsData = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
-      'PRODID:-//Zokal//Local Social Directory//EN',
+      'PRODID:-//Verge//Local Social Directory//EN',
       'BEGIN:VEVENT',
       `SUMMARY:${event.title}`,
       `DESCRIPTION:${event.description.replace(/\n/g, ' ')}`,

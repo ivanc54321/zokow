@@ -15,8 +15,10 @@ import WeekendPlannerModal from './components/WeekendPlannerModal';
 import VenueModal from './components/VenueModal';
 import ContactRibbon from './components/ContactRibbon';
 import BurgerMenuDrawer from './components/BurgerMenuDrawer';
-import DirectoryQuickFilterBar from './components/DirectoryQuickFilterBar';
 import BackToTopDock from './components/BackToTopDock';
+import AboutUsPage from './components/AboutUsPage';
+import SignUpModal from './components/SignUpModal';
+import CommunityTestimonialSection from './components/CommunityTestimonialSection';
 import { useScrollReveal } from './hooks/useScrollReveal';
 import { INITIAL_EVENTS } from './data/eventsData';
 import { 
@@ -28,7 +30,9 @@ import {
   CheckCircle2,
   Layers,
   Activity,
-  Map as MapIcon
+  Map as MapIcon,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import './App.css';
 
@@ -58,13 +62,31 @@ const LinkedinIcon = () => (
 
 export default function App() {
   const [events, setEvents] = useState(() => {
+    const DATA_VERSION = '2026.10.v3';
+    const currentVersion = localStorage.getItem('zokal_events_version');
+    if (currentVersion !== DATA_VERSION) {
+      localStorage.setItem('zokal_events_version', DATA_VERSION);
+      localStorage.setItem('zokal_events', JSON.stringify(INITIAL_EVENTS));
+      return INITIAL_EVENTS;
+    }
+
     const saved = localStorage.getItem('zokal_events');
     if (!saved) return INITIAL_EVENTS;
     try {
       const parsed = JSON.parse(saved);
       const initialMap = new Map(INITIAL_EVENTS.map(e => [e.id, e]));
-      // Preserve any custom user-submitted events while updating built-in events
-      const userCustom = parsed.filter(e => !initialMap.has(e.id) && !e.id.startsWith('evt-dreamland-'));
+      const initialTitles = new Set(INITIAL_EVENTS.map(e => (e.title || '').trim().toLowerCase()));
+
+      // Preserve genuine user-submitted events, excluding legacy duplicates or replaced REWD items
+      const userCustom = parsed.filter(e => {
+        if (!e || !e.id || !e.title) return false;
+        if (initialMap.has(e.id)) return false;
+        if (e.id.startsWith('evt-rewd-intro') || e.id.startsWith('evt-rewd-spin') || e.id.startsWith('evt-rewd-pilates')) return false;
+        if (e.id.startsWith('evt-dreamland-')) return false;
+        if (initialTitles.has(e.title.trim().toLowerCase())) return false;
+        return true;
+      });
+
       return [...INITIAL_EVENTS, ...userCustom];
     } catch {
       return INITIAL_EVENTS;
@@ -89,12 +111,24 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showSavedOnly, setShowSavedOnly] = useState(false);
   const [sortBy, setSortBy] = useState('date'); // 'date' | 'popular'
+  const [isExploreAllExpanded, setIsExploreAllExpanded] = useState(false);
+
+  // Automatically reveal directory if user searches, bookmarks, or applies filters
+  const isDirectoryVisible = isExploreAllExpanded || Boolean(
+    searchQuery.trim() || 
+    showSavedOnly || 
+    selectedCategory !== 'all' || 
+    selectedAmenities.length > 0 ||
+    selectedTown !== 'all' ||
+    selectedTimeFilter !== 'all'
+  );
 
   // Modals state
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedVenueId, setSelectedVenueId] = useState(null);
   const [isPlannerOpen, setIsPlannerOpen] = useState(false);
   const [isSubmitOpen, setIsSubmitOpen] = useState(false);
+  const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isScrapersOpen, setIsScrapersOpen] = useState(false);
   const [isBurgerDrawerOpen, setIsBurgerDrawerOpen] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
@@ -141,8 +175,38 @@ export default function App() {
     localStorage.setItem('zokal_itinerary_ids', JSON.stringify(itineraryIds));
   }, [itineraryIds]);
 
+  // Sync URL hash (#about) or query (?view=about) with viewMode
+  useEffect(() => {
+    const handleUrlChange = () => {
+      const hash = window.location.hash;
+      const search = window.location.search;
+      if (hash === '#about' || search.includes('view=about')) {
+        setViewMode('about');
+      }
+    };
+    handleUrlChange();
+    window.addEventListener('hashchange', handleUrlChange);
+    window.addEventListener('popstate', handleUrlChange);
+    return () => {
+      window.removeEventListener('hashchange', handleUrlChange);
+      window.removeEventListener('popstate', handleUrlChange);
+    };
+  }, []);
+
+  // Update hash when switching to/from about
+  useEffect(() => {
+    if (viewMode === 'about') {
+      if (window.location.hash !== '#about') {
+        window.history.replaceState(null, '', '#about');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (window.location.hash === '#about') {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  }, [viewMode]);
+
   // Activate scroll reveal animations whenever views or filters update
-  useScrollReveal([events, viewMode, selectedTown, selectedCategory, searchQuery, showSavedOnly]);
+  useScrollReveal([events, viewMode, selectedTown, selectedCategory, searchQuery, showSavedOnly, isDirectoryVisible]);
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -196,7 +260,7 @@ export default function App() {
 
   // Filter logic
   const filteredEvents = useMemo(() => {
-    return events.filter(evt => {
+    const list = events.filter(evt => {
       // Town filter
       if (selectedTown !== 'all' && evt.town.toLowerCase() !== selectedTown.toLowerCase()) {
         return false;
@@ -250,23 +314,52 @@ export default function App() {
       }
       return new Date(a.date) - new Date(b.date);
     });
+
+    // Enforce strict uniqueness by both id and normalized title
+    const seen = new Set();
+    return list.filter(item => {
+      const key = `${item.id}|${item.title.trim().toLowerCase()}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
   }, [events, selectedTown, selectedCategory, selectedTimeFilter, selectedAmenities, showSavedOnly, searchQuery, sortBy, savedEventIds]);
 
-  // Curated subsets for carousels
+  // Helper to ensure diverse unique venues/organizers per carousel (no repetition of same brand)
+  const dedupeByBrand = (items, maxCount = 8) => {
+    const seenBrands = new Set();
+    const result = [];
+    for (const item of items) {
+      // Normalize brand / venue / organizer
+      const brandKey = (item.organizer || item.venue || item.id).toLowerCase().replace(/[^a-z0-9]/g, '');
+      if (!seenBrands.has(brandKey)) {
+        seenBrands.add(brandKey);
+        result.push(item);
+      }
+      if (result.length >= maxCount) break;
+    }
+    return result;
+  };
+
+  // Curated subsets for carousels with strict variety and brand-level deduplication
   const trendingEvents = useMemo(() => {
-    return events.filter(e => (selectedTown === 'all' || e.town === selectedTown) && e.trending);
+    const list = events.filter(e => (selectedTown === 'all' || e.town === selectedTown) && e.trending);
+    return dedupeByBrand(list, 8);
   }, [events, selectedTown]);
 
   const volunteerEvents = useMemo(() => {
-    return events.filter(e => (selectedTown === 'all' || e.town === selectedTown) && e.category === 'volunteer');
+    const list = events.filter(e => (selectedTown === 'all' || e.town === selectedTown) && e.category === 'volunteer');
+    return dedupeByBrand(list, 8);
   }, [events, selectedTown]);
 
   const meetupEvents = useMemo(() => {
-    return events.filter(e => (selectedTown === 'all' || e.town === selectedTown) && e.category === 'meetup');
+    const list = events.filter(e => (selectedTown === 'all' || e.town === selectedTown) && e.category === 'meetup');
+    return dedupeByBrand(list, 8);
   }, [events, selectedTown]);
 
   const sportsEvents = useMemo(() => {
-    return events.filter(e => (selectedTown === 'all' || e.town === selectedTown) && e.category === 'activity');
+    const list = events.filter(e => (selectedTown === 'all' || e.town === selectedTown) && e.category === 'activity');
+    return dedupeByBrand(list, 8);
   }, [events, selectedTown]);
 
   const townCounts = useMemo(() => {
@@ -299,25 +392,35 @@ export default function App() {
         </div>
       )}
 
-      {/* Navbar */}
-      <Navbar 
-        selectedTown={selectedTown}
-        onSelectTown={setSelectedTown}
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        savedCount={savedEventIds.length}
-        onOpenSaved={() => setShowSavedOnly(!showSavedOnly)}
-        onOpenSubmit={() => setIsSubmitOpen(true)}
-        onOpenScrapers={() => setIsScrapersOpen(true)}
-        isSyncing={isSyncing}
-        viewMode={viewMode}
-        onToggleViewMode={setViewMode}
-        itineraryCount={itineraryIds.length}
-        onOpenPlanner={() => setIsPlannerOpen(true)}
-        onOpenBurgerMenu={() => setIsBurgerDrawerOpen(true)}
-        theme={theme}
-        onToggleTheme={toggleTheme}
-      />
+      {viewMode === 'about' ? (
+        <AboutUsPage 
+          onBackToDirectory={() => setViewMode('directory')}
+          onOpenSubmit={() => setIsSubmitOpen(true)}
+          onOpenVenue={(vid) => setSelectedVenueId(vid)}
+          theme={theme}
+          onToggleTheme={toggleTheme}
+        />
+      ) : (
+        <>
+          {/* Navbar */}
+          <Navbar 
+            selectedTown={selectedTown}
+            onSelectTown={setSelectedTown}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            savedCount={savedEventIds.length}
+            onOpenSaved={() => setShowSavedOnly(!showSavedOnly)}
+            onOpenSubmit={() => setIsSubmitOpen(true)}
+            onOpenScrapers={() => setIsScrapersOpen(true)}
+            isSyncing={isSyncing}
+            viewMode={viewMode}
+            onToggleViewMode={setViewMode}
+            itineraryCount={itineraryIds.length}
+            onOpenPlanner={() => setIsPlannerOpen(true)}
+            onOpenBurgerMenu={() => setIsBurgerDrawerOpen(true)}
+            theme={theme}
+            onToggleTheme={toggleTheme}
+          />
 
       <main className="main-content">
         {/* Modern Atmospheric Hero */}
@@ -337,15 +440,18 @@ export default function App() {
           onOpenBurgerMenu={() => setIsBurgerDrawerOpen(true)}
           theme={theme}
           onToggleTheme={toggleTheme}
+          onExpandDirectory={() => setIsExploreAllExpanded(true)}
         />
 
         {/* 1. Full-Width Split Action Banner (inspired by reference) */}
         <SplitActionBanner 
           onSelectCategory={setSelectedCategory}
           onScrollToDirectory={() => {
+            setIsExploreAllExpanded(true);
             const el = document.querySelector('.directory-grid-section');
             if (el) el.scrollIntoView({ behavior: 'smooth' });
           }}
+          onBecomeMember={() => setIsSignUpOpen(true)}
         />
 
         {/* 2. Dual Spotlight Promo Cards (inspired by reference) */}
@@ -360,26 +466,7 @@ export default function App() {
           onOpenVenue={(vid) => setSelectedVenueId(vid)}
         />
 
-        {/* 4. Interactive In-Page Directory Filter Hub */}
-        <div id="quick-filter-bar-anchor" className="quick-filter-bar-wrapper">
-          <DirectoryQuickFilterBar 
-            selectedTown={selectedTown}
-            onSelectTown={setSelectedTown}
-            selectedCategory={selectedCategory}
-            onSelectCategory={setSelectedCategory}
-            selectedTimeFilter={selectedTimeFilter}
-            onSelectTimeFilter={setSelectedTimeFilter}
-            selectedAmenities={selectedAmenities}
-            onToggleAmenity={toggleAmenity}
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            viewMode={viewMode}
-            onToggleViewMode={setViewMode}
-            totalEventsCount={events.length}
-            filteredCount={filteredEvents.length}
-            townCounts={townCounts}
-          />
-        </div>
+
 
         {/* Active Filter Indicators */}
         {isFiltering && (
@@ -539,67 +626,157 @@ export default function App() {
               </div>
             )}
 
-            {/* Directory Grid Section: All Filtered Events */}
-            <section className="directory-grid-section reveal-on-scroll">
-              <div className="grid-header">
-                <div className="grid-header-title">
-                  <Layers size={22} className="section-icon" />
-                  <div>
-                    <h2 className="section-title">
-                      {showSavedOnly ? "Your Bookmarked Events" : "Explore All Happenings"}
-                    </h2>
-                    <p className="section-subtitle">
-                      Showing {filteredEvents.length} {filteredEvents.length === 1 ? 'event' : 'events'} across Thanet
+            {/* Directory Grid Section: Hidden/Collapsed by default, Expandable on Click */}
+            <section className={`directory-grid-section ${!isDirectoryVisible ? 'directory-collapsed-section' : 'directory-expanded-section'} reveal-on-scroll`}>
+              {!isDirectoryVisible ? (
+                /* Collapsed Directory Trigger Card */
+                <div 
+                  className="directory-expand-card"
+                  onClick={() => setIsExploreAllExpanded(true)}
+                  role="button"
+                  tabIndex={0}
+                  aria-expanded="false"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setIsExploreAllExpanded(true);
+                    }
+                  }}
+                >
+                  <div className="expand-card-glow" />
+                  <div className="expand-card-left">
+                    <div className="expand-badge-pill">
+                      <Layers size={13} className="expand-badge-icon" />
+                      <span>COMPLETE DIRECTORY</span>
+                    </div>
+                    <h3 className="expand-card-title">Explore All Happenings</h3>
+                    <p className="expand-card-subtitle">
+                      Browse our full directory of {filteredEvents.length} events across Margate, Ramsgate & Broadstairs
                     </p>
                   </div>
-                </div>
-
-                <div className="grid-sort-controls">
-                  <label htmlFor="sort-select">Sort by:</label>
-                  <select 
-                    id="sort-select"
-                    value={sortBy} 
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="sort-dropdown"
-                  >
-                    <option value="date">Date (Earliest First)</option>
-                    <option value="popular">Most Popular / Attendees</option>
-                  </select>
-                </div>
-              </div>
-
-              {filteredEvents.length === 0 ? (
-                <div className="empty-state">
-                  <Compass size={48} className="empty-icon" />
-                  <h3>No events match your current filters</h3>
-                  <p>Try clearing your search query or switching to "All Thanet".</p>
-                  <button className="empty-reset-btn" onClick={resetFilters}>
-                    Reset All Filters
-                  </button>
+                  <div className="expand-card-right">
+                    <button className="expand-trigger-btn" type="button" tabIndex={-1}>
+                      <span>Show All {filteredEvents.length} Events</span>
+                      <ChevronDown size={18} className="expand-chevron-icon" />
+                    </button>
+                  </div>
                 </div>
               ) : (
-                <div className="events-grid">
-                  {filteredEvents.map(event => (
-                    <EventCard 
-                      key={event.id}
-                      event={event}
-                      onSelect={setSelectedEvent}
-                      isSaved={savedEventIds.includes(event.id)}
-                      onToggleSave={toggleSave}
-                      isInItinerary={itineraryIds.includes(event.id)}
-                      onToggleItinerary={toggleItinerary}
-                      onOpenVenue={(vid) => setSelectedVenueId(vid)}
-                    />
-                  ))}
-                </div>
+                /* Expanded Full Directory Grid */
+                <>
+                  <div className="grid-header">
+                    <div className="grid-header-title">
+                      <Layers size={22} className="section-icon" />
+                      <div>
+                        <h2 className="section-title">
+                          {showSavedOnly ? "Your Bookmarked Events" : "Explore All Happenings"}
+                        </h2>
+                        <p className="section-subtitle">
+                          Showing {filteredEvents.length} {filteredEvents.length === 1 ? 'event' : 'events'} across Thanet
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="grid-header-actions">
+                      <div className="grid-sort-controls">
+                        <label htmlFor="sort-select">Sort by:</label>
+                        <select 
+                          id="sort-select"
+                          value={sortBy} 
+                          onChange={(e) => setSortBy(e.target.value)}
+                          className="sort-dropdown"
+                        >
+                          <option value="date">Date (Earliest First)</option>
+                          <option value="popular">Most Popular / Attendees</option>
+                        </select>
+                      </div>
+
+                      {/* Collapse Button (shown when user manually expanded on default view) */}
+                      {!searchQuery && !showSavedOnly && selectedCategory === 'all' && selectedAmenities.length === 0 && selectedTown === 'all' && (
+                        <button 
+                          className="directory-collapse-btn"
+                          onClick={() => {
+                            setIsExploreAllExpanded(false);
+                            const el = document.getElementById('carousels-section') || document.getElementById('upcoming-events-showcase');
+                            if (el) el.scrollIntoView({ behavior: 'smooth' });
+                          }}
+                          title="Hide event grid"
+                        >
+                          <span>Hide Events</span>
+                          <ChevronUp size={16} />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {filteredEvents.length === 0 ? (
+                    <div className="empty-state">
+                      <Compass size={48} className="empty-icon" />
+                      <h3>No events match your current filters</h3>
+                      <p>Try clearing your search query or switching to "All Thanet".</p>
+                      <button className="empty-reset-btn" onClick={resetFilters}>
+                        Reset All Filters
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="events-grid">
+                      {filteredEvents.map(event => (
+                        <EventCard 
+                          key={event.id}
+                          event={event}
+                          className="reveal-on-scroll"
+                          onSelect={setSelectedEvent}
+                          isSaved={savedEventIds.includes(event.id)}
+                          onToggleSave={toggleSave}
+                          isInItinerary={itineraryIds.includes(event.id)}
+                          onToggleItinerary={toggleItinerary}
+                          onOpenVenue={(vid) => setSelectedVenueId(vid)}
+                        />
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Bottom Collapse Button if multiple events */}
+                  {!searchQuery && !showSavedOnly && selectedCategory === 'all' && selectedAmenities.length === 0 && selectedTown === 'all' && filteredEvents.length > 6 && (
+                    <div className="directory-bottom-collapse-row">
+                      <button 
+                        className="directory-bottom-collapse-btn"
+                        onClick={() => {
+                          setIsExploreAllExpanded(false);
+                          const el = document.getElementById('upcoming-events-showcase');
+                          if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                      >
+                        <ChevronUp size={16} />
+                        <span>Collapse Directory ({filteredEvents.length} events)</span>
+                      </button>
+                    </div>
+                  )}
+                </>
               )}
             </section>
           </div>
         )}
 
+        {/* Community Voices & Testimonial Showcase (GathSession Reference Style) */}
+        <CommunityTestimonialSection 
+          onOpenSignUp={() => setIsSignUpOpen(true)}
+          onOpenAbout={() => {
+            setViewMode('about');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          onOpenSubmit={() => setIsSubmitOpen(true)}
+        />
+
         {/* Editorial "About the Scene" section with Framed Atmospheric Bar photo */}
         <div id="about-scene-section">
-          <AboutSection onOpenVenue={(vid) => setSelectedVenueId(vid)} />
+          <AboutSection 
+            onOpenVenue={(vid) => setSelectedVenueId(vid)} 
+            onOpenAbout={() => {
+              setViewMode('about');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+          />
         </div>
 
       </main>
@@ -608,11 +785,11 @@ export default function App() {
       <ContactRibbon onOpenMap={() => { setViewMode('map'); window.scrollTo({ top: 600, behavior: 'smooth' }); }} />
 
       {/* Footer (Dark obsidian minimal footer with social links inspired by reference) */}
-      <footer className="footer-container">
+      <footer className="footer-container reveal-on-scroll">
         <div className="footer-inner">
           <div className="footer-col brand-col">
             <div className="brand-logo footer-logo">
-              <span className="logo-text">ZOKAL</span>
+              <span className="logo-text">VERGE</span>
               <span className="logo-dot"></span>
             </div>
             <p className="footer-desc">
@@ -673,6 +850,14 @@ export default function App() {
 
         <div className="footer-bottom">
           <div className="footer-bottom-links">
+            <button 
+              className="footer-bottom-link-btn"
+              onClick={() => { setViewMode('about'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              style={{ background: 'none', border: 'none', color: '#ff5e14', cursor: 'pointer', fontWeight: '700', padding: 0 }}
+            >
+              About Us & Manifesto
+            </button>
+            <span>•</span>
             <a href="#terms">Terms of Use</a>
             <span>•</span>
             <a href="#privacy">Privacy Policy</a>
@@ -681,9 +866,11 @@ export default function App() {
             <span>•</span>
             <a href="#contact">Support</a>
           </div>
-          <p className="copyright-text">© {CURRENT_YEAR} ZOKAL — Thanet Social & Nightlife Directory. Crafted with passion for coastal culture.</p>
+          <p className="copyright-text">© {CURRENT_YEAR} VERGE — Thanet Social & Nightlife Directory. Crafted with passion for coastal culture.</p>
         </div>
       </footer>
+      </>
+      )}
 
       {/* Event Details Modal */}
       {selectedEvent && (
@@ -720,6 +907,16 @@ export default function App() {
         onAddEvent={handleAddEvent}
       />
 
+      {/* Member Sign Up & Pass Modal */}
+      <SignUpModal 
+        isOpen={isSignUpOpen}
+        onClose={() => setIsSignUpOpen(false)}
+        onSuccess={(member) => {
+          setToastMessage(`Welcome to VERGE, ${member.name}! Pass #${member.passNumber} activated.`);
+          setTimeout(() => setToastMessage(null), 4500);
+        }}
+      />
+
       {/* Scraper / Pipeline Modal */}
       <ScraperSyncModal 
         isOpen={isScrapersOpen}
@@ -748,6 +945,7 @@ export default function App() {
         showSavedOnly={showSavedOnly}
         onOpenSaved={() => setShowSavedOnly(!showSavedOnly)}
         onOpenSubmit={() => setIsSubmitOpen(true)}
+        onOpenSignUp={() => setIsSignUpOpen(true)}
         onOpenScrapers={() => setIsScrapersOpen(true)}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}

@@ -62,7 +62,7 @@ export default function ScraperSyncModal({ isOpen, onClose, onSyncComplete }) {
   const handleRunSync = async () => {
     setIsSyncing(true);
     setProgress(20);
-    setLogs(["[00:01] Contacting Zokal scraper backend on :3001...", "[00:02] Querying Meetup.com & Eventbrite public endpoints for Thanet..."]);
+    setLogs(["[00:01] Contacting VERGE scraper backend on :3001...", "[00:02] Querying Meetup.com & Eventbrite public endpoints for Thanet..."]);
 
     try {
       const response = await fetch('/api/scrape', {
@@ -115,7 +115,7 @@ export default function ScraperSyncModal({ isOpen, onClose, onSyncComplete }) {
           </div>
           <h2 className="modal-heading">Data Ingestion & Event Scrapers</h2>
           <p className="modal-subtext">
-            Zokal aggregates fragmented local social feeds into a single unified directory for Thanet.
+            VERGE aggregates fragmented local social feeds into a single unified directory for Thanet.
           </p>
         </div>
 

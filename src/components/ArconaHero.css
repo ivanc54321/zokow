@@ -213,6 +213,55 @@
   letter-spacing: -0.025em;
 }
 
+/* 3D Flip Headline Containers & Animation */
+.arcona-headline .line-flip-container {
+  perspective: 800px;
+  perspective-origin: 50% 50%;
+  overflow: visible;
+  display: block;
+}
+
+.arcona-headline .flip-word {
+  display: inline-block;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity, filter;
+}
+
+.arcona-headline .flip-word.is-flipping {
+  animation: arconaHeadlineFlip 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes arconaHeadlineFlip {
+  0% {
+    transform: perspective(800px) rotateX(0deg);
+    opacity: 1;
+    filter: brightness(1);
+  }
+  48% {
+    transform: perspective(800px) rotateX(-90deg) scale(0.96);
+    opacity: 0;
+    filter: brightness(0.65);
+  }
+  52% {
+    transform: perspective(800px) rotateX(90deg) scale(0.96);
+    opacity: 0;
+    filter: brightness(1.2);
+  }
+  100% {
+    transform: perspective(800px) rotateX(0deg) scale(1);
+    opacity: 1;
+    filter: brightness(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arcona-headline .flip-word.is-flipping {
+    animation: none;
+  }
+}
+
 /* Lower Golden Yellow Arch */
 .arcona-arch-yellow {
   position: absolute;

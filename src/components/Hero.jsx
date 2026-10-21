@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Sun, Moon } from 'lucide-react';
 import './ArconaHero.css';
 
-// Custom SVG Monogram for ZOKAL Thanet (Coastal Arch + Wave Mark)
-const ZokalMonogram = () => (
+// Rotating headline cycles: THINGS TO DO -> PEOPLE TO MEET -> PLACES TO GO
+const HEADLINE_CYCLES = [
+  { top: 'THINGS', bottom: 'DO' },
+  { top: 'PEOPLE', bottom: 'MEET' },
+  { top: 'PLACES', bottom: 'GO' },
+];
+
+// Custom SVG Monogram for VERGE (Coastal Arch + Converging V Mark)
+const VergeMonogram = () => (
   <svg 
     width="28" 
     height="34" 
@@ -11,7 +18,7 @@ const ZokalMonogram = () => (
     fill="none" 
     xmlns="http://www.w3.org/2000/svg"
     className="arcona-logo-mark"
-    title="ZOKAL Thanet Social Directory"
+    title="VERGE — Thanet Social Directory"
   >
     {/* Arch frame */}
     <path 
@@ -20,11 +27,11 @@ const ZokalMonogram = () => (
       strokeWidth="3.5" 
       strokeLinecap="round" 
     />
-    {/* Stylized Coastal Z wave */}
+    {/* Converging V Mark */}
     <path 
-      d="M11 17H21L11 27H21" 
-      stroke="currentColor" 
-      strokeWidth="3" 
+      d="M10 17L16 28L22 17" 
+      stroke="#ff5e14" 
+      strokeWidth="3.5" 
       strokeLinecap="round" 
       strokeLinejoin="round" 
     />
@@ -97,9 +104,41 @@ export default function Hero({
   onOpenVenue,
   onOpenBurgerMenu,
   theme = 'dark',
-  onToggleTheme
+  onToggleTheme,
+  onExpandDirectory
 }) {
+  const [headlineIndex, setHeadlineIndex] = useState(0);
+  const [isFlipping, setIsFlipping] = useState(false);
+
+  useEffect(() => {
+    let swapTimer;
+    let finishTimer;
+
+    const interval = setInterval(() => {
+      setIsFlipping(true);
+
+      // Halfway through 500ms flip animation, update text while edge-on / hidden
+      swapTimer = setTimeout(() => {
+        setHeadlineIndex((prev) => (prev + 1) % HEADLINE_CYCLES.length);
+      }, 250);
+
+      // Finish flip animation and reset to resting state
+      finishTimer = setTimeout(() => {
+        setIsFlipping(false);
+      }, 520);
+    }, 2000);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(swapTimer);
+      clearTimeout(finishTimer);
+    };
+  }, []);
+
+  const currentPhrase = HEADLINE_CYCLES[headlineIndex];
+
   const handleScrollToDirectory = () => {
+    if (onExpandDirectory) onExpandDirectory();
     const el = document.querySelector('.directory-grid-section') || document.getElementById('upcoming-events-showcase');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
@@ -111,11 +150,11 @@ export default function Hero({
         <div 
           className="arcona-logo-wrapper"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          title="ZOKAL — Thanet Social Directory"
+          title="VERGE — Thanet Social Directory"
         >
-          <span className="arcona-brand-text">ZOKAL</span>
+          <span className="arcona-brand-text">VERGE</span>
           <span className="arcona-brand-cross">✕</span>
-          <ZokalMonogram />
+          <VergeMonogram />
         </div>
 
         {/* Top-Right Header Actions (Theme Toggle & Menu) */}
@@ -164,11 +203,22 @@ export default function Hero({
           {/* Floating Coral Circle (Coastal Sunset Sun) */}
           <div className="arcona-coral-circle" aria-hidden="true" title="Thanet Coastal Sun" />
 
-          {/* Giant Bold Headline */}
-          <h1 className="arcona-headline">
-            <span className="headline-line line-things">THINGS</span>
+          {/* Giant Bold Headline with 3D Flip Rotation */}
+          <h1 
+            className="arcona-headline"
+            aria-label={`${currentPhrase.top} TO ${currentPhrase.bottom}`}
+          >
+            <span className="headline-line line-things line-flip-container">
+              <span className={`flip-word ${isFlipping ? 'is-flipping' : ''}`}>
+                {currentPhrase.top}
+              </span>
+            </span>
             <span className="headline-line line-to">TO</span>
-            <span className="headline-line line-do">DO</span>
+            <span className="headline-line line-do line-flip-container">
+              <span className={`flip-word ${isFlipping ? 'is-flipping' : ''}`}>
+                {currentPhrase.bottom}
+              </span>
+            </span>
           </h1>
 
           {/* Bottom Yellow Cutout (Outdoor Beach Swimmer / Wellness) */}
