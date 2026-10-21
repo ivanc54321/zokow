@@ -137,11 +137,84 @@ app.post('/api/arconf/events', (req, res) => {
   res.status(201).json({ success: true, data: newEvent, message: 'Event added to directory' });
 });
 
+app.put('/api/arconf/events/:id', (req, res) => {
+  const { id } = req.params;
+  const db = getDb();
+  if (!db) return res.status(500).json({ success: false, error: 'Database read failed' });
+
+  if (!db.events) db.events = [];
+  const idx = db.events.findIndex(e => e.id === id);
+  if (idx === -1) return res.status(404).json({ success: false, error: `Event "${id}" not found` });
+
+  db.events[idx] = { ...db.events[idx], ...req.body, id };
+  saveDb(db);
+  res.json({ success: true, data: db.events[idx], message: 'Event updated successfully' });
+});
+
+app.delete('/api/arconf/events/:id', (req, res) => {
+  const { id } = req.params;
+  const db = getDb();
+  if (!db) return res.status(500).json({ success: false, error: 'Database read failed' });
+
+  if (!db.events) db.events = [];
+  const prevCount = db.events.length;
+  db.events = db.events.filter(e => e.id !== id);
+
+  if (db.events.length === prevCount) {
+    return res.status(404).json({ success: false, error: `Event "${id}" not found` });
+  }
+
+  saveDb(db);
+  res.json({ success: true, message: `Event "${id}" removed successfully` });
+});
+
 // 1c. Thanet Venues Endpoints
 app.get('/api/arconf/venues', (req, res) => {
   const db = getDb();
   if (!db) return res.status(500).json({ success: false, error: 'Database read failed' });
   res.json({ success: true, count: (db.venues || []).length, data: db.venues || [] });
+});
+
+app.post('/api/arconf/venues', (req, res) => {
+  const db = getDb();
+  if (!db) return res.status(500).json({ success: false, error: 'Database read failed' });
+
+  const newVenue = req.body;
+  if (!newVenue || !newVenue.name) {
+    return res.status(400).json({ success: false, error: 'Venue name is required' });
+  }
+
+  if (!db.venues) db.venues = [];
+  newVenue.id = newVenue.id || `ven-${Date.now()}`;
+  db.venues.unshift(newVenue);
+  saveDb(db);
+
+  res.status(201).json({ success: true, data: newVenue, message: 'Venue added successfully' });
+});
+
+app.put('/api/arconf/venues/:id', (req, res) => {
+  const { id } = req.params;
+  const db = getDb();
+  if (!db) return res.status(500).json({ success: false, error: 'Database read failed' });
+
+  if (!db.venues) db.venues = [];
+  const idx = db.venues.findIndex(v => v.id === id);
+  if (idx === -1) return res.status(404).json({ success: false, error: `Venue "${id}" not found` });
+
+  db.venues[idx] = { ...db.venues[idx], ...req.body, id };
+  saveDb(db);
+  res.json({ success: true, data: db.venues[idx], message: 'Venue updated successfully' });
+});
+
+app.delete('/api/arconf/venues/:id', (req, res) => {
+  const { id } = req.params;
+  const db = getDb();
+  if (!db) return res.status(500).json({ success: false, error: 'Database read failed' });
+
+  if (!db.venues) db.venues = [];
+  db.venues = db.venues.filter(v => v.id !== id);
+  saveDb(db);
+  res.json({ success: true, message: `Venue "${id}" removed successfully` });
 });
 
 // 1d. Event RSVP / Pass Claim

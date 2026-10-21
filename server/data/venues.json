@@ -1,0 +1,72 @@
+[
+  {
+    "id": "dreamland",
+    "name": "Dreamland Margate",
+    "town": "Margate",
+    "address": "Marine Terrace, Margate CT9 1XJ",
+    "facilities": ["Hall By The Sea (1,400 cap)", "Scenic Stage (7,000 cap)", "Roller Room", "Food Court"],
+    "verified": true,
+    "image": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=80",
+    "description": "Margate's world-famous coastal amusement park, live music venue, and iconic entertainment hub."
+  },
+  {
+    "id": "ramsgatemusichall",
+    "name": "Ramsgate Music Hall",
+    "town": "Ramsgate",
+    "address": "13 Turner Street, Ramsgate CT11 8NJ",
+    "facilities": ["Intimate 140-Cap Live Room", "Acoustically Tuned", "Craft Beer Bar", "Harbour Proximity"],
+    "verified": true,
+    "image": "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=1200&q=80",
+    "description": "NME award-winning grassroots live music venue showcasing international touring artists and local heroes."
+  },
+  {
+    "id": "turner",
+    "name": "Turner Contemporary",
+    "town": "Margate",
+    "address": "Rendezvous, Margate CT9 1HG",
+    "facilities": ["Free Admission", "World-Class Art Galleries", "Sea-View Cafe & Bar", "Community Workshop Studio"],
+    "verified": true,
+    "image": "https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?auto=format&fit=crop&w=1200&q=80",
+    "description": "Prominent seaside gallery inspiring social change through art, overlooking Margate Sands."
+  },
+  {
+    "id": "hartsdown",
+    "name": "Hartsdown Park & Leisure Centre",
+    "town": "Margate",
+    "address": "Hartsdown Road, Margate CT9 5QZ",
+    "facilities": ["3G Floodlit All-Weather Pitches", "Indoor Sports Hall", "Gymnasium", "Clubhouse & Bar"],
+    "verified": true,
+    "image": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1200&q=80",
+    "description": "Community sports hub hosting football leagues, training camps, tennis, and fitness classes."
+  },
+  {
+    "id": "walpole",
+    "name": "Walpole Bay Tidal Pool",
+    "town": "Margate",
+    "address": "Eastern Esplanade, Cliftonville, Margate CT9 2HE",
+    "facilities": ["Free Public Access", "Fresh Sea Water (4 acres)", "Cliff Promenade", "Sauna Pop-ups"],
+    "verified": true,
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+    "description": "One of the largest sea-water tidal bathing pools in the UK, open year-round for coastal wild swimming."
+  },
+  {
+    "id": "faith-in-strangers",
+    "name": "Faith In Strangers",
+    "town": "Margate",
+    "address": "17 Ethelbert Crescent, Cliftonville, Margate CT9 2DY",
+    "facilities": ["Acoustically Treated Space", "High-Fidelity Sound System", "Sunset Terrace Bar", "Co-working Space"],
+    "verified": true,
+    "image": "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80",
+    "description": "Cutting-edge cultural space and audio lab on the cliff edge with panoramic views of the sea."
+  },
+  {
+    "id": "broadstairs-bandstand",
+    "name": "Broadstairs Bandstand & Victoria Gardens",
+    "town": "Broadstairs",
+    "address": "Victoria Parade, Broadstairs CT10 1QL",
+    "facilities": ["Open-Air Amphitheatre", "Sea Views over Viking Bay", "Surrounding Cafes & Kiosks"],
+    "verified": true,
+    "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80",
+    "description": "Historic seaside bandstand hosting weekend live jazz, brass bands, folk sessions, and summer festivals."
+  }
+]

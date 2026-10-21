@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ARCONF — Control Center &amp; CMS</title>
+  <title>VERGE &amp; ARCONF — Control Center &amp; CMS</title>
   
   <!-- Tailwind CSS with Forms -->
   <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap"/>
 
   <script>
     tailwind.config = {
@@ -25,10 +25,12 @@
             brandYellow: '#eec239',
             brandCyan: '#4cd4fb',
             brandMint: '#00d68f',
+            brandOrange: '#ff5e14',
           },
           fontFamily: {
             headline: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
             sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
           }
         }
       }
@@ -46,9 +48,18 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
     .glass-card {
-      background: rgba(18, 24, 38, 0.85);
-      backdrop-filter: blur(12px);
+      background: rgba(18, 24, 38, 0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card-hover {
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card-hover:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
     }
     ::-webkit-scrollbar {
       width: 6px;
@@ -61,30 +72,51 @@
     ::-webkit-scrollbar-track {
       background: #090d16;
     }
+    .custom-gradient-btn {
+      background: linear-gradient(135deg, #ff5e14 0%, #fab828 100%);
+    }
+    .custom-gradient-btn:hover {
+      filter: brightness(1.1);
+    }
   </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col bg-[#060910]">
 
-  <!-- Top Navigation Bar -->
-  <header class="sticky top-0 z-40 bg-[#090d16]/95 backdrop-blur-md border-b border-white/10 px-6 py-3.5 flex items-center justify-between">
+  <!-- Top Global Navigation Bar -->
+  <header class="sticky top-0 z-40 bg-[#090d16]/95 backdrop-blur-md border-b border-white/10 px-4 sm:px-6 py-3.5 flex items-center justify-between">
     <div class="flex items-center gap-4">
-      <div class="flex items-center gap-2">
-        <span class="text-xl font-black tracking-wider text-white">AR<span class="text-brandCoral">C</span>NF</span>
-        <span class="text-xs uppercase px-2 py-0.5 rounded-md bg-brandMagenta/20 text-brandMagenta border border-brandMagenta/30 font-bold tracking-widest">
-          ADMIN CMS
-        </span>
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-brandOrange to-brandYellow flex items-center justify-center shadow-lg shadow-brandOrange/20 font-black text-white text-sm">
+          V
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-lg font-black tracking-wider text-white">VERGE <span class="text-brandOrange">•</span> CMS</span>
+            <span class="text-[10px] uppercase px-2 py-0.5 rounded-full bg-brandOrange/20 text-brandOrange border border-brandOrange/30 font-bold tracking-wider">
+              Control Hub
+            </span>
+          </div>
+          <p class="text-[10px] text-gray-400 hidden sm:block">Thanet Social Directory &amp; ARCONF Conference Suite</p>
+        </div>
       </div>
-      <div class="h-4 w-px bg-white/20 hidden sm:block"></div>
-      <span class="text-xs text-gray-400 hidden sm:inline">Backend API: <span id="apiStatusBadge" class="text-emerald-400 font-semibold">● Connected (Port 3002)</span></span>
+      <div class="h-5 w-px bg-white/15 hidden md:block"></div>
+      <span class="text-xs text-gray-400 hidden md:inline flex items-center gap-1.5">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span id="apiStatusBadge" class="text-emerald-400 font-semibold">API Online (Port 3001)</span>
+      </span>
     </div>
 
-    <div class="flex items-center gap-3">
-      <a href="/arconf.html" target="_blank" class="text-xs px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium flex items-center gap-1.5 transition active:scale-95 border border-white/10">
-        <span>View Public Site</span>
-        <svg class="w-3.5 h-3.5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+    <!-- Right Header Actions -->
+    <div class="flex items-center gap-2.5">
+      <a href="/" target="_blank" class="text-xs px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium flex items-center gap-1.5 transition active:scale-95 border border-white/10" title="Open Public Directory in new tab">
+        <span>🌐 Public Directory</span>
+        <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
       </a>
-      <button onclick="fetchAllData(true)" class="text-xs px-3 py-1.5 rounded-xl bg-brandIndigo hover:bg-brandIndigo/80 text-white font-bold flex items-center gap-1.5 transition active:scale-95 shadow">
-        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+      <a href="/arconf.html" target="_blank" class="text-xs px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white font-medium flex items-center gap-1.5 transition active:scale-95 border border-white/10 hidden sm:flex" title="Open ARCONF Site">
+        <span>🎟️ ARCONF</span>
+      </a>
+      <button onclick="fetchAllData(true)" class="text-xs px-3.5 py-1.5 rounded-xl bg-brandIndigo hover:bg-brandIndigo/80 text-white font-bold flex items-center gap-1.5 transition active:scale-95 shadow">
+        <svg id="refreshSpinIcon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
         <span>Refresh</span>
       </button>
     </div>
@@ -94,132 +126,190 @@
   <div class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col gap-6">
 
     <!-- Tab Navigation Pills -->
-    <nav class="flex flex-wrap items-center gap-2 p-1.5 rounded-2xl bg-white/5 border border-white/10 text-xs font-semibold">
-      <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn px-4 py-2 rounded-xl text-white bg-white/15 font-bold transition shadow">
-        📊 Overview
+    <nav class="flex flex-wrap items-center gap-1.5 p-1.5 rounded-2xl bg-white/5 border border-white/10 text-xs font-semibold overflow-x-auto">
+      <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn px-4 py-2 rounded-xl text-white bg-white/15 font-bold transition shadow flex items-center gap-1.5">
+        <span>📊</span> <span>Overview</span>
       </button>
-      <button onclick="switchTab('settings')" id="tab-settings" class="tab-btn px-4 py-2 rounded-xl text-gray-400 hover:text-white transition">
-        ⚙️ Event &amp; Countdown
+      <button onclick="switchTab('events')" id="tab-events" class="tab-btn px-4 py-2 rounded-xl text-gray-400 hover:text-white transition flex items-center gap-1.5">
+        <span>🎪</span> <span>Events Directory</span>
+        <span id="badgeEventsCount" class="ml-1 px-1.5 py-0.2 rounded-full bg-brandOrange/30 text-brandOrange text-[10px] font-bold">16</span>
       </button>
-      <button onclick="switchTab('speakers')" id="tab-speakers" class="tab-btn px-4 py-2 rounded-xl text-gray-400 hover:text-white transition">
-        🎙️ Speakers &amp; Sessions
+      <button onclick="switchTab('venues')" id="tab-venues" class="tab-btn px-4 py-2 rounded-xl text-gray-400 hover:text-white transition flex items-center gap-1.5">
+        <span>📍</span> <span>Venues</span>
+        <span id="badgeVenuesCount" class="ml-1 px-1.5 py-0.2 rounded-full bg-brandTeal/30 text-brandTeal text-[10px] font-bold">7</span>
       </button>
-      <button onclick="switchTab('stages')" id="tab-stages" class="tab-btn px-4 py-2 rounded-xl text-gray-400 hover:text-white transition">
-        🏟️ Stages &amp; Tracks
+      <button onclick="switchTab('scrapers')" id="tab-scrapers" class="tab-btn px-4 py-2 rounded-xl text-gray-400 hover:text-white transition flex items-center gap-1.5">
+        <span>🤖</span> <span>Scrapers &amp; Sync</span>
       </button>
-      <button onclick="switchTab('poll')" id="tab-poll" class="tab-btn px-4 py-2 rounded-xl text-gray-400 hover:text-white transition">
-        🗳️ Live Polls
+      <button onclick="switchTab('settings')" id="tab-settings" class="tab-btn px-4 py-2 rounded-xl text-gray-400 hover:text-white transition flex items-center gap-1.5">
+        <span>⚙️</span> <span>Event Settings</span>
       </button>
-      <button onclick="switchTab('passes')" id="tab-passes" class="tab-btn px-4 py-2 rounded-xl text-gray-400 hover:text-white transition">
-        🎟️ Attendees &amp; Passes
+      <button onclick="switchTab('speakers')" id="tab-speakers" class="tab-btn px-4 py-2 rounded-xl text-gray-400 hover:text-white transition flex items-center gap-1.5">
+        <span>🎙️</span> <span>Speakers</span>
+      </button>
+      <button onclick="switchTab('stages')" id="tab-stages" class="tab-btn px-4 py-2 rounded-xl text-gray-400 hover:text-white transition flex items-center gap-1.5">
+        <span>🏟️</span> <span>Stages</span>
+      </button>
+      <button onclick="switchTab('poll')" id="tab-poll" class="tab-btn px-4 py-2 rounded-xl text-gray-400 hover:text-white transition flex items-center gap-1.5">
+        <span>🗳️</span> <span>Live Polls</span>
+      </button>
+      <button onclick="switchTab('passes')" id="tab-passes" class="tab-btn px-4 py-2 rounded-xl text-gray-400 hover:text-white transition flex items-center gap-1.5">
+        <span>🎟️</span> <span>Passes &amp; RSVPs</span>
       </button>
     </nav>
 
     <!-- ======================================================== -->
-    <!-- TAB 1: OVERVIEW -->
+    <!-- TAB 1: OVERVIEW & ANALYTICS -->
     <!-- ======================================================== -->
     <div id="section-overview" class="tab-content space-y-6">
       
       <!-- Metrics Cards -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
-        <div class="glass-card rounded-2xl p-5 border-l-4 border-brandTeal">
+        <div onclick="switchTab('events')" class="glass-card glass-card-hover rounded-2xl p-5 border-l-4 border-brandOrange cursor-pointer">
           <div class="flex items-center justify-between text-gray-400 text-xs font-semibold uppercase">
-            <span>Confirmed Attendees</span>
-            <span class="text-brandTeal text-base">👥</span>
+            <span>Directory Events</span>
+            <span class="text-brandOrange text-base">🎪</span>
           </div>
-          <div id="statAttendees" class="text-3xl font-black text-white mt-2">--</div>
-          <p class="text-[11px] text-gray-400 mt-1">Live attendee ticker value</p>
+          <div id="statEventsCount" class="text-3xl font-black text-white mt-2">--</div>
+          <div class="flex items-center justify-between text-[11px] text-gray-400 mt-1">
+            <span>Margate • Ramsgate • Broadstairs</span>
+            <span class="text-brandOrange font-bold">Manage →</span>
+          </div>
         </div>
 
-        <div class="glass-card rounded-2xl p-5 border-l-4 border-brandMagenta">
+        <div onclick="switchTab('venues')" class="glass-card glass-card-hover rounded-2xl p-5 border-l-4 border-brandTeal cursor-pointer">
           <div class="flex items-center justify-between text-gray-400 text-xs font-semibold uppercase">
-            <span>Passes Claimed</span>
+            <span>Thanet Venues</span>
+            <span class="text-brandTeal text-base">📍</span>
+          </div>
+          <div id="statVenuesCount" class="text-3xl font-black text-white mt-2">--</div>
+          <div class="flex items-center justify-between text-[11px] text-gray-400 mt-1">
+            <span>Verified coastal locations</span>
+            <span class="text-brandTeal font-bold">Manage →</span>
+          </div>
+        </div>
+
+        <div onclick="switchTab('scrapers')" class="glass-card glass-card-hover rounded-2xl p-5 border-l-4 border-brandCyan cursor-pointer">
+          <div class="flex items-center justify-between text-gray-400 text-xs font-semibold uppercase">
+            <span>Ingestion Status</span>
+            <span class="text-brandCyan text-base">🤖</span>
+          </div>
+          <div id="statScraperStatus" class="text-2xl font-black text-emerald-400 mt-2">Active</div>
+          <div class="flex items-center justify-between text-[11px] text-gray-400 mt-1">
+            <span>Auto sync: every 30 mins</span>
+            <span class="text-brandCyan font-bold">Run Now →</span>
+          </div>
+        </div>
+
+        <div onclick="switchTab('passes')" class="glass-card glass-card-hover rounded-2xl p-5 border-l-4 border-brandMagenta cursor-pointer">
+          <div class="flex items-center justify-between text-gray-400 text-xs font-semibold uppercase">
+            <span>Passes &amp; RSVPs</span>
             <span class="text-brandMagenta text-base">🎟️</span>
           </div>
           <div id="statPasses" class="text-3xl font-black text-white mt-2">--</div>
-          <p class="text-[11px] text-gray-400 mt-1">Stored digital pass records</p>
-        </div>
-
-        <div class="glass-card rounded-2xl p-5 border-l-4 border-brandIndigo">
-          <div class="flex items-center justify-between text-gray-400 text-xs font-semibold uppercase">
-            <span>Keynote Speakers</span>
-            <span class="text-brandIndigo text-base">🎤</span>
+          <div class="flex items-center justify-between text-[11px] text-gray-400 mt-1">
+            <span>Claimed digital badges</span>
+            <span class="text-brandMagenta font-bold">View List →</span>
           </div>
-          <div id="statSpeakers" class="text-3xl font-black text-white mt-2">--</div>
-          <p class="text-[11px] text-gray-400 mt-1">Across all 4 stage tracks</p>
-        </div>
-
-        <div class="glass-card rounded-2xl p-5 border-l-4 border-brandCoral">
-          <div class="flex items-center justify-between text-gray-400 text-xs font-semibold uppercase">
-            <span>Live Poll Votes</span>
-            <span class="text-brandCoral text-base">🗳️</span>
-          </div>
-          <div id="statVotes" class="text-3xl font-black text-white mt-2">--</div>
-          <p class="text-[11px] text-gray-400 mt-1">Audience engagement votes</p>
         </div>
 
       </div>
 
-      <!-- Quick Actions and Status -->
+      <!-- Quick Actions Bar -->
+      <div class="p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-gray-400">⚡ Quick Actions:</span>
+          <button onclick="openEventModal()" class="px-3.5 py-2 rounded-xl bg-brandOrange hover:bg-brandOrange/80 text-white font-bold text-xs flex items-center gap-1.5 transition active:scale-95 shadow">
+            <span>+ New Event</span>
+          </button>
+          <button onclick="openVenueModal()" class="px-3.5 py-2 rounded-xl bg-brandTeal hover:bg-brandTeal/80 text-white font-bold text-xs flex items-center gap-1.5 transition active:scale-95 shadow">
+            <span>+ New Venue</span>
+          </button>
+          <button onclick="triggerLiveScrape()" class="px-3.5 py-2 rounded-xl bg-brandIndigo hover:bg-brandIndigo/80 text-white font-bold text-xs flex items-center gap-1.5 transition active:scale-95 shadow">
+            <span>🤖 Trigger Scraper</span>
+          </button>
+        </div>
+        <div class="flex items-center gap-2">
+          <a href="/api/arconf/passes/export" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 transition active:scale-95">
+            <span>📥 Export Roster CSV</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Town Breakdown & Live Conference Status -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
+        <!-- Left 2 Cols: Town Distribution -->
         <div class="lg:col-span-2 glass-card rounded-2xl p-6">
           <h3 class="headline-font text-lg font-bold text-white mb-4 flex items-center justify-between">
-            <span>Active Conference Snapshot</span>
-            <span class="text-xs font-mono px-2.5 py-1 rounded bg-white/10 text-brandCyan">LIVE BROADCAST READY</span>
+            <span>Thanet Coastal Activity Distribution</span>
+            <span class="text-xs font-mono px-2.5 py-1 rounded bg-white/10 text-brandCyan">LIVE DIRECTORY DATA</span>
           </h3>
-          <div class="space-y-3 text-xs">
-            <div class="flex items-center justify-between py-2 border-b border-white/5">
-              <span class="text-gray-400">Conference Name</span>
-              <span id="quickTitle" class="font-bold text-white">ARCONF — WE COLLAB IT</span>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+            <div class="p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col justify-between">
+              <div>
+                <span class="text-xs font-bold text-cyan-400 uppercase tracking-wider">Margate</span>
+                <p class="text-[11px] text-gray-400 mt-0.5">Old Town &amp; Cliftonville</p>
+              </div>
+              <div id="countMargate" class="text-2xl font-black text-white mt-3">--</div>
             </div>
-            <div class="flex items-center justify-between py-2 border-b border-white/5">
-              <span class="text-gray-400">Main Event Date</span>
-              <span id="quickDate" class="font-bold text-brandYellow">20 June 2026 • 06:00 PM GMT</span>
+            <div class="p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col justify-between">
+              <div>
+                <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">Ramsgate</span>
+                <p class="text-[11px] text-gray-400 mt-0.5">Royal Harbour &amp; Town</p>
+              </div>
+              <div id="countRamsgate" class="text-2xl font-black text-white mt-3">--</div>
             </div>
-            <div class="flex items-center justify-between py-2 border-b border-white/5">
-              <span class="text-gray-400">Location</span>
-              <span id="quickLocation" class="font-bold text-white">London Olympia &amp; Metaverse Broadcast</span>
-            </div>
-            <div class="flex items-center justify-between py-2 border-b border-white/5">
-              <span class="text-gray-400">Countdown Target</span>
-              <span id="quickCountdown" class="font-mono text-brandPink font-bold">2026-06-20T18:00:00Z</span>
-            </div>
-            <div class="flex items-center justify-between py-2">
-              <span class="text-gray-400">Accreditation Registration</span>
-              <span id="quickRegStatus" class="font-bold text-emerald-400">OPEN / ACCEPTING BADGES</span>
+            <div class="p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col justify-between">
+              <div>
+                <span class="text-xs font-bold text-rose-400 uppercase tracking-wider">Broadstairs</span>
+                <p class="text-[11px] text-gray-400 mt-0.5">Viking Bay &amp; Cliffs</p>
+              </div>
+              <div id="countBroadstairs" class="text-2xl font-black text-white mt-3">--</div>
             </div>
           </div>
-          <div class="mt-5 flex gap-3">
-            <button onclick="switchTab('settings')" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition">
-              Edit Settings →
-            </button>
-            <button onclick="switchTab('speakers')" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition">
-              Manage Speakers →
-            </button>
+
+          <div class="space-y-3 text-xs">
+            <div class="flex items-center justify-between py-2 border-b border-white/5">
+              <span class="text-gray-400">Featured Events Active</span>
+              <span id="quickFeaturedCount" class="font-bold text-brandYellow">--</span>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-white/5">
+              <span class="text-gray-400">Trending Events</span>
+              <span id="quickTrendingCount" class="font-bold text-brandOrange">--</span>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-white/5">
+              <span class="text-gray-400">Directory Coverage</span>
+              <span class="font-bold text-white">CT9, CT10, CT11, CT12 Postcodes</span>
+            </div>
           </div>
         </div>
 
+        <!-- Right Col: Registration & Quick Controls -->
         <div class="glass-card rounded-2xl p-6 flex flex-col justify-between">
           <div>
-            <h3 class="headline-font text-lg font-bold text-white mb-2">Registration Status</h3>
+            <h3 class="headline-font text-lg font-bold text-white mb-2">Public Pass Access</h3>
             <p class="text-xs text-gray-400 leading-relaxed mb-4">
-              Toggle whether attendees can claim digital passes from the landing page.
+              Toggle whether community members and visitors can claim passes and RSVP from the live site.
             </p>
             <div class="p-4 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between">
               <div>
-                <div class="text-xs font-bold text-white">Public Passes</div>
-                <div class="text-[11px] text-gray-400">Instant barcode creation</div>
+                <div class="text-xs font-bold text-white">Public Registration</div>
+                <div id="quickRegStatus" class="text-[11px] font-semibold text-emerald-400">ACCEPTING PASSES</div>
               </div>
-              <input type="checkbox" id="regToggleCheckbox" onchange="toggleRegistration(this.checked)" class="w-5 h-5 rounded text-brandMagenta focus:ring-brandMagenta bg-gray-900 border-gray-700"/>
+              <input type="checkbox" id="regToggleCheckbox" onchange="toggleRegistration(this.checked)" class="w-5 h-5 rounded text-brandOrange focus:ring-brandOrange bg-gray-900 border-gray-700 cursor-pointer"/>
             </div>
           </div>
 
-          <div class="mt-6 pt-4 border-t border-white/10">
-            <a href="/api/arconf/passes/export" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-2 transition active:scale-95 shadow">
-              <span>📥 Export Attendee Roster (CSV)</span>
-            </a>
+          <div class="mt-6 pt-4 border-t border-white/10 space-y-2">
+            <button onclick="switchTab('events')" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition">
+              View All Directory Events →
+            </button>
+            <button onclick="switchTab('scrapers')" class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white font-medium text-xs transition">
+              Manage Data Ingestion →
+            </button>
           </div>
         </div>
 
@@ -228,16 +318,258 @@
     </div>
 
     <!-- ======================================================== -->
-    <!-- TAB 2: SETTINGS & COUNTDOWN -->
+    <!-- TAB 2: EVENTS DIRECTORY (FULL CRUD) -->
+    <!-- ======================================================== -->
+    <div id="section-events" class="tab-content hidden space-y-6">
+      
+      <!-- Events Header with Controls -->
+      <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+        <div>
+          <h3 class="headline-font text-xl font-bold text-white flex items-center gap-2">
+            <span>🎪 Thanet Events Directory</span>
+            <span id="eventsTotalLabel" class="text-xs font-normal text-gray-400">(0 listings)</span>
+          </h3>
+          <p class="text-xs text-gray-400">Manage, edit, publish, feature, or remove community happenings across Thanet.</p>
+        </div>
+
+        <button onclick="openEventModal()" class="px-4 py-2.5 rounded-xl bg-brandOrange hover:bg-brandOrange/80 text-white font-bold text-xs flex items-center gap-2 transition active:scale-95 shadow-lg shadow-brandOrange/25">
+          <span>+ Add New Event</span>
+        </button>
+      </div>
+
+      <!-- Filter Controls Bar -->
+      <div class="glass-card rounded-2xl p-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 text-xs">
+        <!-- Search input -->
+        <div class="relative flex-1">
+          <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+            🔍
+          </span>
+          <input type="text" id="eventSearchInput" oninput="filterEventsList()" placeholder="Search by title, venue, organizer, or tags..." class="w-full pl-9 pr-3 py-2 bg-white/5 border border-white/15 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-brandOrange"/>
+        </div>
+
+        <!-- Town Filter -->
+        <div class="flex items-center gap-1.5 overflow-x-auto">
+          <span class="text-gray-400 font-semibold mr-1">Town:</span>
+          <button onclick="setEventTownFilter('all')" class="evt-town-filter px-3 py-1.5 rounded-lg bg-white/15 text-white font-bold transition" data-town="all">All</button>
+          <button onclick="setEventTownFilter('Margate')" class="evt-town-filter px-3 py-1.5 rounded-lg bg-white/5 text-gray-400 hover:text-white transition" data-town="Margate">Margate</button>
+          <button onclick="setEventTownFilter('Ramsgate')" class="evt-town-filter px-3 py-1.5 rounded-lg bg-white/5 text-gray-400 hover:text-white transition" data-town="Ramsgate">Ramsgate</button>
+          <button onclick="setEventTownFilter('Broadstairs')" class="evt-town-filter px-3 py-1.5 rounded-lg bg-white/5 text-gray-400 hover:text-white transition" data-town="Broadstairs">Broadstairs</button>
+        </div>
+
+        <!-- Category Dropdown -->
+        <select id="eventCategorySelect" onchange="filterEventsList()" class="bg-[#121826] border border-white/15 text-white rounded-xl px-3 py-2 focus:outline-none focus:border-brandOrange">
+          <option value="all">All Categories</option>
+          <option value="activity">Sports &amp; Fitness</option>
+          <option value="volunteer">Volunteering &amp; Community</option>
+          <option value="meetup">Social Circles &amp; Meetups</option>
+          <option value="event">Club Nights &amp; Music Gigs</option>
+          <option value="creative">Arts &amp; Creative Workshops</option>
+        </select>
+      </div>
+
+      <!-- Events Table -->
+      <div class="glass-card rounded-2xl overflow-hidden border border-white/10">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-white/5 text-gray-400 uppercase font-semibold border-b border-white/10">
+              <tr>
+                <th class="px-4 py-3">Event</th>
+                <th class="px-4 py-3">Town &amp; Venue</th>
+                <th class="px-4 py-3">Category</th>
+                <th class="px-4 py-3">Date &amp; Time</th>
+                <th class="px-4 py-3">Price</th>
+                <th class="px-4 py-3 text-center">Featured</th>
+                <th class="px-4 py-3 text-center">Trending</th>
+                <th class="px-4 py-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="eventsTableBody" class="divide-y divide-white/5 text-gray-200">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- TAB 3: VENUES DIRECTORY (FULL CRUD) -->
+    <!-- ======================================================== -->
+    <div id="section-venues" class="tab-content hidden space-y-6">
+      
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h3 class="headline-font text-xl font-bold text-white flex items-center gap-2">
+            <span>📍 Thanet Venues &amp; Spaces</span>
+            <span id="venuesTotalLabel" class="text-xs font-normal text-gray-400">(0 locations)</span>
+          </h3>
+          <p class="text-xs text-gray-400">Curate venues, parks, pools, galleries, and grassroots spaces across Margate, Ramsgate, and Broadstairs.</p>
+        </div>
+
+        <button onclick="openVenueModal()" class="px-4 py-2.5 rounded-xl bg-brandTeal hover:bg-brandTeal/80 text-white font-bold text-xs flex items-center gap-2 transition active:scale-95 shadow-lg shadow-brandTeal/25">
+          <span>+ Add New Venue</span>
+        </button>
+      </div>
+
+      <!-- Venue Search and Town Filters -->
+      <div class="glass-card rounded-2xl p-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs">
+        <div class="relative flex-1">
+          <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+            🔍
+          </span>
+          <input type="text" id="venueSearchInput" oninput="filterVenuesList()" placeholder="Search venue by name, address, or facilities..." class="w-full pl-9 pr-3 py-2 bg-white/5 border border-white/15 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-brandTeal"/>
+        </div>
+
+        <div class="flex items-center gap-1.5">
+          <span class="text-gray-400 font-semibold mr-1">Town:</span>
+          <button onclick="setVenueTownFilter('all')" class="ven-town-filter px-3 py-1.5 rounded-lg bg-white/15 text-white font-bold transition" data-town="all">All</button>
+          <button onclick="setVenueTownFilter('Margate')" class="ven-town-filter px-3 py-1.5 rounded-lg bg-white/5 text-gray-400 hover:text-white transition" data-town="Margate">Margate</button>
+          <button onclick="setVenueTownFilter('Ramsgate')" class="ven-town-filter px-3 py-1.5 rounded-lg bg-white/5 text-gray-400 hover:text-white transition" data-town="Ramsgate">Ramsgate</button>
+          <button onclick="setVenueTownFilter('Broadstairs')" class="ven-town-filter px-3 py-1.5 rounded-lg bg-white/5 text-gray-400 hover:text-white transition" data-town="Broadstairs">Broadstairs</button>
+        </div>
+      </div>
+
+      <!-- Venues Grid -->
+      <div id="venuesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Rendered via JS -->
+      </div>
+
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- TAB 4: SCRAPERS & INGESTION HUB -->
+    <!-- ======================================================== -->
+    <div id="section-scrapers" class="tab-content hidden space-y-6">
+      
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h3 class="headline-font text-xl font-bold text-white flex items-center gap-2">
+            <span>🤖 Automated Web Ingestion &amp; Feed Hub</span>
+            <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono font-bold">ONLINE</span>
+          </h3>
+          <p class="text-xs text-gray-400">Real-time status of connected scraping feeds, background sync workers, and manual ingestion triggers.</p>
+        </div>
+
+        <button id="triggerScrapeBtn" onclick="triggerLiveScrape()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-brandOrange to-brandYellow text-white font-extrabold text-xs flex items-center gap-2 transition active:scale-95 shadow-lg shadow-brandOrange/25">
+          <span id="scrapeBtnIcon">🚀</span>
+          <span id="scrapeBtnText">Trigger Live Ingestion</span>
+        </button>
+      </div>
+
+      <!-- Active Sources Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        
+        <div class="glass-card rounded-2xl p-4 border border-white/10 flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-orange-500/20 border border-orange-500/30 flex items-center justify-center text-lg flex-shrink-0">
+            🎡
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-white">Dreamland Margate Box Office</span>
+              <span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-400 font-bold">ACTIVE</span>
+            </div>
+            <p class="text-[11px] text-gray-400 mt-1">Hall By The Sea &amp; Scenic Stage live music gigs &amp; club specials.</p>
+          </div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-4 border border-white/10 flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-teal-500/20 border border-teal-500/30 flex items-center justify-center text-lg flex-shrink-0">
+            ⚽
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-white">Hartsdown Park &amp; Sports</span>
+              <span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-400 font-bold">ACTIVE</span>
+            </div>
+            <p class="text-[11px] text-gray-400 mt-1">3G all-weather floodlit football leagues, social tennis, and tournaments.</p>
+          </div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-4 border border-white/10 flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-rose-500/20 border border-rose-500/30 flex items-center justify-center text-lg flex-shrink-0">
+            🎟️
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-white">Eventbrite East Kent</span>
+              <span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-400 font-bold">ACTIVE</span>
+            </div>
+            <p class="text-[11px] text-gray-400 mt-1">Direct API &amp; HTML crawler covering postcodes CT9, CT10, CT11, CT12.</p>
+          </div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-4 border border-white/10 flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-lg flex-shrink-0">
+            👥
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-white">Meetup.com Thanet Circles</span>
+              <span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-400 font-bold">ACTIVE</span>
+            </div>
+            <p class="text-[11px] text-gray-400 mt-1">Grassroots meetups, coastal walking clubs, and tech/creative socials.</p>
+          </div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-4 border border-white/10 flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-lg flex-shrink-0">
+            📱
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-white">Instagram Cultural Feeds</span>
+              <span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-400 font-bold">ACTIVE</span>
+            </div>
+            <p class="text-[11px] text-gray-400 mt-1">Margate Arts Club, Faith In Strangers, Ramsgate Music Hall venue flyers.</p>
+          </div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-4 border border-white/10 flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-yellow-500/20 border border-yellow-500/30 flex items-center justify-center text-lg flex-shrink-0">
+            🤝
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-white">Community Submissions</span>
+              <span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-400 font-bold">ACTIVE</span>
+            </div>
+            <p class="text-[11px] text-gray-400 mt-1">Live user-submitted events from the VERGE submission modal.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Scraper Log Terminal -->
+      <div class="glass-card rounded-2xl p-5 border border-white/10">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
+            <span class="text-xs font-mono font-bold text-gray-300 ml-2">Ingestion Pipeline Terminal Output</span>
+          </div>
+          <button onclick="clearScraperLogs()" class="text-[11px] text-gray-400 hover:text-white transition">
+            Clear Logs
+          </button>
+        </div>
+
+        <pre id="scraperConsole" class="bg-[#05070c] p-4 rounded-xl text-gray-300 font-mono text-xs overflow-x-auto max-h-72 leading-relaxed border border-white/5">
+[Zokal Aggregator] Background worker online. Monitoring Thanet event feeds...
+Ready for manual trigger or scheduled sync.
+        </pre>
+      </div>
+
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- TAB 5: EVENT & COUNTDOWN SETTINGS -->
     <!-- ======================================================== -->
     <div id="section-settings" class="tab-content hidden space-y-6">
-      
       <div class="glass-card rounded-2xl p-6">
         <h3 class="headline-font text-xl font-bold text-white mb-2">Event Configuration &amp; Announcements</h3>
         <p class="text-xs text-gray-400 mb-6">Modify header announcements, event location, countdown timestamps, and hero details.</p>
 
         <form id="settingsForm" onsubmit="saveSettings(event)" class="space-y-4 text-xs">
-          
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block font-bold text-gray-300 uppercase tracking-wider mb-1">Conference Title</label>
@@ -295,17 +627,14 @@
               💾 Save Event Settings
             </button>
           </div>
-
         </form>
       </div>
-
     </div>
 
     <!-- ======================================================== -->
-    <!-- TAB 3: SPEAKERS & SESSIONS (CRUD) -->
+    <!-- TAB 6: SPEAKERS & SESSIONS -->
     <!-- ======================================================== -->
     <div id="section-speakers" class="tab-content hidden space-y-6">
-      
       <div class="flex items-center justify-between">
         <div>
           <h3 class="headline-font text-xl font-bold text-white">Speakers &amp; Keynotes Roster</h3>
@@ -316,15 +645,13 @@
         </button>
       </div>
 
-      <!-- Speakers Grid -->
       <div id="speakersContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <!-- Rendered via JS -->
       </div>
-
     </div>
 
     <!-- ======================================================== -->
-    <!-- TAB 4: STAGES & TRACKS -->
+    <!-- TAB 7: STAGES & TRACKS -->
     <!-- ======================================================== -->
     <div id="section-stages" class="tab-content hidden space-y-6">
       <h3 class="headline-font text-xl font-bold text-white">Stage &amp; Color Track Details</h3>
@@ -336,10 +663,9 @@
     </div>
 
     <!-- ======================================================== -->
-    <!-- TAB 5: LIVE POLLS -->
+    <!-- TAB 8: LIVE POLLS -->
     <!-- ======================================================== -->
     <div id="section-poll" class="tab-content hidden space-y-6">
-      
       <div class="glass-card rounded-2xl p-6">
         <div class="flex items-center justify-between mb-4">
           <div>
@@ -372,14 +698,12 @@
           </div>
         </form>
       </div>
-
     </div>
 
     <!-- ======================================================== -->
-    <!-- TAB 6: PASSES & ATTENDEES -->
+    <!-- TAB 9: PASSES & ATTENDEES -->
     <!-- ======================================================== -->
     <div id="section-passes" class="tab-content hidden space-y-6">
-      
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h3 class="headline-font text-xl font-bold text-white">Claimed Accreditation Passes</h3>
@@ -412,9 +736,179 @@
           </table>
         </div>
       </div>
-
     </div>
 
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: ADD / EDIT DIRECTORY EVENT -->
+  <!-- ======================================================== -->
+  <div id="eventModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="glass-card rounded-3xl max-w-2xl w-full p-6 text-white relative shadow-2xl my-8">
+      <button onclick="closeEventModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-gray-400 hover:text-white transition">
+        ✕
+      </button>
+
+      <h3 id="eventModalTitle" class="headline-font text-xl font-bold mb-4">Add Directory Event</h3>
+
+      <form id="eventForm" onsubmit="saveEvent(event)" class="space-y-4 text-xs">
+        <input type="hidden" id="evt_id"/>
+
+        <div>
+          <label class="block font-bold text-gray-300 uppercase mb-1">Event Title *</label>
+          <input type="text" id="evt_title" required placeholder="e.g. Broadstairs Sunset Trail Run" class="w-full bg-white/5 border border-white/15 rounded-xl px-3.5 py-2 text-white focus:outline-none focus:border-brandOrange"/>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-gray-300 uppercase mb-1">Town *</label>
+            <select id="evt_town" required class="w-full bg-[#121826] border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandOrange">
+              <option value="Margate">Margate</option>
+              <option value="Ramsgate">Ramsgate</option>
+              <option value="Broadstairs">Broadstairs</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-gray-300 uppercase mb-1">Category *</label>
+            <select id="evt_category" required class="w-full bg-[#121826] border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandOrange">
+              <option value="activity">Sports &amp; Fitness</option>
+              <option value="volunteer">Volunteering &amp; Community</option>
+              <option value="meetup">Social Circles &amp; Meetups</option>
+              <option value="event">Club Nights &amp; Music Gigs</option>
+              <option value="creative">Arts &amp; Creative Workshops</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-gray-300 uppercase mb-1">Venue Name / Location *</label>
+            <input type="text" id="evt_venue" required placeholder="e.g. Walpole Bay Tidal Pool" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandOrange"/>
+          </div>
+          <div>
+            <label class="block font-bold text-gray-300 uppercase mb-1">Organizer / Host</label>
+            <input type="text" id="evt_organizer" placeholder="e.g. Thanet Coastal Wild Swimmers" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandOrange"/>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block font-bold text-gray-300 uppercase mb-1">Date (YYYY-MM-DD) *</label>
+            <input type="date" id="evt_date" required class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandOrange"/>
+          </div>
+          <div>
+            <label class="block font-bold text-gray-300 uppercase mb-1">Time Range</label>
+            <input type="text" id="evt_time" placeholder="10:00 - 12:00" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandOrange"/>
+          </div>
+          <div>
+            <label class="block font-bold text-gray-300 uppercase mb-1">Price / Fee</label>
+            <input type="text" id="evt_price" placeholder="Free (Drop-in)" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandOrange"/>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-gray-300 uppercase mb-1">Banner Image URL</label>
+          <input type="url" id="evt_image" placeholder="https://images.unsplash.com/photo-..." class="w-full bg-white/5 border border-white/15 rounded-xl px-3.5 py-2 text-white focus:outline-none focus:border-brandOrange"/>
+        </div>
+
+        <div>
+          <label class="block font-bold text-gray-300 uppercase mb-1">Description</label>
+          <textarea id="evt_desc" rows="3" placeholder="Describe the vibe, who it's for, and what to bring..." class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandOrange"></textarea>
+        </div>
+
+        <div>
+          <label class="block font-bold text-gray-300 uppercase mb-1">Tags (Comma-separated)</label>
+          <input type="text" id="evt_tags" placeholder="Outdoors, WildSwimming, Wellness, Free" class="w-full bg-white/5 border border-white/15 rounded-xl px-3.5 py-2 text-white focus:outline-none focus:border-brandOrange"/>
+        </div>
+
+        <div class="flex items-center gap-6 pt-2">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="evt_featured" class="w-4 h-4 rounded text-brandOrange focus:ring-brandOrange bg-gray-900 border-gray-700"/>
+            <span class="font-bold text-gray-200">⭐ Mark as Featured</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="evt_trending" checked class="w-4 h-4 rounded text-brandOrange focus:ring-brandOrange bg-gray-900 border-gray-700"/>
+            <span class="font-bold text-gray-200">🔥 Show in Trending</span>
+          </label>
+        </div>
+
+        <div class="pt-4 flex items-center justify-end gap-3 border-t border-white/10">
+          <button type="button" onclick="closeEventModal()" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold transition">
+            Cancel
+          </button>
+          <button type="submit" class="px-6 py-2 rounded-xl bg-brandOrange hover:bg-brandOrange/80 text-white font-bold transition shadow-lg shadow-brandOrange/30">
+            Save Event
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: ADD / EDIT VENUE -->
+  <!-- ======================================================== -->
+  <div id="venueModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="glass-card rounded-3xl max-w-lg w-full p-6 text-white relative shadow-2xl my-8">
+      <button onclick="closeVenueModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-gray-400 hover:text-white transition">
+        ✕
+      </button>
+
+      <h3 id="venueModalTitle" class="headline-font text-xl font-bold mb-4">Add Thanet Venue</h3>
+
+      <form id="venueForm" onsubmit="saveVenue(event)" class="space-y-4 text-xs">
+        <input type="hidden" id="ven_id"/>
+
+        <div>
+          <label class="block font-bold text-gray-300 uppercase mb-1">Venue Name *</label>
+          <input type="text" id="ven_name" required placeholder="e.g. Ramsgate Music Hall" class="w-full bg-white/5 border border-white/15 rounded-xl px-3.5 py-2 text-white focus:outline-none focus:border-brandTeal"/>
+        </div>
+
+        <div>
+          <label class="block font-bold text-gray-300 uppercase mb-1">Town *</label>
+          <select id="ven_town" required class="w-full bg-[#121826] border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandTeal">
+            <option value="Margate">Margate</option>
+            <option value="Ramsgate">Ramsgate</option>
+            <option value="Broadstairs">Broadstairs</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold text-gray-300 uppercase mb-1">Street Address *</label>
+          <input type="text" id="ven_address" required placeholder="13 Turner Street, Ramsgate CT11 8NJ" class="w-full bg-white/5 border border-white/15 rounded-xl px-3.5 py-2 text-white focus:outline-none focus:border-brandTeal"/>
+        </div>
+
+        <div>
+          <label class="block font-bold text-gray-300 uppercase mb-1">Facilities &amp; Highlights (Comma-separated)</label>
+          <input type="text" id="ven_facilities" placeholder="Intimate Stage, Craft Beer Bar, Sea Views" class="w-full bg-white/5 border border-white/15 rounded-xl px-3.5 py-2 text-white focus:outline-none focus:border-brandTeal"/>
+        </div>
+
+        <div>
+          <label class="block font-bold text-gray-300 uppercase mb-1">Photo Image URL</label>
+          <input type="url" id="ven_image" placeholder="https://images.unsplash.com/..." class="w-full bg-white/5 border border-white/15 rounded-xl px-3.5 py-2 text-white focus:outline-none focus:border-brandTeal"/>
+        </div>
+
+        <div>
+          <label class="block font-bold text-gray-300 uppercase mb-1">Short Description</label>
+          <textarea id="ven_desc" rows="2" placeholder="Iconic grassroots music and community venue..." class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandTeal"></textarea>
+        </div>
+
+        <div class="pt-2">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="ven_verified" checked class="w-4 h-4 rounded text-brandTeal focus:ring-brandTeal bg-gray-900 border-gray-700"/>
+            <span class="font-bold text-gray-200">Verified Thanet Venue Badge</span>
+          </label>
+        </div>
+
+        <div class="pt-4 flex items-center justify-end gap-3 border-t border-white/10">
+          <button type="button" onclick="closeVenueModal()" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold transition">
+            Cancel
+          </button>
+          <button type="submit" class="px-6 py-2 rounded-xl bg-brandTeal hover:bg-brandTeal/80 text-white font-bold transition shadow-lg shadow-brandTeal/30">
+            Save Venue
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <!-- ======================================================== -->
@@ -448,48 +942,47 @@
             <input type="text" id="spk_track" placeholder="Teal Stage • Session 101" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandMagenta"/>
           </div>
           <div>
-            <label class="block font-bold text-gray-300 uppercase mb-1">Badge Tag</label>
-            <input type="text" id="spk_badge" placeholder="Keynote" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandMagenta"/>
+            <label class="block font-bold text-gray-300 uppercase mb-1">Badge Label</label>
+            <input type="text" id="spk_badge" placeholder="Keynote / Panelist" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandMagenta"/>
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-bold text-gray-300 uppercase mb-1">Stage Key</label>
+            <label class="block font-bold text-gray-300 uppercase mb-1">Assigned Stage</label>
             <select id="spk_stageId" class="w-full bg-[#121826] border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandMagenta">
-              <option value="hero">Hero (Alex / Elena)</option>
               <option value="teal">Teal Stage</option>
+              <option value="magenta">Magenta Stage</option>
               <option value="indigo">Indigo Stage</option>
-              <option value="coral">Coral Stage</option>
-              <option value="yellow">Yellow Lounge</option>
+              <option value="yellow">Yellow Stage</option>
             </select>
           </div>
           <div>
-            <label class="block font-bold text-gray-300 uppercase mb-1">Schedule Time</label>
-            <input type="text" id="spk_time" placeholder="7:15 PM GMT" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandMagenta"/>
+            <label class="block font-bold text-gray-300 uppercase mb-1">Session Time</label>
+            <input type="text" id="spk_time" placeholder="7:00 PM GMT" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandMagenta"/>
           </div>
         </div>
 
         <div>
-          <label class="block font-bold text-gray-300 uppercase mb-1">Photo Image URL</label>
-          <input type="url" id="spk_img" placeholder="https://..." class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandMagenta"/>
+          <label class="block font-bold text-gray-300 uppercase mb-1">Speaker Photo URL</label>
+          <input type="url" id="spk_img" placeholder="https://images.unsplash.com/..." class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandMagenta"/>
         </div>
 
         <div>
-          <label class="block font-bold text-gray-300 uppercase mb-1">Session / Keynote Title *</label>
-          <input type="text" id="spk_title" required placeholder="Build Your Business Brand Style" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandMagenta"/>
+          <label class="block font-bold text-gray-300 uppercase mb-1">Session / Talk Title *</label>
+          <input type="text" id="spk_title" required placeholder="Spatial Computing & Community Hubs" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandMagenta"/>
         </div>
 
         <div>
-          <label class="block font-bold text-gray-300 uppercase mb-1">Session Abstract &amp; Description</label>
+          <label class="block font-bold text-gray-300 uppercase mb-1">Session Abstract / Bio</label>
           <textarea id="spk_desc" rows="3" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brandMagenta"></textarea>
         </div>
 
-        <div class="pt-3 flex items-center justify-end gap-2 border-t border-white/10">
-          <button type="button" onclick="closeSpeakerModal()" class="px-4 py-2 rounded-xl bg-white/10 text-white font-bold text-xs hover:bg-white/20 transition">
+        <div class="pt-3 flex items-center justify-end gap-3 border-t border-white/10">
+          <button type="button" onclick="closeSpeakerModal()" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold transition">
             Cancel
           </button>
-          <button type="submit" class="px-5 py-2 rounded-xl bg-brandTeal hover:bg-brandTeal/80 text-white font-bold text-xs transition">
+          <button type="submit" class="px-5 py-2 rounded-xl bg-brandTeal hover:bg-brandTeal/80 text-white font-bold transition">
             Save Speaker
           </button>
         </div>
@@ -503,9 +996,14 @@
     <span id="toastMsg">Changes saved!</span>
   </div>
 
+  <!-- Script Logic -->
   <script>
     let appState = null;
+    let allEvents = [];
+    let allVenues = [];
     let allPasses = [];
+    let currentEventTownFilter = 'all';
+    let currentVenueTownFilter = 'all';
 
     // Toast helper
     function showToast(msg, icon = '✅') {
@@ -533,46 +1031,88 @@
       document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
       const activeSection = document.getElementById(`section-${tabName}`);
       if (activeSection) activeSection.classList.remove('hidden');
+
+      if (tabName === 'events') filterEventsList();
+      if (tabName === 'venues') filterVenuesList();
     }
 
-    // Fetch unified state from backend
+    // Unified state fetcher
     async function fetchAllData(showNotification = false) {
+      const spinIcon = document.getElementById('refreshSpinIcon');
+      if (spinIcon) spinIcon.classList.add('animate-spin');
+
       try {
-        const res = await fetch('/api/arconf/state');
-        const json = await res.json();
-        if (json.success) {
-          appState = json.data;
-          renderOverview();
+        // Fetch events
+        const evRes = await fetch('/api/events');
+        const evJson = await evRes.json();
+        if (evJson.success) {
+          allEvents = evJson.data || [];
+          document.getElementById('badgeEventsCount').textContent = allEvents.length;
+          document.getElementById('statEventsCount').textContent = allEvents.length;
+          document.getElementById('eventsTotalLabel').textContent = `(${allEvents.length} listings)`;
+          renderEventsTable(allEvents);
+          updateTownBreakdown();
+        }
+
+        // Fetch venues
+        const venRes = await fetch('/api/venues');
+        const venJson = await venRes.json();
+        if (venJson.success) {
+          allVenues = venJson.data || [];
+          document.getElementById('badgeVenuesCount').textContent = allVenues.length;
+          document.getElementById('statVenuesCount').textContent = allVenues.length;
+          document.getElementById('venuesTotalLabel').textContent = `(${allVenues.length} locations)`;
+          renderVenuesGrid(allVenues);
+        }
+
+        // Fetch conference state
+        const stateRes = await fetch('/api/arconf/state');
+        const stateJson = await stateRes.json();
+        if (stateJson.success) {
+          appState = stateJson.data;
+          renderOverviewMetrics();
           renderSettings();
           renderSpeakers();
           renderStages();
           renderPoll();
           fetchPasses();
-          if (showNotification) showToast('Refreshed data from server!');
         }
+
+        document.getElementById('apiStatusBadge').innerHTML = 'API Online (Port 3001)';
+        document.getElementById('apiStatusBadge').className = 'text-emerald-400 font-semibold';
+        if (showNotification) showToast('Data refreshed successfully!');
       } catch (err) {
         console.error('Failed to load state:', err);
-        document.getElementById('apiStatusBadge').innerHTML = '<span class="text-rose-400">● Server Disconnected</span>';
+        document.getElementById('apiStatusBadge').innerHTML = 'Server Reconnecting...';
+        document.getElementById('apiStatusBadge').className = 'text-rose-400 font-semibold';
+      } finally {
+        if (spinIcon) spinIcon.classList.remove('animate-spin');
       }
     }
 
-    // 1. Overview
-    function renderOverview() {
+    // Overview Stats
+    function renderOverviewMetrics() {
       if (!appState) return;
-      document.getElementById('statAttendees').textContent = (appState.settings.confirmedCount || 3840).toLocaleString();
       document.getElementById('statPasses').textContent = (appState.passesCount || 0).toLocaleString();
-      document.getElementById('statSpeakers').textContent = (appState.speakers || []).length;
-      document.getElementById('statVotes').textContent = appState.poll ? appState.poll.totalVotes : 0;
-
-      document.getElementById('quickTitle').textContent = appState.settings.title;
-      document.getElementById('quickDate').textContent = `${appState.settings.dateFormatted} • ${appState.settings.timeFormatted}`;
-      document.getElementById('quickLocation').textContent = appState.settings.location;
-      document.getElementById('quickCountdown').textContent = appState.settings.countdownTarget;
       
-      const isOpen = appState.settings.registrationOpen !== false;
+      const isOpen = appState.settings && appState.settings.registrationOpen !== false;
       document.getElementById('regToggleCheckbox').checked = isOpen;
-      document.getElementById('quickRegStatus').textContent = isOpen ? 'OPEN / ACCEPTING BADGES' : 'CLOSED / RESTRICTED';
-      document.getElementById('quickRegStatus').className = isOpen ? 'font-bold text-emerald-400' : 'font-bold text-rose-400';
+      document.getElementById('quickRegStatus').textContent = isOpen ? 'ACCEPTING PASSES' : 'REGISTRATION CLOSED';
+      document.getElementById('quickRegStatus').className = isOpen ? 'text-[11px] font-semibold text-emerald-400' : 'text-[11px] font-semibold text-rose-400';
+    }
+
+    function updateTownBreakdown() {
+      const margate = allEvents.filter(e => e.town && e.town.toLowerCase() === 'margate').length;
+      const ramsgate = allEvents.filter(e => e.town && e.town.toLowerCase() === 'ramsgate').length;
+      const broadstairs = allEvents.filter(e => e.town && e.town.toLowerCase() === 'broadstairs').length;
+      const featured = allEvents.filter(e => e.featured === true).length;
+      const trending = allEvents.filter(e => e.trending === true).length;
+
+      document.getElementById('countMargate').textContent = margate;
+      document.getElementById('countRamsgate').textContent = ramsgate;
+      document.getElementById('countBroadstairs').textContent = broadstairs;
+      document.getElementById('quickFeaturedCount').textContent = `${featured} Active Listings`;
+      document.getElementById('quickTrendingCount').textContent = `${trending} Hot Happenings`;
     }
 
     async function toggleRegistration(checked) {
@@ -584,8 +1124,8 @@
         });
         const json = await res.json();
         if (json.success) {
-          appState.settings.registrationOpen = checked;
-          renderOverview();
+          if (appState && appState.settings) appState.settings.registrationOpen = checked;
+          renderOverviewMetrics();
           showToast(`Pass registration is now ${checked ? 'OPEN' : 'CLOSED'}`);
         }
       } catch (e) {
@@ -593,7 +1133,516 @@
       }
     }
 
-    // 2. Settings
+    // =============================================================
+    // EVENTS DIRECTORY CRUD
+    // =============================================================
+
+    function setEventTownFilter(town) {
+      currentEventTownFilter = town;
+      document.querySelectorAll('.evt-town-filter').forEach(btn => {
+        if (btn.getAttribute('data-town') === town) {
+          btn.className = 'evt-town-filter px-3 py-1.5 rounded-lg bg-white/15 text-white font-bold transition';
+        } else {
+          btn.className = 'evt-town-filter px-3 py-1.5 rounded-lg bg-white/5 text-gray-400 hover:text-white transition';
+        }
+      });
+      filterEventsList();
+    }
+
+    function filterEventsList() {
+      const query = (document.getElementById('eventSearchInput').value || '').toLowerCase().trim();
+      const cat = document.getElementById('eventCategorySelect').value;
+
+      let filtered = allEvents;
+
+      if (currentEventTownFilter !== 'all') {
+        filtered = filtered.filter(e => e.town && e.town.toLowerCase() === currentEventTownFilter.toLowerCase());
+      }
+
+      if (cat !== 'all') {
+        filtered = filtered.filter(e => e.category === cat || (e.categoryLabel && e.categoryLabel.toLowerCase().includes(cat)));
+      }
+
+      if (query) {
+        filtered = filtered.filter(e =>
+          (e.title && e.title.toLowerCase().includes(query)) ||
+          (e.venue && e.venue.toLowerCase().includes(query)) ||
+          (e.organizer && e.organizer.toLowerCase().includes(query)) ||
+          (e.town && e.town.toLowerCase().includes(query)) ||
+          (Array.isArray(e.tags) && e.tags.some(t => t.toLowerCase().includes(query)))
+        );
+      }
+
+      renderEventsTable(filtered);
+    }
+
+    function renderEventsTable(events) {
+      const tbody = document.getElementById('eventsTableBody');
+      if (!events || events.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" class="text-center py-8 text-gray-400">
+              No matching events found. Try clearing filters or add a new event.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = events.map(evt => {
+        const townColor = evt.town === 'Margate' ? 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30' :
+                          evt.town === 'Ramsgate' ? 'text-amber-400 bg-amber-500/10 border-amber-500/30' :
+                          'text-rose-400 bg-rose-500/10 border-rose-500/30';
+
+        const img = evt.image || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80';
+
+        return `
+          <tr class="hover:bg-white/5 transition border-b border-white/5">
+            <td class="px-4 py-3">
+              <div class="flex items-center gap-3">
+                <img src="${img}" alt="${evt.title}" class="w-10 h-10 rounded-lg object-cover bg-white/5 border border-white/10 flex-shrink-0"/>
+                <div class="min-w-0 max-w-xs">
+                  <div class="font-bold text-white truncate" title="${evt.title}">${evt.title}</div>
+                  <div class="text-[11px] text-gray-400 truncate">${evt.organizer || 'Community Host'}</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-4 py-3">
+              <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold border ${townColor}">
+                ${evt.town || 'Thanet'}
+              </span>
+              <div class="text-[11px] text-gray-300 mt-0.5 truncate max-w-[140px]" title="${evt.venue}">${evt.venue || 'TBA'}</div>
+            </td>
+            <td class="px-4 py-3">
+              <span class="text-[11px] text-gray-300">${evt.categoryLabel || evt.category || 'General'}</span>
+            </td>
+            <td class="px-4 py-3 font-mono text-[11px]">
+              <div class="text-white">${evt.dateDisplay || evt.date || 'Upcoming'}</div>
+              <div class="text-gray-400 text-[10px]">${evt.time || ''}</div>
+            </td>
+            <td class="px-4 py-3">
+              <span class="px-2 py-0.5 rounded bg-white/10 text-[10px] font-bold text-white">
+                ${evt.price || (evt.isFree ? 'Free' : 'Ticketed')}
+              </span>
+            </td>
+            <td class="px-4 py-3 text-center">
+              <button onclick="toggleEventFeatured('${evt.id}', ${!evt.featured})" class="text-base transition hover:scale-110" title="${evt.featured ? 'Featured (click to unfeature)' : 'Not featured (click to feature)'}">
+                ${evt.featured ? '⭐' : '<span class="opacity-25 hover:opacity-75">☆</span>'}
+              </button>
+            </td>
+            <td class="px-4 py-3 text-center">
+              <button onclick="toggleEventTrending('${evt.id}', ${!evt.trending})" class="text-base transition hover:scale-110" title="${evt.trending ? 'Trending' : 'Not trending'}">
+                ${evt.trending ? '🔥' : '<span class="opacity-25 hover:opacity-75">💨</span>'}
+              </button>
+            </td>
+            <td class="px-4 py-3 text-right whitespace-nowrap">
+              <button onclick="editEvent('${evt.id}')" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-[11px] font-semibold transition mr-1">
+                Edit
+              </button>
+              <button onclick="deleteEvent('${evt.id}', '${evt.title.replace(/'/g, "\\'")}')" class="px-2.5 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-[11px] font-semibold transition">
+                Delete
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function openEventModal(event = null) {
+      document.getElementById('eventForm').reset();
+      if (event) {
+        document.getElementById('eventModalTitle').textContent = 'Edit Directory Event';
+        document.getElementById('evt_id').value = event.id;
+        document.getElementById('evt_title').value = event.title || '';
+        document.getElementById('evt_town').value = event.town || 'Margate';
+        document.getElementById('evt_category').value = event.category || 'activity';
+        document.getElementById('evt_venue').value = event.venue || '';
+        document.getElementById('evt_organizer').value = event.organizer || '';
+        document.getElementById('evt_date').value = event.date || '';
+        document.getElementById('evt_time').value = event.time || '';
+        document.getElementById('evt_price').value = event.price || '';
+        document.getElementById('evt_image').value = event.image || '';
+        document.getElementById('evt_desc').value = event.description || '';
+        document.getElementById('evt_tags').value = Array.isArray(event.tags) ? event.tags.join(', ') : '';
+        document.getElementById('evt_featured').checked = Boolean(event.featured);
+        document.getElementById('evt_trending').checked = event.trending !== false;
+      } else {
+        document.getElementById('eventModalTitle').textContent = 'Add Directory Event';
+        document.getElementById('evt_id').value = '';
+        document.getElementById('evt_featured').checked = false;
+        document.getElementById('evt_trending').checked = true;
+      }
+      document.getElementById('eventModal').classList.remove('hidden');
+    }
+
+    function closeEventModal() {
+      document.getElementById('eventModal').classList.add('hidden');
+    }
+
+    function editEvent(id) {
+      const evt = allEvents.find(e => e.id === id);
+      if (evt) openEventModal(evt);
+    }
+
+    async function saveEvent(e) {
+      e.preventDefault();
+      const id = document.getElementById('evt_id').value;
+      const isEdit = Boolean(id);
+
+      const categoryLabels = {
+        activity: 'Sports & Fitness',
+        volunteer: 'Volunteering & Community',
+        meetup: 'Social Circles & Meetups',
+        event: 'Club Nights & Music Gigs',
+        creative: 'Arts & Creative Workshops'
+      };
+
+      const catVal = document.getElementById('evt_category').value;
+      const tagsRaw = document.getElementById('evt_tags').value;
+      const tags = tagsRaw ? tagsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+      const payload = {
+        title: document.getElementById('evt_title').value.trim(),
+        town: document.getElementById('evt_town').value,
+        category: catVal,
+        categoryLabel: categoryLabels[catVal] || 'Community',
+        venue: document.getElementById('evt_venue').value.trim(),
+        organizer: document.getElementById('evt_organizer').value.trim(),
+        date: document.getElementById('evt_date').value,
+        time: document.getElementById('evt_time').value.trim(),
+        price: document.getElementById('evt_price').value.trim() || 'Free',
+        isFree: (document.getElementById('evt_price').value || '').toLowerCase().includes('free'),
+        image: document.getElementById('evt_image').value.trim(),
+        description: document.getElementById('evt_desc').value.trim(),
+        tags: tags,
+        featured: document.getElementById('evt_featured').checked,
+        trending: document.getElementById('evt_trending').checked
+      };
+
+      try {
+        const url = isEdit ? `/api/events/${id}` : '/api/events';
+        const method = isEdit ? 'PUT' : 'POST';
+
+        const res = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const json = await res.json();
+        if (json.success) {
+          closeEventModal();
+          showToast(isEdit ? 'Event updated successfully!' : 'Event created successfully!');
+          fetchAllData();
+        } else {
+          showToast(json.error || 'Failed to save event', '❌');
+        }
+      } catch (err) {
+        showToast('Error saving event', '❌');
+      }
+    }
+
+    async function toggleEventFeatured(id, featured) {
+      try {
+        const res = await fetch(`/api/events/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ featured })
+        });
+        const json = await res.json();
+        if (json.success) {
+          const item = allEvents.find(e => e.id === id);
+          if (item) item.featured = featured;
+          filterEventsList();
+          updateTownBreakdown();
+          showToast(`Event featured status updated`);
+        }
+      } catch (e) {
+        showToast('Error updating status', '❌');
+      }
+    }
+
+    async function toggleEventTrending(id, trending) {
+      try {
+        const res = await fetch(`/api/events/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ trending })
+        });
+        const json = await res.json();
+        if (json.success) {
+          const item = allEvents.find(e => e.id === id);
+          if (item) item.trending = trending;
+          filterEventsList();
+          updateTownBreakdown();
+          showToast(`Event trending status updated`);
+        }
+      } catch (e) {
+        showToast('Error updating status', '❌');
+      }
+    }
+
+    async function deleteEvent(id, title) {
+      if (!confirm(`Are you sure you want to permanently delete event "${title}"?`)) return;
+
+      try {
+        const res = await fetch(`/api/events/${id}`, { method: 'DELETE' });
+        const json = await res.json();
+        if (json.success) {
+          allEvents = allEvents.filter(e => e.id !== id);
+          filterEventsList();
+          updateTownBreakdown();
+          showToast(`Deleted "${title}"`);
+        }
+      } catch (e) {
+        showToast('Error deleting event', '❌');
+      }
+    }
+
+    // =============================================================
+    // VENUES DIRECTORY CRUD
+    // =============================================================
+
+    function setVenueTownFilter(town) {
+      currentVenueTownFilter = town;
+      document.querySelectorAll('.ven-town-filter').forEach(btn => {
+        if (btn.getAttribute('data-town') === town) {
+          btn.className = 'ven-town-filter px-3 py-1.5 rounded-lg bg-white/15 text-white font-bold transition';
+        } else {
+          btn.className = 'ven-town-filter px-3 py-1.5 rounded-lg bg-white/5 text-gray-400 hover:text-white transition';
+        }
+      });
+      filterVenuesList();
+    }
+
+    function filterVenuesList() {
+      const query = (document.getElementById('venueSearchInput').value || '').toLowerCase().trim();
+      let filtered = allVenues;
+
+      if (currentVenueTownFilter !== 'all') {
+        filtered = filtered.filter(v => v.town && v.town.toLowerCase() === currentVenueTownFilter.toLowerCase());
+      }
+
+      if (query) {
+        filtered = filtered.filter(v =>
+          (v.name && v.name.toLowerCase().includes(query)) ||
+          (v.address && v.address.toLowerCase().includes(query)) ||
+          (v.town && v.town.toLowerCase().includes(query)) ||
+          (Array.isArray(v.facilities) && v.facilities.some(f => f.toLowerCase().includes(query)))
+        );
+      }
+
+      renderVenuesGrid(filtered);
+    }
+
+    function renderVenuesGrid(venues) {
+      const container = document.getElementById('venuesContainer');
+      if (!venues || venues.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full text-center py-12 glass-card rounded-2xl text-gray-400 text-xs">
+            No venues found. Click "+ Add New Venue" to add one.
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = venues.map(ven => {
+        const townColor = ven.town === 'Margate' ? 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30' :
+                          ven.town === 'Ramsgate' ? 'text-amber-400 bg-amber-500/10 border-amber-500/30' :
+                          'text-rose-400 bg-rose-500/10 border-rose-500/30';
+        const img = ven.image || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80';
+
+        const facTags = (ven.facilities || []).map(f => `
+          <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-[10px] text-gray-300">
+            ${f}
+          </span>
+        `).join('');
+
+        return `
+          <div class="glass-card glass-card-hover rounded-2xl overflow-hidden flex flex-col justify-between border border-white/10">
+            <div>
+              <div class="relative h-36 bg-gray-900">
+                <img src="${img}" alt="${ven.name}" class="w-full h-full object-cover"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#121826] via-transparent to-black/40"></div>
+                <div class="absolute top-3 left-3">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${townColor}">
+                    ${ven.town || 'Thanet'}
+                  </span>
+                </div>
+                ${ven.verified ? `
+                  <div class="absolute top-3 right-3 px-2 py-0.5 rounded bg-emerald-500/80 text-white text-[10px] font-bold">
+                    ✓ Verified
+                  </div>
+                ` : ''}
+              </div>
+
+              <div class="p-4">
+                <h4 class="font-extrabold text-white text-base">${ven.name}</h4>
+                <p class="text-xs text-gray-400 mt-1 flex items-center gap-1">
+                  <span>📍</span>
+                  <span class="truncate">${ven.address}</span>
+                </p>
+                ${ven.description ? `<p class="text-[11px] text-gray-300 mt-2 line-clamp-2 leading-relaxed">${ven.description}</p>` : ''}
+                
+                <div class="mt-3 flex flex-wrap gap-1.5">
+                  ${facTags}
+                </div>
+              </div>
+            </div>
+
+            <div class="p-4 pt-3 border-t border-white/5 flex items-center justify-between">
+              <span class="text-[11px] text-gray-400 font-mono">ID: ${ven.id}</span>
+              <div class="flex gap-1.5">
+                <button onclick="editVenue('${ven.id}')" class="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition">
+                  Edit
+                </button>
+                <button onclick="deleteVenue('${ven.id}', '${ven.name.replace(/'/g, "\\'")}')" class="px-2.5 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-xs font-semibold transition">
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openVenueModal(venue = null) {
+      document.getElementById('venueForm').reset();
+      if (venue) {
+        document.getElementById('venueModalTitle').textContent = 'Edit Thanet Venue';
+        document.getElementById('ven_id').value = venue.id;
+        document.getElementById('ven_name').value = venue.name || '';
+        document.getElementById('ven_town').value = venue.town || 'Margate';
+        document.getElementById('ven_address').value = venue.address || '';
+        document.getElementById('ven_facilities').value = Array.isArray(venue.facilities) ? venue.facilities.join(', ') : '';
+        document.getElementById('ven_image').value = venue.image || '';
+        document.getElementById('ven_desc').value = venue.description || '';
+        document.getElementById('ven_verified').checked = venue.verified !== false;
+      } else {
+        document.getElementById('venueModalTitle').textContent = 'Add Thanet Venue';
+        document.getElementById('ven_id').value = '';
+        document.getElementById('ven_verified').checked = true;
+      }
+      document.getElementById('venueModal').classList.remove('hidden');
+    }
+
+    function closeVenueModal() {
+      document.getElementById('venueModal').classList.add('hidden');
+    }
+
+    function editVenue(id) {
+      const v = allVenues.find(ven => ven.id === id);
+      if (v) openVenueModal(v);
+    }
+
+    async function saveVenue(e) {
+      e.preventDefault();
+      const id = document.getElementById('ven_id').value;
+      const isEdit = Boolean(id);
+
+      const facRaw = document.getElementById('ven_facilities').value;
+      const facilities = facRaw ? facRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+      const payload = {
+        name: document.getElementById('ven_name').value.trim(),
+        town: document.getElementById('ven_town').value,
+        address: document.getElementById('ven_address').value.trim(),
+        facilities,
+        image: document.getElementById('ven_image').value.trim(),
+        description: document.getElementById('ven_desc').value.trim(),
+        verified: document.getElementById('ven_verified').checked
+      };
+
+      try {
+        const url = isEdit ? `/api/venues/${id}` : '/api/venues';
+        const method = isEdit ? 'PUT' : 'POST';
+
+        const res = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const json = await res.json();
+        if (json.success) {
+          closeVenueModal();
+          showToast(isEdit ? 'Venue updated successfully!' : 'Venue created successfully!');
+          fetchAllData();
+        }
+      } catch (err) {
+        showToast('Error saving venue', '❌');
+      }
+    }
+
+    async function deleteVenue(id, name) {
+      if (!confirm(`Are you sure you want to delete venue "${name}"?`)) return;
+
+      try {
+        const res = await fetch(`/api/venues/${id}`, { method: 'DELETE' });
+        const json = await res.json();
+        if (json.success) {
+          allVenues = allVenues.filter(v => v.id !== id);
+          filterVenuesList();
+          showToast(`Deleted "${name}"`);
+        }
+      } catch (e) {
+        showToast('Error deleting venue', '❌');
+      }
+    }
+
+    // =============================================================
+    // SCRAPERS & INGESTION HUB
+    // =============================================================
+
+    async function triggerLiveScrape() {
+      const btn = document.getElementById('triggerScrapeBtn');
+      const btnIcon = document.getElementById('scrapeBtnIcon');
+      const btnText = document.getElementById('scrapeBtnText');
+      const consoleEl = document.getElementById('scraperConsole');
+
+      btn.disabled = true;
+      btn.classList.add('opacity-75');
+      btnIcon.textContent = '⏳';
+      btnText.textContent = 'Running Ingestion Pipeline...';
+
+      consoleEl.textContent += `\n[${new Date().toLocaleTimeString()}] Triggering live scraper pipeline...`;
+
+      try {
+        const res = await fetch('/api/scrape', { method: 'POST' });
+        const json = await res.json();
+
+        if (json.success) {
+          consoleEl.textContent += `\n[${new Date().toLocaleTimeString()}] Ingestion Complete!`;
+          consoleEl.textContent += `\n - Total events in database: ${json.totalEvents}`;
+          consoleEl.textContent += `\n - Newly parsed listings: ${json.newCount}`;
+          if (Array.isArray(json.logs)) {
+            consoleEl.textContent += '\n\n' + json.logs.join('\n');
+          }
+          consoleEl.scrollTop = consoleEl.scrollHeight;
+
+          showToast(`Ingestion complete! ${json.totalEvents} events active in directory.`);
+          fetchAllData();
+        } else {
+          consoleEl.textContent += `\n[Error]: ${json.error || 'Scrape execution failed'}`;
+          showToast('Scraper reported an issue', '❌');
+        }
+      } catch (err) {
+        consoleEl.textContent += `\n[Network Error]: ${err.message}`;
+        showToast('Scraper network error', '❌');
+      } finally {
+        btn.disabled = false;
+        btn.classList.remove('opacity-75');
+        btnIcon.textContent = '🚀';
+        btnText.textContent = 'Trigger Live Ingestion';
+      }
+    }
+
+    function clearScraperLogs() {
+      document.getElementById('scraperConsole').textContent = '[Zokal Aggregator] Console cleared. Ready for next sync.';
+    }
+
+    // =============================================================
+    // SETTINGS, SPEAKERS, STAGES, POLLS, PASSES (PRESERVED)
+    // =============================================================
+
     function renderSettings() {
       if (!appState || !appState.settings) return;
       const s = appState.settings;
@@ -633,7 +1682,7 @@
         const json = await res.json();
         if (json.success) {
           appState.settings = json.data;
-          renderOverview();
+          renderOverviewMetrics();
           showToast('Event settings saved & broadcasted!');
         }
       } catch (err) {
@@ -641,10 +1690,14 @@
       }
     }
 
-    // 3. Speakers
     function renderSpeakers() {
       const container = document.getElementById('speakersContainer');
       if (!appState || !appState.speakers) return;
+
+      if (appState.speakers.length === 0) {
+        container.innerHTML = `<div class="col-span-full py-8 text-center text-gray-400 text-xs">No speakers currently configured. Click "+ Add Speaker" above.</div>`;
+        return;
+      }
 
       container.innerHTML = appState.speakers.map(spk => `
         <div class="glass-card rounded-2xl p-4 flex flex-col justify-between border border-white/10 hover:border-white/20 transition">
@@ -708,28 +1761,31 @@
     }
 
     function editSpeaker(id) {
-      const spk = appState.speakers.find(s => s.id === id);
+      const spk = (appState.speakers || []).find(s => s.id === id);
       if (spk) openSpeakerModal(spk);
     }
 
     async function saveSpeaker(e) {
       e.preventDefault();
       const id = document.getElementById('spk_id').value;
+      const isEdit = Boolean(id);
+
       const payload = {
-        name: document.getElementById('spk_name').value,
-        role: document.getElementById('spk_role').value,
-        track: document.getElementById('spk_track').value,
-        badge: document.getElementById('spk_badge').value,
+        name: document.getElementById('spk_name').value.trim(),
+        role: document.getElementById('spk_role').value.trim(),
+        track: document.getElementById('spk_track').value.trim(),
+        badge: document.getElementById('spk_badge').value.trim(),
         stageId: document.getElementById('spk_stageId').value,
-        time: document.getElementById('spk_time').value,
-        img: document.getElementById('spk_img').value,
-        title: document.getElementById('spk_title').value,
-        desc: document.getElementById('spk_desc').value
+        time: document.getElementById('spk_time').value.trim(),
+        img: document.getElementById('spk_img').value.trim() || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
+        title: document.getElementById('spk_title').value.trim(),
+        desc: document.getElementById('spk_desc').value.trim()
       };
 
       try {
-        const url = id ? `/api/arconf/speakers/${id}` : '/api/arconf/speakers';
-        const method = id ? 'PUT' : 'POST';
+        const url = isEdit ? `/api/arconf/speakers/${id}` : '/api/arconf/speakers';
+        const method = isEdit ? 'PUT' : 'POST';
+
         const res = await fetch(url, {
           method,
           headers: { 'Content-Type': 'application/json' },
@@ -738,10 +1794,8 @@
         const json = await res.json();
         if (json.success) {
           closeSpeakerModal();
+          showToast(isEdit ? 'Speaker updated!' : 'Speaker added!');
           fetchAllData();
-          showToast(id ? 'Speaker updated!' : 'Speaker added!');
-        } else {
-          showToast(json.error || 'Failed to save', '❌');
         }
       } catch (err) {
         showToast('Error saving speaker', '❌');
@@ -749,103 +1803,101 @@
     }
 
     async function deleteSpeaker(id) {
-      if (!confirm('Are you sure you want to delete this speaker?')) return;
+      if (!confirm('Are you sure you want to remove this speaker?')) return;
       try {
         const res = await fetch(`/api/arconf/speakers/${id}`, { method: 'DELETE' });
         const json = await res.json();
         if (json.success) {
+          showToast('Speaker removed');
           fetchAllData();
-          showToast('Speaker deleted');
         }
-      } catch (err) {
+      } catch (e) {
         showToast('Error deleting speaker', '❌');
       }
     }
 
-    // 4. Stages
     function renderStages() {
       const container = document.getElementById('stagesContainer');
       if (!appState || !appState.stages) return;
 
-      const stages = appState.stages;
-      container.innerHTML = Object.keys(stages).map(key => {
-        const st = stages[key];
+      const colors = {
+        teal: { border: 'border-brandTeal', text: 'text-brandTeal', badge: 'TEAL TRACK' },
+        magenta: { border: 'border-brandMagenta', text: 'text-brandMagenta', badge: 'MAGENTA TRACK' },
+        yellow: { border: 'border-brandYellow', text: 'text-brandYellow', badge: 'YELLOW TRACK' },
+        indigo: { border: 'border-brandIndigo', text: 'text-brandIndigo', badge: 'INDIGO TRACK' }
+      };
+
+      container.innerHTML = Object.entries(appState.stages).map(([id, stage]) => {
+        const conf = colors[id] || { border: 'border-white/20', text: 'text-white', badge: id.toUpperCase() };
+
         return `
-          <div class="glass-card rounded-2xl p-5 border border-white/10 space-y-4">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full" style="background-color: ${st.themeColor}"></span>
-                <span class="font-extrabold text-white text-base">${st.name}</span>
-              </div>
-              <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-white/10 text-gray-300">${st.trackNumber}</span>
+          <div class="glass-card rounded-2xl p-5 border-l-4 ${conf.border}">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-bold ${conf.text} tracking-wider uppercase">${stage.badge || conf.badge}</span>
+              <span class="text-[10px] font-mono text-gray-400">${stage.speakerTime || ''}</span>
             </div>
+            
+            <h4 class="font-extrabold text-white text-base">${stage.title || stage.name}</h4>
+            <p class="text-xs text-gray-300 mt-1 leading-relaxed">${stage.desc || ''}</p>
 
-            <div class="space-y-3 text-xs">
+            <form onsubmit="saveStage(event, '${id}')" class="mt-4 pt-3 border-t border-white/5 space-y-2.5 text-xs">
               <div>
-                <label class="block text-gray-400 font-semibold mb-1">Track Badge</label>
-                <input type="text" id="stage_badge_${key}" value="${st.badge || ''}" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white"/>
+                <label class="block text-[10px] font-bold text-gray-400 uppercase mb-0.5">Stage / Track Title</label>
+                <input type="text" id="stage_title_${id}" value="${stage.title || stage.name || ''}" class="w-full bg-white/5 border border-white/10 rounded-lg px-2.5 py-1.5 text-white"/>
               </div>
-
               <div>
-                <label class="block text-gray-400 font-semibold mb-1">Main Talk Title / Headline</label>
-                <input type="text" id="stage_title_${key}" value="${st.title || st.headline || ''}" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white"/>
+                <label class="block text-[10px] font-bold text-gray-400 uppercase mb-0.5">Description</label>
+                <input type="text" id="stage_desc_${id}" value="${stage.desc || ''}" class="w-full bg-white/5 border border-white/10 rounded-lg px-2.5 py-1.5 text-white"/>
               </div>
-
-              <div>
-                <label class="block text-gray-400 font-semibold mb-1">Track Abstract &amp; Details</label>
-                <textarea id="stage_desc_${key}" rows="2" class="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-white">${st.description || ''}</textarea>
+              <div class="flex justify-end pt-1">
+                <button type="submit" class="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white font-semibold transition">
+                  Save Track
+                </button>
               </div>
-            </div>
-
-            <div class="pt-3 border-t border-white/10 flex justify-end">
-              <button onclick="saveStage('${key}')" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition active:scale-95">
-                Save ${st.name}
-              </button>
-            </div>
+            </form>
           </div>
         `;
       }).join('');
     }
 
-    async function saveStage(key) {
-      const payload = {
-        badge: document.getElementById(`stage_badge_${key}`).value,
-        title: document.getElementById(`stage_title_${key}`).value,
-        description: document.getElementById(`stage_desc_${key}`).value
+    async function saveStage(e, id) {
+      e.preventDefault();
+      const updated = {
+        title: document.getElementById(`stage_title_${id}`).value,
+        desc: document.getElementById(`stage_desc_${id}`).value
       };
-      if (key === 'yellow') payload.headline = payload.title;
-
       try {
-        const res = await fetch(`/api/arconf/stages/${key}`, {
+        const res = await fetch(`/api/arconf/stages/${id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          body: JSON.stringify(updated)
         });
         const json = await res.json();
         if (json.success) {
-          showToast(`${key.toUpperCase()} Stage updated!`);
+          showToast(`Stage ${id.toUpperCase()} updated!`);
         }
       } catch (err) {
-        showToast('Error saving stage', '❌');
+        showToast('Error updating stage', '❌');
       }
     }
 
-    // 5. Poll
     function renderPoll() {
       if (!appState || !appState.poll) return;
-      const poll = appState.poll;
-      document.getElementById('pollQuestionInput').value = poll.question;
-      document.getElementById('pollTotalVotesDisplay').textContent = (poll.totalVotes || 0).toLocaleString();
+      const p = appState.poll;
+      document.getElementById('pollQuestionInput').value = p.question || '';
+      document.getElementById('pollTotalVotesDisplay').textContent = (p.totalVotes || 0).toLocaleString();
 
-      const container = document.getElementById('pollOptionsList');
-      container.innerHTML = poll.options.map((opt, i) => `
-        <div class="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between gap-3">
+      const list = document.getElementById('pollOptionsList');
+      list.innerHTML = (p.options || []).map((opt, i) => `
+        <div class="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between gap-4">
           <div class="flex-1">
-            <input type="text" value="${opt.label}" data-opt-id="${opt.id}" class="poll-opt-input w-full bg-transparent border-0 text-white text-xs font-semibold focus:ring-0 p-0"/>
+            <input type="text" id="poll_opt_${i}" value="${opt.label}" class="w-full bg-transparent font-semibold text-white border-b border-white/10 focus:outline-none focus:border-brandMagenta py-1"/>
           </div>
           <div class="flex items-center gap-3">
-            <span class="text-xs font-bold text-brandCyan">${opt.percent || 0}%</span>
-            <span class="text-xs text-gray-400 font-mono">(${opt.votes || 0} votes)</span>
+            <span class="text-xs font-mono font-bold text-brandCyan">${opt.votes || 0} votes (${opt.percent || 0}%)</span>
+            <button type="button" onclick="simulateVote('${opt.id}')" class="px-2 py-1 rounded bg-white/10 hover:bg-white/20 text-[10px] font-bold text-white transition">
+              +1 Vote
+            </button>
           </div>
         </div>
       `).join('');
@@ -854,24 +1906,19 @@
     async function savePoll(e) {
       e.preventDefault();
       const question = document.getElementById('pollQuestionInput').value;
-      const inputs = document.querySelectorAll('.poll-opt-input');
-      const updatedOptions = [];
-
-      inputs.forEach(inp => {
-        const id = inp.getAttribute('data-opt-id');
-        const existing = appState.poll.options.find(o => o.id === id);
-        updatedOptions.push({
-          id,
-          label: inp.value,
-          votes: existing ? existing.votes : 0
-        });
+      const options = (appState.poll ? appState.poll.options : []).map((opt, i) => {
+        const input = document.getElementById(`poll_opt_${i}`);
+        return {
+          ...opt,
+          label: input ? input.value : opt.label
+        };
       });
 
       try {
         const res = await fetch('/api/arconf/poll', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ question, options: updatedOptions })
+          body: JSON.stringify({ question, options })
         });
         const json = await res.json();
         if (json.success) {
@@ -880,27 +1927,43 @@
           showToast('Live poll updated!');
         }
       } catch (err) {
-        showToast('Error updating poll', '❌');
+        showToast('Error saving poll', '❌');
       }
     }
 
     async function resetPollVotes() {
-      if (!confirm('Are you sure you want to reset all poll votes to 0?')) return;
+      if (!confirm('Reset all live votes to 0?')) return;
       try {
         const res = await fetch('/api/arconf/poll/reset', { method: 'POST' });
         const json = await res.json();
         if (json.success) {
           appState.poll = json.data;
           renderPoll();
-          renderOverview();
-          showToast('Poll votes reset to 0');
+          showToast('Votes reset to 0');
         }
       } catch (e) {
-        showToast('Failed to reset votes', '❌');
+        showToast('Error resetting votes', '❌');
       }
     }
 
-    // 6. Passes
+    async function simulateVote(optionId) {
+      try {
+        const res = await fetch('/api/arconf/poll/vote', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ optionId })
+        });
+        const json = await res.json();
+        if (json.success) {
+          appState.poll = json.data;
+          renderPoll();
+          showToast('Vote recorded!');
+        }
+      } catch (e) {
+        showToast('Error casting vote', '❌');
+      }
+    }
+
     async function fetchPasses() {
       try {
         const res = await fetch('/api/arconf/passes');
@@ -909,44 +1972,14 @@
           allPasses = json.data || [];
           renderPassesTable(allPasses);
         }
-      } catch (err) {
-        console.error('Failed to fetch passes:', err);
+      } catch (e) {
+        console.error('Error fetching passes:', e);
       }
-    }
-
-    function renderPassesTable(passes) {
-      const tbody = document.getElementById('passesTableBody');
-      if (passes.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-gray-400">No passes registered yet.</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = passes.map(p => {
-        const dateStr = p.claimedAt ? new Date(p.claimedAt).toLocaleString() : 'N/A';
-        return `
-          <tr class="hover:bg-white/5 transition">
-            <td class="px-4 py-3 font-mono text-brandCyan font-bold">${p.badgeNumber || p.id}</td>
-            <td class="px-4 py-3 font-semibold text-white">${p.name}</td>
-            <td class="px-4 py-3 text-gray-300">${p.role || 'Attendee'}</td>
-            <td class="px-4 py-3">
-              <span class="px-2 py-0.5 rounded bg-brandMagenta/20 text-brandMagenta font-bold text-[10px] border border-brandMagenta/30">
-                ${p.tier || 'ALL-ACCESS'}
-              </span>
-            </td>
-            <td class="px-4 py-3 font-mono text-gray-400 capitalize">${p.theme || 'holo'}</td>
-            <td class="px-4 py-3 text-gray-400 text-[11px]">${dateStr}</td>
-          </tr>
-        `;
-      }).join('');
     }
 
     function filterPasses() {
-      const q = document.getElementById('passSearchInput').value.toLowerCase().trim();
-      if (!q) {
-        renderPassesTable(allPasses);
-        return;
-      }
-      const filtered = allPasses.filter(p => 
+      const q = (document.getElementById('passSearchInput').value || '').toLowerCase().trim();
+      const filtered = allPasses.filter(p =>
         (p.name && p.name.toLowerCase().includes(q)) ||
         (p.badgeNumber && p.badgeNumber.toLowerCase().includes(q)) ||
         (p.role && p.role.toLowerCase().includes(q))
@@ -954,7 +1987,30 @@
       renderPassesTable(filtered);
     }
 
-    // Initialize on load
+    function renderPassesTable(passes) {
+      const tbody = document.getElementById('passesTableBody');
+      if (!passes || passes.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-gray-400">No accreditation passes claimed yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = passes.map(p => `
+        <tr class="hover:bg-white/5 transition">
+          <td class="px-4 py-3 font-mono text-brandCyan font-semibold">${p.badgeNumber || p.id}</td>
+          <td class="px-4 py-3 font-bold text-white">${p.name}</td>
+          <td class="px-4 py-3 text-gray-300">${p.role || 'Community Member'}</td>
+          <td class="px-4 py-3">
+            <span class="px-2 py-0.5 rounded-full bg-brandMagenta/20 text-brandMagenta font-bold text-[10px]">
+              ${p.tier || 'ALL-ACCESS'}
+            </span>
+          </td>
+          <td class="px-4 py-3 text-gray-400 uppercase text-[10px]">${p.theme || 'holo'}</td>
+          <td class="px-4 py-3 text-gray-400 font-mono text-[10px]">${new Date(p.claimedAt).toLocaleString()}</td>
+        </tr>
+      `).join('');
+    }
+
+    // Initialize on page load
     window.addEventListener('DOMContentLoaded', () => {
       fetchAllData();
     });
